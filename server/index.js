@@ -20,7 +20,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "https://learning-bca-smg3.vercel.app/",
+      "https://learning-bca-smg3.vercel.app",
       "https://learning-bca.vercel.app",
     ],
     credentials: true,
