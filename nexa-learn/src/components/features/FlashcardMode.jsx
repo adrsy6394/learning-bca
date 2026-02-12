@@ -50,7 +50,7 @@ const handleMarkAsLearned = (index) => {
               onClick={() => toggleFlip(index)}
             >
               {/* FRONT */}
-              <div className="absolute w-full h-full backface-hidden bg-white dark:bg-gradient-to-r from-indigo-600 to-purple-600 dark:text-white text-black border p-4 rounded-xl shadow-sm flex flex-col justify-between hover:scale-y-105 transition-scale duration-300">
+              <div className="absolute w-full h-full backface-hidden  dark:bg-gradient-to-r from-indigo-600 to-purple-600 dark:text-white border p-4 rounded-xl shadow-sm flex flex-col justify-between hover:scale-y-105 transition-scale duration-300">
                 <p className="pt-32 font-semibold">📌 {card.topic}</p>
                 <p className="text-sm text-gray-500 mt-2 dark:text-gray-400">
                   Click to flip

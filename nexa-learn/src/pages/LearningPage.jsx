@@ -110,7 +110,7 @@ ${explanation}
     text-gray-900 dark:text-white 
     py-12 "
     >
-      <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-10 mt-[10%]">
+      <div className="max-w-full mx-auto md:px-6 p-2 grid grid-cols-1 lg:grid-cols-2 gap-10 mt-[7%]">
         {/* LEFT PANEL */}
         <div
           className="rounded-2xl p-8 shadow-2xl border border-white/20
@@ -163,15 +163,17 @@ ${explanation}
 
         {/* RIGHT PANEL */}
         <div
-          className="rounded-2xl p-8 shadow-2xl border border-white/20
+          className="rounded-2xl p- shadow-2xl border border-white/20
         bg-gradient-to-r from-indigo-600 via-purple-600 to-purple-700
         dark:from-indigo-700 dark:via-purple-700 dark:to-purple-800
         transition-all duration-500"
         >
-          <h2 className="text-2xl font-semibold text-white mb-2">
+          <h2 className="text-2xl font-semibold text-white mb-2 text-center">
             AI Explanation
           </h2>
-          <p className="text-gray-200 mb-8">Personalized in {language}</p>
+          <p className="text-gray-200 mb-8 text-center">
+            Personalized in {language}
+          </p>
 
           {explanation ? (
             <>
@@ -213,7 +215,7 @@ ${explanation}
             text-gray-200 py-16"
             >
               <Brain className="w-14 h-14 mb-6 text-gray-300 animate-pulse" />
-              <p className="text-lg opacity-80">
+              <p className="text-lg opacity-80 text-center">
                 Select a topic and language to get started
               </p>
             </div>

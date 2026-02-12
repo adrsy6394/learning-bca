@@ -1,5 +1,6 @@
+// src/App.jsx
 import React, { useContext } from "react";
-import { AuthContext } from "./context/AuthContext";
+import { AuthContext, useAuth } from "./context/AuthContext";
 import { Routes, Route, Navigate } from "react-router-dom";
 
 import LoginForm from "./components/auth/LoginForm";
@@ -11,33 +12,27 @@ import LearningPage from "./pages/LearningPage";
 import FlashcardsPage from "./pages/FlashcardsPage";
 import ProgressPage from "./pages/ProgressPage";
 
-const FullScreenLoader = () => (
-  <div className="h-screen flex items-center justify-center">Loading…</div>
-);
+const ProtectedRoute = ({ children }) => {
+  const { user, authReady } = useAuth();
+
+  if (!authReady) return null; // wait session restore
+
+  if (!user) return <Navigate to="/login" replace />;
+
+  return children;
+};
 
 const PublicRoute = ({ children }) => {
-  const { user, authLoading } = useContext(AuthContext);
+  const { user, authReady } = useAuth();
 
-  if (authLoading) return <FullScreenLoader />;
+  if (!authReady) return null;
 
-  if (user && user.id) {
-    return <Navigate to="/" replace />;
-  }
+  if (user) return <Navigate to="/" replace />;
 
   return children;
 };
 
-const ProtectedRoute = ({ children }) => {
-  const { user, authLoading } = useContext(AuthContext);
 
-  if (authLoading) return <FullScreenLoader />;
-
-  if (!user || !user.id) {
-    return <Navigate to="/login" replace />;
-  }
-
-  return children;
-};
 
 const App = () => {
   return (
@@ -64,40 +59,48 @@ const App = () => {
         <Route
           path="/"
           element={
-            <>
-              <Navigation />
-              <HomePage />
-            </>
+            <ProtectedRoute>
+              <>
+                <Navigation />
+                <HomePage />
+              </>
+            </ProtectedRoute>
           }
         />
 
         <Route
           path="/learning"
           element={
-            <>
-              <Navigation />
-              <LearningPage />
-            </>
+            <ProtectedRoute>
+              <>
+                <Navigation />
+                <LearningPage />
+              </>
+            </ProtectedRoute>
           }
         />
 
         <Route
           path="/flashcards"
           element={
-            <>
-              <Navigation />
-              <FlashcardsPage />
-            </>
+            <ProtectedRoute>
+              <>
+                <Navigation />
+                <FlashcardsPage />
+              </>
+            </ProtectedRoute>
           }
         />
 
         <Route
           path="/progress"
           element={
-            <>
-              <Navigation />
-              <ProgressPage />
-            </>
+            <ProtectedRoute>
+              <>
+                <Navigation />
+                <ProgressPage />
+              </>
+            </ProtectedRoute>
           }
         />
 

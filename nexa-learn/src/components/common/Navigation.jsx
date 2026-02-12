@@ -1,19 +1,20 @@
 // src/components/layout/Navigation.jsx
 import React, { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Menu, X, Sun, Moon } from "lucide-react";
 
 const Navigation = () => {
   const { user, signOut } = useContext(AuthContext);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [isOpen, setIsOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(
     () => localStorage.getItem("theme") === "dark"
   );
 
-  /* -------------------- Dark Mode Sync -------------------- */
+  /* ================= DARK MODE ================= */
   useEffect(() => {
     if (darkMode) {
       document.documentElement.classList.add("dark");
@@ -24,18 +25,22 @@ const Navigation = () => {
     }
   }, [darkMode]);
 
-  /* -------------------- Logout Handler -------------------- */
+  /* ================= AUTO CLOSE MOBILE MENU ON ROUTE CHANGE ================= */
+  useEffect(() => {
+    setIsOpen(false);
+  }, [location.pathname]);
+
+  /* ================= LOGOUT ================= */
   const handleLogout = async () => {
     try {
-      await signOut();          // Supabase sign out
-      setIsOpen(false);         // close mobile menu if open
-      navigate("/login");       // redirect
+      await signOut();
+      navigate("/login");
     } catch (err) {
       console.error("Logout failed:", err);
     }
   };
 
-  /* -------------------- Navigation Links -------------------- */
+  /* ================= NAV LINKS ================= */
   const navLinks = [
     { name: "Home", path: "/" },
     { name: "Flashcards", path: "/flashcards" },
@@ -43,12 +48,17 @@ const Navigation = () => {
     { name: "Progress", path: "/progress" },
   ];
 
-  const isLoggedIn = !!(user && user.id);
-  const displayName = user?.full_name || user?.email || "User";
+  const isLoggedIn = !!user?.id;
+
+  // 🔥 FINAL DISPLAY LOGIC (NO EMAIL FALLBACK)
+  const displayName =
+    user?.full_name ||
+    "User";
 
   return (
     <nav className="bg-white dark:bg-gray-900 text-black dark:text-white shadow-xl px-4 py-3 flex justify-between items-center fixed w-full top-0 z-50">
-      {/* ---------------- Left: Logo + Links ---------------- */}
+      
+      {/* LEFT SIDE */}
       <div className="flex items-center space-x-4">
         <img
           src="/ChatGPT_Image_Jul_20__2025__04_55_44_PM-removebg-preview.png"
@@ -63,7 +73,11 @@ const Navigation = () => {
             <button
               key={link.path}
               onClick={() => navigate(link.path)}
-              className="px-3 py-1 rounded hover:bg-gray-100 dark:hover:bg-gray-800"
+              className={`px-3 py-1 rounded transition ${
+                location.pathname === link.path
+                  ? "bg-purple-500 text-white"
+                  : "hover:bg-gray-100 dark:hover:bg-gray-800"
+              }`}
             >
               {link.name}
             </button>
@@ -71,18 +85,18 @@ const Navigation = () => {
         </div>
       </div>
 
-      {/* ---------------- Right Controls ---------------- */}
+      {/* RIGHT SIDE */}
       <div className="flex items-center space-x-3">
-        {/* Theme toggle (desktop) */}
+        
+        {/* Theme Toggle */}
         <button
-          aria-label="Toggle theme"
           onClick={() => setDarkMode((m) => !m)}
           className="hidden md:block"
         >
           {darkMode ? <Sun size={20} /> : <Moon size={20} />}
         </button>
 
-        {/* Auth buttons (desktop) */}
+        {/* Desktop Auth */}
         <div className="hidden md:flex items-center space-x-3">
           {isLoggedIn ? (
             <>
@@ -106,7 +120,7 @@ const Navigation = () => {
           )}
         </div>
 
-        {/* Mobile controls */}
+        {/* Mobile Controls */}
         <div className="flex items-center md:hidden space-x-2">
           <button onClick={() => setDarkMode((m) => !m)}>
             {darkMode ? <Sun size={20} /> : <Moon size={20} />}
@@ -117,17 +131,18 @@ const Navigation = () => {
         </div>
       </div>
 
-      {/* ---------------- Mobile Dropdown ---------------- */}
+      {/* MOBILE DROPDOWN */}
       {isOpen && (
-        <div className="absolute top-20 left-0 w-full bg-white dark:bg-gray-900 flex flex-col space-y-2 p-4 shadow-md md:hidden items-center">
+        <div className="absolute top-20 left-0 w-full bg-white dark:bg-gray-900 flex flex-col space-y-2 p-4 shadow-md md:hidden items-center z-50">
           {navLinks.map((link) => (
             <button
               key={link.path}
-              onClick={() => {
-                navigate(link.path);
-                setIsOpen(false);
-              }}
-              className="w-full text-center px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800"
+              onClick={() => navigate(link.path)}
+              className={`w-full text-center px-3 py-2 rounded ${
+                location.pathname === link.path
+                  ? "bg-purple-500 text-white"
+                  : "hover:bg-gray-100 dark:hover:bg-gray-800"
+              }`}
             >
               {link.name}
             </button>
@@ -147,10 +162,7 @@ const Navigation = () => {
             </>
           ) : (
             <button
-              onClick={() => {
-                navigate("/login");
-                setIsOpen(false);
-              }}
+              onClick={() => navigate("/login")}
               className="w-full px-3 py-2 border rounded hover:bg-gray-100 dark:hover:bg-gray-800"
             >
               Login

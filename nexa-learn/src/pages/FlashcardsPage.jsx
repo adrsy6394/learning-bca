@@ -73,8 +73,11 @@ const FlashcardsPage = () => {
   return (
     <div className="my-36 p-6 space-y-6 min-h-screen bg-white dark:bg-gray-900 text-gray-800 dark:text-white transition-all duration-300">
       <div className="flex justify-center">
-        <div className="py-4 space-y-6 text-center dark:bg-gray-800 rounded-lg shadow-xl border-2 px-6 w-96">
-          <label className="block font-semibold text-lg text-center border-b-4 dark:border-gray-500 rounded-lg">
+        <div className="py-12 space-y-8 text-center dark:bg-gray-800 rounded-lg shadow-xl border-2 px-6 w-[110%] mx-auto md:w-[70%] lg:w-[70%] rounded-2xl p-8 shadow-2xl border border-white/20
+        bg-gradient-to-r from-indigo-600 via-purple-600 to-purple-700
+        dark:from-indigo-700 dark:via-purple-700 dark:to-purple-800
+        transition-all duration-500">
+          <label className="block font-semibold text-lg text-center border-b-4 dark:border-gray-500 rounded-lg text-white">
             🎓 Select Semester & Subject:
           </label>
 
@@ -82,7 +85,7 @@ const FlashcardsPage = () => {
             <select
               value={semester}
               onChange={(e) => setSemester(e.target.value)}
-              className="border border-gray-300 dark:border-gray-700 p-2 rounded bg-white dark:bg-gray-800 cursor-cell"
+              className="border border-gray-300  p-2 rounded bg-white text-black cursor-cell"
             >
               {[1, 2, 3, 4, 5, 6].map((sem) => (
                 <option key={sem} value={sem}>
@@ -94,7 +97,7 @@ const FlashcardsPage = () => {
             <select
               value={subject}
               onChange={(e) => setSubject(e.target.value)}
-              className="border border-gray-300 dark:border-gray-700 p-2 rounded bg-white dark:bg-gray-800 cursor-cell"
+              className="border border-gray-300  p-2 rounded bg-white text-black cursor-cell"
             >
               <option value="">-- Choose Subject --</option>
               {subjectList.map((name, idx) => (
@@ -107,7 +110,7 @@ const FlashcardsPage = () => {
             <select
               value={unit}
               onChange={(e) => setUnit(e.target.value)}
-              className="border border-gray-300 dark:border-gray-700 p-2 rounded bg-white dark:bg-gray-800 cursor-cell"
+              className="border border-gray-300 dark:border-gray-700 p-2 rounded bg-white text-black cursor-cell"
             >
               <option value="">Select Unit</option>
               {unitList.map((u, idx) => (
@@ -120,7 +123,8 @@ const FlashcardsPage = () => {
             <button
               onClick={generateCards}
               disabled={!subject || loading}
-              className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg transition cursor-pointer w-52 self-center"
+              className="bg-green-600 hover:bg-green-700 
+              text-white px-4 py-3 rounded-lg transition cursor-pointer w-52 self-center font-bold text-lg"
             >
               {loading ? "⏳ Generating..." : "Generate Flashcards"}
             </button>
@@ -135,7 +139,7 @@ const FlashcardsPage = () => {
           </div>
         )}
         {!cards.length && !loading && (
-          <p className="text-gray-500 dark:text-gray-400 py-40 text-xl">
+          <p className="text-gray-500 dark:text-gray-400 py-32 text-xl">
             🔍 No flashcards to show. Please select a semester & subject to
             click Generate.
           </p>

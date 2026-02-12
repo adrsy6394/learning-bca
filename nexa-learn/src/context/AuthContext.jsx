@@ -10,166 +10,128 @@ import { supabase } from "../lib/supabase";
 
 export const AuthContext = createContext();
 
-const DEFAULT_USER = { progress: {} };
-
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [authLoading, setAuthLoading] = useState(true); // ✅ NEW
+  const [authReady, setAuthReady] = useState(false); // 🔥 important
 
-  /* ---------------- Initial session restore ---------------- */
-  useEffect(() => {
-    let mounted = true;
+  /* ================= RESTORE SESSION ================= */
+ useEffect(() => {
+  let mounted = true;
 
-    const init = async () => {
-      try {
-        const { data } = await supabase.auth.getSession();
-        const sessionUser = data?.session?.user ?? null;
+  const buildUser = (authUser) => {
+    if (!authUser) return null;
 
-        if (mounted && sessionUser) {
-          const publicUser = {
-            id: sessionUser.id,
-            email: sessionUser.email,
-            progress:
-              (JSON.parse(localStorage.getItem("user")) || {}).progress || {},
-          };
+    const metadataName =
+      authUser.user_metadata?.name ||
+      authUser.user_metadata?.full_name ||
+      "";
 
-          setUser(publicUser);
-          localStorage.setItem("user", JSON.stringify(publicUser));
-        }
-      } catch (err) {
-        console.error("Auth init error:", err);
-      } finally {
-        setAuthLoading(false); // ✅ VERY IMPORTANT
-      }
+    const emailPrefix =
+      authUser.email?.split("@")[0] || "User";
+
+    return {
+      id: authUser.id,
+      email: authUser.email,
+      full_name: metadataName || emailPrefix,
     };
+  };
 
-    init();
+  const restoreSession = async () => {
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
 
-    /* ---------------- Auth state listener ---------------- */
-    const { data: listener } = supabase.auth.onAuthStateChange(
-      async (_event, session) => {
-        const sUser = session?.user ?? null;
+    if (!mounted) return;
 
-        if (sUser) {
-          const publicUser = {
-            id: sUser.id,
-            email: sUser.email,
-            progress:
-              (JSON.parse(localStorage.getItem("user")) || {}).progress || {},
-          };
-
-          // OAuth name (Google)
-          const fullNameFromOAuth =
-            sUser.user_metadata?.full_name ||
-            sUser.user_metadata?.name ||
-            null;
-
-          // Ensure profile exists
-          const { data: profile } = await supabase
-            .from("profiles")
-            .upsert(
-              {
-                id: sUser.id,
-                full_name: fullNameFromOAuth,
-              },
-              { onConflict: "id" }
-            )
-            .select("full_name, student_id")
-            .single();
-
-          if (profile) {
-            publicUser.full_name = profile.full_name;
-            publicUser.studentId = profile.student_id;
-          }
-
-          setUser(publicUser);
-          localStorage.setItem("user", JSON.stringify(publicUser));
-        } else {
-          setUser(null);
-          localStorage.removeItem("user");
-        }
-
-        setAuthLoading(false); // ✅ IMPORTANT
-      }
-    );
-
-    return () => {
-      mounted = false;
-      listener?.subscription?.unsubscribe();
-    };
-  }, []);
-
-  /* ---------------- Signup ---------------- */
-  const signUp = useCallback(async ({ email, password, full_name, studentId }) => {
-    try {
-      const { data, error } = await supabase.auth.signUp({ email, password });
-      if (error) throw error;
-
-      if (data.user) {
-        await supabase.from("profiles").upsert({
-          id: data.user.id,
-          full_name,
-          student_id: studentId,
-        });
-      }
-
-      return { success: true };
-    } catch (err) {
-      return { success: false, error: err.message };
+    if (session?.user) {
+      const userObj = buildUser(session.user);
+      setUser(userObj);
     }
-  }, []);
 
-  /* ---------------- Login ---------------- */
+    setAuthReady(true);
+  };
+
+  restoreSession();
+
+  const {
+    data: { subscription },
+  } = supabase.auth.onAuthStateChange((_event, session) => {
+    if (!mounted) return;
+
+    if (session?.user) {
+      const userObj = buildUser(session.user);
+      setUser(userObj);
+    } else {
+      setUser(null);
+    }
+  });
+
+  return () => {
+    mounted = false;
+    subscription.unsubscribe();
+  };
+}, []);
+
+
+  /* ================= EMAIL LOGIN ================= */
   const signIn = useCallback(async ({ email, password }) => {
-    try {
-      const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-      if (error) throw error;
-      return { success: true };
-    } catch (err) {
-      return { success: false, error: err.message };
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (error) {
+      return { success: false, error: error.message };
     }
+
+    return { success: true };
   }, []);
 
-  /* ---------------- Logout ---------------- */
-  const signOut = useCallback(async () => {
+  /* ================= GOOGLE LOGIN ================= */
+  const signInWithGoogle = async () => {
+    await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo: window.location.origin,
+      },
+    });
+  };
+
+  /* ================= SIGNUP ================= */
+  const signUp = useCallback(async ({ email, password, full_name }) => {
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+    });
+
+    if (error) {
+      return { success: false, error: error.message };
+    }
+
+    if (data?.user) {
+      await supabase.from("profiles").upsert({
+        id: data.user.id,
+        full_name,
+      });
+    }
+
+    return { success: true };
+  }, []);
+
+  const signOut = async () => {
     await supabase.auth.signOut();
     setUser(null);
-    localStorage.removeItem("user");
-  }, []);
-
-  /* ---------------- Progress ---------------- */
-  const markTopicAsLearned = useCallback(
-    async (semester, subject, unit, topic) => {
-      setUser((prev) => {
-        const base = prev ? { ...prev } : { ...DEFAULT_USER };
-        base.progress ??= {};
-        base.progress[semester] ??= {};
-        base.progress[semester][subject] ??= {};
-        base.progress[semester][subject][unit] ??= [];
-
-        if (!base.progress[semester][subject][unit].includes(topic)) {
-          base.progress[semester][subject][unit].push(topic);
-        }
-
-        localStorage.setItem("user", JSON.stringify(base));
-        return base;
-      });
-    },
-    []
-  );
+  };
 
   return (
     <AuthContext.Provider
       value={{
         user,
-        authLoading, // ✅ expose this
-        signUp,
+        authReady, // 🔥 must use in route guard
         signIn,
+        signInWithGoogle,
+        signUp,
         signOut,
-        markTopicAsLearned,
       }}
     >
       {children}

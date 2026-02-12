@@ -11,7 +11,7 @@ const TopicInput = ({ onSubmit }) => {
         onSubmit(t); // pass entered topic to parent
         setT(""); // clear input after submit
       }}
-      className="flex space-x-2"
+      className="flex  flex-col space-y-4"
     >
       <input
         value={t} // controlled input value
@@ -19,7 +19,7 @@ const TopicInput = ({ onSubmit }) => {
         placeholder="Enter topic"
         className="border border-gray-400 shadow-md p-2 rounded flex-1  dark:text-gray-500"
       />
-      <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded">
+      <button type="submit" className="bg-green-500 text-white w-16 py-2 rounded ">
         Go
       </button>
     </form>

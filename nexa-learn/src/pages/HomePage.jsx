@@ -30,7 +30,7 @@ const HomePage = () => {
           <h1 className="text-4xl font-bold text-gray-900 mb-4 dark:text-white">
             Welcome back,{" "}
             <span className="bg-gradient-to-r from-purple-500 to-pink-500 text-transparent bg-clip-text">
-              {user?.name}!
+              {user?.full_name}!
             </span>
           </h1>
           <p className="text-xl text-gray-500 max-w-2xl mx-auto">
