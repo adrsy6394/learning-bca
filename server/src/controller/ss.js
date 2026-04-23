@@ -32,7 +32,7 @@ class AIController {
             "X-Title": "NexaLearn AI Assistant",
           },
           body: JSON.stringify({
-            model: "mistralai/mistral-7b-instruct",
+            model: "google/gemini-2.0-flash-001",
             messages: [
               {
                 role: "system",

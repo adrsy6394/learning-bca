@@ -41,7 +41,7 @@ Include examples if possible.
           "X-Title": "Learning Assistant",
         },
         body: JSON.stringify({
-          model: "mistralai/mistral-7b-instruct", // Stable free model
+          model: "google/gemini-2.0-flash-001", // Gemini 2.0 Flash model via OpenRouter
           messages: [
             {
               role: "system",
