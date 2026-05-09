@@ -108,40 +108,39 @@ ${explanation}
     bg-white
     dark:bg-[#0B1C2D] 
     text-gray-900 dark:text-white 
-    py-12 "
+    pt-28 pb-12 "
     >
-      <div className="max-w-full mx-auto md:px-6 p-2 grid grid-cols-1 lg:grid-cols-2 gap-10 mt-[7%]">
+      <div className="max-w-full mx-auto md:px-6 p-2 grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
         {/* LEFT PANEL */}
         <div
-          className="rounded-2xl p-8 shadow-2xl border border-white/20
-        bg-gradient-to-r from-indigo-600 via-purple-600 to-purple-700
-        dark:from-indigo-700 dark:via-purple-700 dark:to-purple-800
-        transition-all duration-500"
+          className="bg-white dark:bg-slate-800/50 rounded-[2rem] p-8 shadow-xl border border-slate-100 dark:border-slate-700 transition-all duration-500 sticky top-28"
         >
-          <h2 className="text-2xl font-semibold text-white mb-2">
+          <h2 className="text-2xl font-black bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-2">
             Select Your Topic
           </h2>
-          <p className="text-gray-200 mb-6">
+          <p className="text-slate-500 dark:text-slate-400 mb-6 font-medium">
             Choose a topic for personalized explanation
           </p>
 
           <div className="space-y-6">
             <div>
-              <label className="block text-white mb-2">Topic</label>
+              <label className="block text-slate-700 dark:text-slate-300 font-bold text-sm mb-2">Topic</label>
               <TopicInput onSubmit={setSelectedTopic} />
             </div>
 
             <div>
-              <label className="block text-white mb-2">Or Custom Topic</label>
-              <Input
-                value={customTopic}
-                onChange={(e) => {
-                  setCustomTopic(e.target.value);
-                  setSelectedTopic("");
-                }}
-                placeholder="Enter your specific doubt"
-                className="bg-white/90 text-black focus:ring-2 focus:ring-green-400"
-              />
+              <label className="block text-slate-700 dark:text-slate-300 font-bold text-sm mb-2">Or Custom Topic</label>
+              <div className="relative flex items-center w-full group">
+                <Input
+                  value={customTopic}
+                  onChange={(e) => {
+                    setCustomTopic(e.target.value);
+                    setSelectedTopic("");
+                  }}
+                  placeholder="Enter your specific doubt..."
+                  className="w-full px-5 py-4 rounded-2xl bg-slate-50 dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 focus:border-indigo-500 dark:focus:border-indigo-500 focus:bg-white dark:focus:bg-slate-800 text-slate-900 dark:text-white outline-none transition-all duration-300 shadow-inner dark:shadow-slate-950/50 placeholder-slate-400 group-hover:border-indigo-300 dark:group-hover:border-indigo-700"
+                />
+              </div>
             </div>
 
             <div>
@@ -151,10 +150,7 @@ ${explanation}
             <button
               onClick={handleGetExplanation}
               disabled={loading}
-              className="w-full bg-green-600 hover:bg-green-700 
-              text-white py-3 rounded-xl font-semibold 
-              shadow-lg transition-all duration-300 
-              hover:scale-[1.02]"
+              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-4 rounded-2xl font-black text-lg transition-all hover:scale-105 active:scale-95 shadow-xl shadow-indigo-100 dark:shadow-none disabled:opacity-50"
             >
               {loading ? "Generating..." : "Get Explanation"}
             </button>
@@ -163,15 +159,12 @@ ${explanation}
 
         {/* RIGHT PANEL */}
         <div
-          className="rounded-2xl p- shadow-2xl border border-white/20
-        bg-gradient-to-r from-indigo-600 via-purple-600 to-purple-700
-        dark:from-indigo-700 dark:via-purple-700 dark:to-purple-800
-        transition-all duration-500"
+          className="bg-white dark:bg-slate-800/50 rounded-[2rem] p-8 shadow-xl border border-slate-100 dark:border-slate-700 transition-all duration-500"
         >
-          <h2 className="text-2xl font-semibold text-white mb-2 text-center">
+          <h2 className="text-2xl font-black bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-2 text-center">
             AI Explanation
           </h2>
-          <p className="text-gray-200 mb-8 text-center">
+          <p className="text-slate-500 dark:text-slate-400 mb-8 text-center font-medium">
             Personalized in {language}
           </p>
 
@@ -189,23 +182,21 @@ ${explanation}
                 {supported && (
                   <button
                     onClick={() => (speaking ? stop() : speak(explanation))}
-                    className="bg-black/20 hover:bg-black/40 
-                    p-3 rounded-xl transition-all duration-200"
+                    className="bg-slate-100 dark:bg-slate-700 hover:bg-indigo-600 hover:text-white p-4 rounded-2xl transition-all duration-300 shadow-sm"
                   >
                     {speaking ? (
-                      <Pause className="w-6 h-6 text-white" />
+                      <Pause className="w-6 h-6" />
                     ) : (
-                      <Play className="w-6 h-6 text-white" />
+                      <Play className="w-6 h-6" />
                     )}
                   </button>
                 )}
 
                 <button
                   onClick={exportToFile}
-                  className="bg-black/20 hover:bg-black/40 
-                  p-3 rounded-xl transition-all duration-200"
+                  className="bg-slate-100 dark:bg-slate-700 hover:bg-indigo-600 hover:text-white p-4 rounded-2xl transition-all duration-300 shadow-sm"
                 >
-                  <FileText className="w-6 h-6 text-white" />
+                  <FileText className="w-6 h-6" />
                 </button>
               </div>
             </>

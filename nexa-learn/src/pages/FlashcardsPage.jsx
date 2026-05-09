@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from "react";
-import bcaSyllabus from "../data/bcaSyllabus";
+import React, { useState, useEffect, useContext } from "react";
+
+import { AuthContext } from "../context/AuthContext";
 import { FlashcardMode } from "../components/features/FlashcardMode";
 
 const FlashcardsPage = () => {
+  const { user } = useContext(AuthContext);
   const [semester, setSemester] = useState("1");
   const [subject, setSubject] = useState("");
   const [unit, setUnit] = useState("");
@@ -11,19 +13,35 @@ const FlashcardsPage = () => {
 
   const [subjectList, setSubjectList] = useState([]);
   const [unitList, setUnitList] = useState([]);
+  const [bcaSyllabus, setBcaSyllabus] = useState(null);
+
+  useEffect(() => {
+    const fetchSyllabus = async () => {
+      try {
+        const response = await fetch(`${import.meta.env.VITE_MAIN_URL}/api/v2/syllabus`);
+        const data = await response.json();
+        setBcaSyllabus(data);
+      } catch (error) {
+        console.error("Error fetching syllabus:", error);
+      }
+    };
+    fetchSyllabus();
+  }, []);
 
   // Update subject list when semester changes, and reset downstream selections
   useEffect(() => {
+    if (!bcaSyllabus) return;
     const subjects = bcaSyllabus[`semester${semester}`];
     setSubjectList(subjects ? Object.values(subjects).map((s) => s.name) : []); // extract subject names
     setSubject(""); // clear selected subject
     setUnit(""); // clear selected unit
     setUnitList([]); // reset unit list
     setCards([]); // clear existing cards
-  }, [semester]);
+  }, [semester, bcaSyllabus]);
 
   // Update unit list when subject changes, and reset related state
   useEffect(() => {
+    if (!bcaSyllabus) return;
     const selectedSemester = bcaSyllabus[`semester${semester}`];
     if (selectedSemester) {
       // find the key whose name matches selected subject
@@ -35,11 +53,11 @@ const FlashcardsPage = () => {
       setUnit(""); // clear selected unit
       setCards([]); // clear cards because unit changed
     }
-  }, [subject]);
+  }, [subject, bcaSyllabus]);
 
   // Generate flashcard objects based on current semester, subject, and unit
   const generateCards = () => {
-    if (!semester || !subject || !unit) return; // guard: need all selections
+    if (!semester || !subject || !unit || !bcaSyllabus) return; // guard: need all selections
     setLoading(true); // show loading state
 
     // simulate async delay (could be replaced with real async logic)
@@ -58,11 +76,15 @@ const FlashcardsPage = () => {
         return;
       }
 
-      // Build new card array from topics, defaulting answer if missing
+      // Get user progress to mark already learned cards
+      const semKeyShort = semester.toString();
+      const userProgress = user?.progress?.[semKeyShort]?.[subject]?.[unit] || [];
+
+      // Build new card array from topics, answer will be fetched later
       const newCards = selectedUnit.topics.map((t) => ({
         topic: t.topic,
-        answer: t.answer || "No answer available.",
-        learned: false, // initial state
+        answer: null, // Will be generated dynamically
+        learned: userProgress.includes(t.topic.trim()), // check against user progress (trimmed)
       }));
 
       setCards(newCards); // update cards
@@ -71,21 +93,18 @@ const FlashcardsPage = () => {
   };
 
   return (
-    <div className="my-36 p-6 space-y-6 min-h-screen bg-white dark:bg-gray-900 text-gray-800 dark:text-white transition-all duration-300">
+    <div className="pt-28 p-6 space-y-6 min-h-screen bg-white dark:bg-gray-900 text-gray-800 dark:text-white transition-all duration-300">
       <div className="flex justify-center">
-        <div className="py-12 space-y-8 text-center dark:bg-gray-800 rounded-lg shadow-xl border-2 px-6 w-[110%] mx-auto md:w-[70%] lg:w-[70%] rounded-2xl p-8 shadow-2xl border border-white/20
-        bg-gradient-to-r from-indigo-600 via-purple-600 to-purple-700
-        dark:from-indigo-700 dark:via-purple-700 dark:to-purple-800
-        transition-all duration-500">
-          <label className="block font-semibold text-lg text-center border-b-4 dark:border-gray-500 rounded-lg text-white">
-            🎓 Select Semester & Subject:
+        <div className="py-12 space-y-8 text-center bg-white dark:bg-slate-800/50 rounded-[2rem] shadow-xl border border-slate-100 dark:border-slate-700 px-8 w-[95%] md:w-[70%] lg:w-[60%] mx-auto transition-all duration-500">
+          <label className="block font-black text-2xl text-center bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-4">
+            🎓 Select Semester & Subject
           </label>
 
           <div className="flex flex-col space-y-4">
             <select
               value={semester}
               onChange={(e) => setSemester(e.target.value)}
-              className="border border-gray-300  p-2 rounded bg-white text-black cursor-cell"
+              className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none transition-all appearance-none cursor-pointer font-medium"
             >
               {[1, 2, 3, 4, 5, 6].map((sem) => (
                 <option key={sem} value={sem}>
@@ -97,7 +116,7 @@ const FlashcardsPage = () => {
             <select
               value={subject}
               onChange={(e) => setSubject(e.target.value)}
-              className="border border-gray-300  p-2 rounded bg-white text-black cursor-cell"
+              className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none transition-all appearance-none cursor-pointer font-medium"
             >
               <option value="">-- Choose Subject --</option>
               {subjectList.map((name, idx) => (
@@ -110,7 +129,7 @@ const FlashcardsPage = () => {
             <select
               value={unit}
               onChange={(e) => setUnit(e.target.value)}
-              className="border border-gray-300 dark:border-gray-700 p-2 rounded bg-white text-black cursor-cell"
+              className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none transition-all appearance-none cursor-pointer font-medium"
             >
               <option value="">Select Unit</option>
               {unitList.map((u, idx) => (
@@ -123,8 +142,7 @@ const FlashcardsPage = () => {
             <button
               onClick={generateCards}
               disabled={!subject || loading}
-              className="bg-green-600 hover:bg-green-700 
-              text-white px-4 py-3 rounded-lg transition cursor-pointer w-52 self-center font-bold text-lg"
+              className="bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-4 rounded-2xl font-black text-lg transition-all hover:scale-105 active:scale-95 shadow-xl shadow-indigo-100 dark:shadow-none disabled:opacity-50"
             >
               {loading ? "⏳ Generating..." : "Generate Flashcards"}
             </button>

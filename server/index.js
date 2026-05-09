@@ -6,6 +6,12 @@ import compression from "compression";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import { Apirouter } from "./src/routes/routes.js";
+import authRoutes from "./src/routes/authRoutes.js";
+import aiRoutes from "./src/routes/aiRoutes.js";
+import syllabusRoutes from "./src/routes/syllabusRoutes.js";
+import connectDB from "./src/config/db.js";
+
+connectDB();
 
 const app = express();
 
@@ -18,14 +24,11 @@ console.log(
 // ✅ Middleware
 app.use(
   cors({
-    origin: [
-      "http://localhost:5173",
-      "https://learning-bca-smg3.vercel.app",
-      "https://learning-bca.vercel.app",
-    ],
+    origin: "http://localhost:5173",
     credentials: true,
-    methods: ["GET", "POST"],
-  }),
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
 );
 app.use(compression());
 app.use(express.json());
@@ -45,6 +48,9 @@ app.get("/", (req, res) => {
 
 // ✅ API Routes
 app.use("/api/v2/chatbot", Apirouter);
+app.use("/api/v2/auth", authRoutes);
+app.use("/api/v2/ai", aiRoutes);
+app.use("/api/v2/syllabus", syllabusRoutes);
 
 // ✅ Global Error Handler (Professional touch)
 app.use((err, req, res, next) => {

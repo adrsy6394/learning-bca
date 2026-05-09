@@ -6,132 +6,152 @@ import React, {
   useState,
   useCallback,
 } from "react";
-import { supabase } from "../lib/supabase";
+import axios from "axios";
 
 export const AuthContext = createContext();
 
+const API_URL = import.meta.env.VITE_MAIN_URL || "http://localhost:5000";
+
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [authReady, setAuthReady] = useState(false); // 🔥 important
+  const [authReady, setAuthReady] = useState(false);
 
   /* ================= RESTORE SESSION ================= */
- useEffect(() => {
-  let mounted = true;
-
-  const buildUser = (authUser) => {
-    if (!authUser) return null;
-
-    const metadataName =
-      authUser.user_metadata?.name ||
-      authUser.user_metadata?.full_name ||
-      "";
-
-    const emailPrefix =
-      authUser.email?.split("@")[0] || "User";
-
-    return {
-      id: authUser.id,
-      email: authUser.email,
-      full_name: metadataName || emailPrefix,
+  useEffect(() => {
+    const restoreSession = async () => {
+      const token = localStorage.getItem("token");
+      if (token) {
+        try {
+          const config = {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          };
+          const { data } = await axios.get(`${API_URL}/api/v2/auth/profile`, config);
+          setUser({ ...data, token });
+        } catch (error) {
+          console.error("Session restoration failed:", error);
+          localStorage.removeItem("token");
+          setUser(null);
+        }
+      }
+      setAuthReady(true);
     };
-  };
 
-  const restoreSession = async () => {
-    const {
-      data: { session },
-    } = await supabase.auth.getSession();
-
-    if (!mounted) return;
-
-    if (session?.user) {
-      const userObj = buildUser(session.user);
-      setUser(userObj);
-    }
-
-    setAuthReady(true);
-  };
-
-  restoreSession();
-
-  const {
-    data: { subscription },
-  } = supabase.auth.onAuthStateChange((_event, session) => {
-    if (!mounted) return;
-
-    if (session?.user) {
-      const userObj = buildUser(session.user);
-      setUser(userObj);
-    } else {
-      setUser(null);
-    }
-  });
-
-  return () => {
-    mounted = false;
-    subscription.unsubscribe();
-  };
-}, []);
-
+    restoreSession();
+  }, []);
 
   /* ================= EMAIL LOGIN ================= */
   const signIn = useCallback(async ({ email, password }) => {
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+    try {
+      const { data } = await axios.post(`${API_URL}/api/v2/auth/login`, {
+        email,
+        password,
+      });
 
-    if (error) {
-      return { success: false, error: error.message };
+      setUser(data);
+      localStorage.setItem("token", data.token);
+      return { success: true };
+    } catch (error) {
+      return {
+        success: false,
+        error: error.response?.data?.message || "Login failed",
+      };
     }
-
-    return { success: true };
   }, []);
 
   /* ================= GOOGLE LOGIN ================= */
-  const signInWithGoogle = async () => {
-    await supabase.auth.signInWithOAuth({
-      provider: "google",
-      options: {
-        redirectTo: window.location.origin,
-      },
-    });
-  };
+  const signInWithGoogle = useCallback(async (token, userInfo) => {
+    try {
+      const { data } = await axios.post(`${API_URL}/api/v2/auth/google`, {
+        token,
+        userInfo,
+      });
+
+      setUser(data);
+      localStorage.setItem("token", data.token);
+      return { success: true };
+    } catch (error) {
+      return {
+        success: false,
+        error: error.response?.data?.message || "Google login failed",
+      };
+    }
+  }, []);
 
   /* ================= SIGNUP ================= */
-  const signUp = useCallback(async ({ email, password, full_name }) => {
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-    });
-
-    if (error) {
-      return { success: false, error: error.message };
-    }
-
-    if (data?.user) {
-      await supabase.from("profiles").upsert({
-        id: data.user.id,
+  const signUp = useCallback(async ({ email, password, full_name, studentId }) => {
+    try {
+      const { data } = await axios.post(`${API_URL}/api/v2/auth/register`, {
         full_name,
+        email,
+        studentId,
+        password,
       });
-    }
 
-    return { success: true };
+      setUser(data);
+      localStorage.setItem("token", data.token);
+      return { success: true };
+    } catch (error) {
+      return {
+        success: false,
+        error: error.response?.data?.message || "Registration failed",
+      };
+    }
   }, []);
 
   const signOut = async () => {
-    await supabase.auth.signOut();
+    localStorage.removeItem("token");
     setUser(null);
   };
+
+  /* ================= MARK TOPIC AS LEARNED ================= */
+  const markTopicAsLearned = useCallback(
+    async (semester, subject, unit, topic) => {
+      if (!user) return;
+
+      const currentProgress = JSON.parse(JSON.stringify(user.progress || {}));
+      
+      if (!currentProgress[semester]) currentProgress[semester] = {};
+      if (!currentProgress[semester][subject]) currentProgress[semester][subject] = {};
+      if (!currentProgress[semester][subject][unit])
+        currentProgress[semester][subject][unit] = [];
+
+      const trimmedTopic = topic.trim();
+      if (!currentProgress[semester][subject][unit].includes(trimmedTopic)) {
+        currentProgress[semester][subject][unit].push(trimmedTopic);
+
+        try {
+          const config = {
+            headers: {
+              Authorization: `Bearer ${user.token}`,
+            },
+          };
+          await axios.put(
+            `${API_URL}/api/v2/auth/progress`,
+            { progress: currentProgress },
+            config
+          );
+          
+          setUser(prev => ({ ...prev, progress: currentProgress }));
+        } catch (error) {
+          console.error("Error updating progress:", error);
+        }
+      }
+    },
+    [user]
+  );
 
   return (
     <AuthContext.Provider
       value={{
         user,
-        authReady, // 🔥 must use in route guard
+        authReady,
         signIn,
         signInWithGoogle,
         signUp,
         signOut,
+        markTopicAsLearned,
       }}
     >
       {children}

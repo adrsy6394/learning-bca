@@ -11,6 +11,7 @@ import HomePage from "./pages/HomePage";
 import LearningPage from "./pages/LearningPage";
 import FlashcardsPage from "./pages/FlashcardsPage";
 import ProgressPage from "./pages/ProgressPage";
+import PerformanceAnalyzer from "./pages/PerformanceAnalyzer";
 
 const ProtectedRoute = ({ children }) => {
   const { user, authReady } = useAuth();
@@ -99,6 +100,19 @@ const App = () => {
               <>
                 <Navigation />
                 <ProgressPage />
+              </>
+            </ProtectedRoute>
+          }
+        />
+
+
+        <Route
+          path="/analyzer"
+          element={
+            <ProtectedRoute>
+              <>
+                <Navigation />
+                <PerformanceAnalyzer />
               </>
             </ProtectedRoute>
           }
