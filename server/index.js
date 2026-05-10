@@ -16,20 +16,17 @@ connectDB();
 
 const app = express();
 
-// 1. ✅ STANDARD CORS
+// 1. ✅ CORS Configuration
 app.use(cors({
-  origin: [
-    "https://learning-bca-t1ue.vercel.app",
-    "https://learning-bca.vercel.app",
-    "http://localhost:5173"
-  ],
+  origin: true, // Allow all for a moment to debug
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
   allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept", "Origin"]
 }));
 
-// Handle OPTIONS explicitly just in case
-app.options("*", cors());
+app.options("*", (req, res) => {
+  res.status(200).end();
+});
 
 // ✅ Environment Debug (Production-Friendly)
 console.log(
