@@ -12,18 +12,20 @@ import syllabusRoutes from "./src/routes/syllabusRoutes.js";
 import adminRoutes from "./src/routes/adminRoutes.js";
 import connectDB from "./src/config/db.js";
 
-connectDB();
+connectDB().then(() => console.log("Database connected successfully"));
 
 const app = express();
 
-// 1. ✅ CORS Configuration
+// 1. ✅ STANDARD CORS
 app.use(cors({
-  origin: [
-    "https://learning-bca-wljl.vercel.app",
-    "https://learning-bca-t1ue.vercel.app",
-    "https://learning-bca.vercel.app",
-    "http://localhost:5173"
-  ],
+  origin: function(origin, callback) {
+    // Allow any Vercel domain for now to debug
+    if (!origin || origin.endsWith(".vercel.app") || origin.includes("localhost")) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
   allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept", "Origin"]
