@@ -26,14 +26,13 @@ console.log(
 const allowedOrigins = [
   "http://localhost:5173",
   "https://learning-bca-t1ue.vercel.app",
-  process.env.FRONTEND_URL,
-].filter(Boolean);
+  "https://learning-bca.vercel.app"
+];
 
 app.use(
   cors({
-    origin: (origin, callback) => {
-      // Allow requests with no origin (Postman, server-to-server)
-      if (!origin || allowedOrigins.includes(origin)) {
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.indexOf(origin) !== -1) {
         callback(null, true);
       } else {
         callback(new Error("Not allowed by CORS"));
@@ -41,7 +40,9 @@ app.use(
     },
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept"],
+    preflightContinue: false,
+    optionsSuccessStatus: 204
   })
 );
 app.use(compression());
