@@ -106,11 +106,22 @@ const FlashcardsPage = () => {
               onChange={(e) => setSemester(e.target.value)}
               className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none transition-all appearance-none cursor-pointer font-medium"
             >
-              {[1, 2, 3, 4, 5, 6].map((sem) => (
-                <option key={sem} value={sem}>
-                  Semester {sem}
-                </option>
-              ))}
+              {bcaSyllabus && Object.keys(bcaSyllabus).length > 0 ? (
+                Object.keys(bcaSyllabus)
+                  .map(key => key.replace("semester", ""))
+                  .sort((a, b) => a - b)
+                  .map((sem) => (
+                    <option key={sem} value={sem}>
+                      Semester {sem}
+                    </option>
+                  ))
+              ) : (
+                [1, 2, 3, 4, 5, 6].map((sem) => (
+                  <option key={sem} value={sem}>
+                    Semester {sem}
+                  </option>
+                ))
+              )}
             </select>
 
             <select

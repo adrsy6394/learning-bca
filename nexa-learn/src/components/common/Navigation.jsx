@@ -60,7 +60,6 @@ const Navigation = () => {
 
   const isLoggedIn = !!user?._id;
   const displayName = user?.full_name || "User";
-  const userRole = user?.role || "no-role";
 
   return (
     <>
@@ -159,7 +158,6 @@ const Navigation = () => {
               {isLoggedIn ? (
                 <div className="flex items-center bg-gray-100/50 dark:bg-white/5 pl-2 pr-1 py-1 rounded-2xl border border-white/10">
                   <div className="flex flex-col items-end mr-3">
-                    <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Logged in as {userRole}</span>
                     <span className="text-sm font-black text-gray-900 dark:text-white leading-tight">{displayName}</span>
                   </div>
                   <button

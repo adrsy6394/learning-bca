@@ -5,6 +5,7 @@ import {
   getAllUsers,
   deleteUser,
   updateUserRole,
+  getAllSyllabus,
   createSyllabus,
   updateSyllabus,
   deleteSyllabus,
@@ -28,7 +29,9 @@ router.route("/users/:id")
 router.put("/users/:id/role", updateUserRole);
 
 // Syllabus Management
-router.post("/syllabus", createSyllabus);
+router.route("/syllabus")
+  .get(getAllSyllabus)
+  .post(createSyllabus);
 router.route("/syllabus/:id")
   .put(updateSyllabus)
   .delete(deleteSyllabus);

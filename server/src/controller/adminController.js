@@ -109,6 +109,18 @@ export const updateUserRole = async (req, res) => {
   }
 };
 
+// @desc    Get all raw syllabus modules
+// @route   GET /api/v2/admin/syllabus
+// @access  Private/Admin
+export const getAllSyllabus = async (req, res) => {
+  try {
+    const syllabus = await Syllabus.find({}).sort({ semester: 1 });
+    res.json({ success: true, data: syllabus });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to fetch syllabus" });
+  }
+};
+
 // @desc    Create new syllabus module
 // @route   POST /api/v2/admin/syllabus
 // @access  Private/Admin
@@ -117,7 +129,8 @@ export const createSyllabus = async (req, res) => {
     const newSyllabus = await Syllabus.create(req.body);
     res.status(201).json({ success: true, syllabus: newSyllabus });
   } catch (error) {
-    res.status(500).json({ message: "Failed to create syllabus module" });
+    console.error("Create Syllabus Error:", error);
+    res.status(500).json({ message: error.message || "Failed to create syllabus module" });
   }
 };
 
@@ -138,7 +151,8 @@ export const updateSyllabus = async (req, res) => {
       res.status(404).json({ message: "Syllabus module not found" });
     }
   } catch (error) {
-    res.status(500).json({ message: "Failed to update syllabus module" });
+    console.error("Update Syllabus Error:", error);
+    res.status(500).json({ message: error.message || "Failed to update syllabus module" });
   }
 };
 
