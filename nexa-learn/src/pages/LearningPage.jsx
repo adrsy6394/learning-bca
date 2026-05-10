@@ -113,7 +113,7 @@ ${explanation}
       <div className="max-w-full mx-auto md:px-6 p-2 grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
         {/* LEFT PANEL */}
         <div
-          className="bg-white dark:bg-slate-800/50 rounded-[2rem] p-8 shadow-xl border border-slate-100 dark:border-slate-700 transition-all duration-500 sticky top-28"
+          className="bg-white dark:bg-slate-800/50 rounded-[2rem] p-8 shadow-xl border border-slate-100 dark:border-slate-700 transition-all duration-500 lg:sticky lg:top-28"
         >
           <h2 className="text-2xl font-black bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-2">
             Select Your Topic
