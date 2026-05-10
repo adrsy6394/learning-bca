@@ -42,9 +42,12 @@ const PublicRoute = ({ children }) => {
 
 
 
+import FloatingBot from "./components/common/FloatingBot";
+
 const App = () => {
   return (
     <div className="min-h-screen bg-gray-50">
+      <FloatingBot />
       <Routes>
         <Route
           path="/login"

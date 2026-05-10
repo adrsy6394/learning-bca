@@ -10,6 +10,7 @@ import {
   updateSyllabus,
   deleteSyllabus,
   addAdmin,
+  syncKnowledgeBase,
 } from "../controller/adminController.js";
 
 const router = express.Router();
@@ -25,6 +26,7 @@ router.route("/users")
   .get(getAllUsers);
   
 router.post("/users/add-admin", addAdmin);
+router.post("/sync-knowledge", syncKnowledgeBase);
 
 router.route("/users/:id")
   .delete(deleteUser);

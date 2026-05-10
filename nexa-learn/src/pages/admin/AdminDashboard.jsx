@@ -10,6 +10,25 @@ const AdminDashboard = () => {
   const [error, setError] = useState(null);
 
   const API_URL = import.meta.env.VITE_MAIN_URL || "http://localhost:5000";
+  const [syncing, setSyncing] = useState(false);
+
+  const handleSyncKnowledge = async () => {
+    if (!window.confirm("This will process all syllabus data into vectors for the AI Bot. Continue?")) return;
+    
+    setSyncing(true);
+    try {
+      const { data } = await axios.post(`${API_URL}/api/v2/admin/sync-knowledge`, {}, {
+        headers: { Authorization: `Bearer ${user.token}` },
+      });
+      if (data.success) {
+        alert(data.message || "Knowledge base synced successfully!");
+      }
+    } catch (err) {
+      alert(err.response?.data?.message || "Failed to sync knowledge base. Check if OPENAI_API_KEY is set in backend .env");
+    } finally {
+      setSyncing(false);
+    }
+  };
 
   useEffect(() => {
     const fetchStats = async () => {
@@ -103,10 +122,28 @@ const AdminDashboard = () => {
       
       <div className="grid lg:grid-cols-2 gap-6 mt-8">
          <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 shadow-sm border border-slate-100 dark:border-slate-800">
-            <h3 className="text-xl font-bold mb-4">Quick Actions</h3>
-            <div className="space-y-3">
-               <p className="text-slate-500 dark:text-slate-400">Use the sidebar to manage users and syllabus content. System metrics and quick actions will appear here in future updates.</p>
+            <h3 className="text-xl font-bold mb-2">AI Knowledge System</h3>
+            <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">
+              Sync your syllabus and site data with the AI Bot's vector database (RAG). 
+              This allows the bot to answer questions about specific subjects and topics.
+            </p>
+            <button
+              onClick={handleSyncKnowledge}
+              disabled={syncing}
+              className={`flex items-center gap-2 px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold transition-all shadow-lg shadow-indigo-500/20 disabled:opacity-50`}
+            >
+              <Layers className={`${syncing ? 'animate-spin' : ''}`} size={20} />
+              {syncing ? "Syncing Knowledge..." : "Sync AI Knowledge Base"}
+            </button>
+         </div>
+         
+         <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 shadow-sm border border-slate-100 dark:border-slate-800 flex flex-col justify-center">
+            <h3 className="text-xl font-bold mb-2">System Status</h3>
+            <div className="flex items-center gap-2 text-green-500 font-medium">
+               <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+               RAG Vector Index: Active
             </div>
+            <p className="text-xs text-slate-400 mt-2 italic">Ensure your MongoDB Atlas Vector Index name is 'vector_index'</p>
          </div>
       </div>
     </div>

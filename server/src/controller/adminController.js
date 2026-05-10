@@ -1,5 +1,7 @@
 import User from "../models/User.js";
 import Syllabus from "../models/Syllabus.js";
+import ragService from "../services/ragService.js";
+import AcademicRecord from "../models/AcademicRecord.js";
 
 // @desc    Get Admin Dashboard Stats
 // @route   GET /api/v2/admin/stats
@@ -211,5 +213,44 @@ export const addAdmin = async (req, res) => {
   } catch (error) {
     console.error("Add Admin Error:", error);
     res.status(500).json({ message: error.message || "Failed to create admin" });
+  }
+};
+// @desc    Sync Website Knowledge Base (RAG)
+// @route   POST /api/v2/admin/sync-knowledge
+// @access  Private/Admin
+export const syncKnowledgeBase = async (req, res) => {
+  try {
+    const syllabus = await Syllabus.find({});
+    
+    // 1. Prepare chunks
+    const chunks = [];
+    
+    // Chunk syllabus data
+    syllabus.forEach(s => {
+      s.units.forEach(u => {
+        chunks.push({
+          content: `Subject: ${s.subjectName}, Semester: ${s.semester}, Unit: ${u.unitName}. Topics: ${u.topics.join(", ")}`,
+          source: "Syllabus",
+          category: s.subjectName
+        });
+      });
+    });
+
+    // Add general site info
+    chunks.push({
+      content: "NexaLearn is an AI-powered learning assistant for BCA students. Features include AI Explanations, Flashcards, and Progress Tracking.",
+      source: "General",
+      category: "Info"
+    });
+
+    // 2. Ingest into RAG Service
+    for (const chunk of chunks) {
+      await ragService.ingestKnowledge(chunk.content, chunk.source, chunk.category);
+    }
+
+    res.json({ success: true, message: `Successfully synced ${chunks.length} chunks to Knowledge Base.` });
+  } catch (error) {
+    console.error("Sync Knowledge Error:", error);
+    res.status(500).json({ message: "Failed to sync knowledge base. Ensure Embedding API key is set." });
   }
 };
