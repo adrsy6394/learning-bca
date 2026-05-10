@@ -172,3 +172,44 @@ export const deleteSyllabus = async (req, res) => {
     res.status(500).json({ message: "Failed to delete syllabus module" });
   }
 };
+
+// @desc    Add a new admin
+// @route   POST /api/v2/admin/users/add-admin
+// @access  Private/Admin
+export const addAdmin = async (req, res) => {
+  try {
+    const { full_name, email, password } = req.body;
+
+    const userExists = await User.findOne({ email });
+    if (userExists) {
+      return res.status(400).json({ message: "User already exists with this email" });
+    }
+
+    // Generate a unique studentId for the admin (since it's required by schema)
+    const adminId = `ADM-${Math.random().toString(36).substring(2, 7).toUpperCase()}`;
+
+    const admin = await User.create({
+      full_name,
+      email,
+      password,
+      studentId: adminId,
+      role: "admin"
+    });
+
+    if (admin) {
+      res.status(201).json({
+        success: true,
+        message: "Admin created successfully",
+        data: {
+          _id: admin._id,
+          full_name: admin.full_name,
+          email: admin.email,
+          role: admin.role
+        }
+      });
+    }
+  } catch (error) {
+    console.error("Add Admin Error:", error);
+    res.status(500).json({ message: error.message || "Failed to create admin" });
+  }
+};

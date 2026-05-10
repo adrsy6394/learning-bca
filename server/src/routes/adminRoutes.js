@@ -9,6 +9,7 @@ import {
   createSyllabus,
   updateSyllabus,
   deleteSyllabus,
+  addAdmin,
 } from "../controller/adminController.js";
 
 const router = express.Router();
@@ -23,6 +24,8 @@ router.get("/stats", getDashboardStats);
 router.route("/users")
   .get(getAllUsers);
   
+router.post("/users/add-admin", addAdmin);
+
 router.route("/users/:id")
   .delete(deleteUser);
   
