@@ -16,34 +16,35 @@ connectDB();
 
 const app = express();
 
+// 1. ✅ Preflight & CORS (Must be at the very top)
+app.use((req, res, next) => {
+  const allowedOrigins = [
+    "http://localhost:5173",
+    "https://learning-bca-t1ue.vercel.app",
+    "https://learning-bca.vercel.app"
+  ];
+  const origin = req.headers.origin;
+  
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+  }
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, PATCH");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With, Accept");
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+
+  if (req.method === "OPTIONS") {
+    return res.status(200).end();
+  }
+  next();
+});
+
 // ✅ Environment Debug (Production-Friendly)
 console.log(
   "OPENROUTER KEY 👉",
   process.env.OPENROUTER_API_KEY ? "LOADED ✅" : "NOT LOADED ❌",
 );
 
-// ✅ Robust Manual CORS Middleware
-const allowedOrigins = [
-  "http://localhost:5173",
-  "https://learning-bca-t1ue.vercel.app",
-  "https://learning-bca.vercel.app"
-];
-
-app.use((req, res, next) => {
-  const origin = req.headers.origin;
-  if (allowedOrigins.includes(origin)) {
-    res.setHeader("Access-Control-Allow-Origin", origin);
-  }
-  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With, Accept");
-  res.setHeader("Access-Control-Allow-Credentials", "true");
-
-  // Handle Preflight
-  if (req.method === "OPTIONS") {
-    return res.status(200).end();
-  }
-  next();
-});
+// 2. ✅ Other Middlewares
 app.use(compression());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
