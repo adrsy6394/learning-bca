@@ -22,29 +22,28 @@ console.log(
   process.env.OPENROUTER_API_KEY ? "LOADED ✅" : "NOT LOADED ❌",
 );
 
-// ✅ Middleware
+// ✅ Robust Manual CORS Middleware
 const allowedOrigins = [
   "http://localhost:5173",
   "https://learning-bca-t1ue.vercel.app",
   "https://learning-bca.vercel.app"
 ];
 
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept"],
-    preflightContinue: false,
-    optionsSuccessStatus: 204
-  })
-);
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+  }
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With, Accept");
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+
+  // Handle Preflight
+  if (req.method === "OPTIONS") {
+    return res.status(200).end();
+  }
+  next();
+});
 app.use(compression());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
