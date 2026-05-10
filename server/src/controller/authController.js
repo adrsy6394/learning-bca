@@ -28,6 +28,7 @@ export const loginUser = async (req, res) => {
         studentId: user.studentId,
         profileImage: user.profileImage,
         progress: user.progress,
+        role: user.role,
         token: generateToken(user._id),
       });
     } else {
@@ -67,6 +68,7 @@ export const registerUser = async (req, res) => {
         studentId: user.studentId,
         profileImage: user.profileImage,
         progress: user.progress,
+        role: user.role,
         token: generateToken(user._id),
       });
     } else {
@@ -85,14 +87,17 @@ export const getUserProfile = async (req, res) => {
     const user = await User.findById(req.user._id);
 
     if (user) {
-      res.json({
+      const responseData = {
         _id: user._id,
         full_name: user.full_name,
         email: user.email,
         studentId: user.studentId,
         profileImage: user.profileImage,
         progress: user.progress,
-      });
+        role: user.role,
+      };
+      console.log("SENDING PROFILE:", responseData);
+      res.json(responseData);
     } else {
       res.status(404).json({ message: "User not found" });
     }
@@ -162,6 +167,7 @@ export const googleLogin = async (req, res) => {
         studentId: user.studentId,
         profileImage: user.profileImage,
         progress: user.progress,
+        role: user.role,
         token: generateToken(user._id),
       });
     } else {
@@ -185,6 +191,7 @@ export const googleLogin = async (req, res) => {
           studentId: user.studentId,
           profileImage: user.profileImage,
           progress: user.progress,
+          role: user.role,
           token: generateToken(user._id),
         });
       } else {

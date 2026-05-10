@@ -9,6 +9,7 @@ import { Apirouter } from "./src/routes/routes.js";
 import authRoutes from "./src/routes/authRoutes.js";
 import aiRoutes from "./src/routes/aiRoutes.js";
 import syllabusRoutes from "./src/routes/syllabusRoutes.js";
+import adminRoutes from "./src/routes/adminRoutes.js";
 import connectDB from "./src/config/db.js";
 
 connectDB();
@@ -64,6 +65,7 @@ app.use("/api/v2/chatbot", Apirouter);
 app.use("/api/v2/auth", authRoutes);
 app.use("/api/v2/ai", aiRoutes);
 app.use("/api/v2/syllabus", syllabusRoutes);
+app.use("/api/v2/admin", adminRoutes);
 
 // ✅ Global Error Handler (Professional touch)
 app.use((err, req, res, next) => {

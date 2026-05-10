@@ -13,6 +13,13 @@ import FlashcardsPage from "./pages/FlashcardsPage";
 import ProgressPage from "./pages/ProgressPage";
 import PerformanceAnalyzer from "./pages/PerformanceAnalyzer";
 
+// Admin Imports
+import AdminRoute from "./components/auth/AdminRoute";
+import AdminLayout from "./layouts/AdminLayout";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import ManageUsers from "./pages/admin/ManageUsers";
+import ManageSyllabus from "./pages/admin/ManageSyllabus";
+
 const ProtectedRoute = ({ children }) => {
   const { user, authReady } = useAuth();
 
@@ -117,6 +124,13 @@ const App = () => {
             </ProtectedRoute>
           }
         />
+
+        {/* Admin Routes */}
+        <Route path="/admin" element={<AdminRoute><AdminLayout /></AdminRoute>}>
+          <Route index element={<AdminDashboard />} />
+          <Route path="users" element={<ManageUsers />} />
+          <Route path="syllabus" element={<ManageSyllabus />} />
+        </Route>
 
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
