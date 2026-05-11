@@ -27,9 +27,6 @@ app.use(cors({
   allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept", "Origin"]
 }));
 
-// Handle Preflight (OPTIONS)
-app.options(/.*/, cors());
-
 // ✅ Environment Debug (Production-Friendly)
 console.log(
   "OPENROUTER KEY 👉",
