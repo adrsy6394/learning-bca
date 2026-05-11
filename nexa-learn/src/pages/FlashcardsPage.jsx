@@ -93,149 +93,143 @@ const FlashcardsPage = () => {
   };
 
   return (
-    <div className="pt-28 p-6 space-y-6 min-h-screen bg-white dark:bg-gray-900 text-gray-800 dark:text-white transition-all duration-300">
-      <div className="flex justify-center">
-        <div className="py-12 space-y-8 text-center bg-white dark:bg-slate-800/50 rounded-[2rem] shadow-xl border border-slate-100 dark:border-slate-700 px-8 w-[95%] md:w-[70%] lg:w-[60%] mx-auto transition-all duration-500">
-          <label className="block font-black text-2xl text-center bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-4">
-            🎓 Select Semester & Subject
-          </label>
+    <div className="pt-28 min-h-screen bg-[#fdf7e9] transition-all duration-300">
+      
+      {/* Header Section */}
+      <div className="bg-[#0b2b24] py-20 px-6 text-center relative overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-full opacity-5">
+          <div className="absolute top-10 left-10 w-32 h-32 border border-white rounded-full"></div>
+          <div className="absolute bottom-10 right-10 w-64 h-64 border border-white rounded-lg rotate-45"></div>
+        </div>
+        <h1 className="text-4xl md:text-6xl font-serif text-white uppercase tracking-tighter mb-4">
+          SMART <span className="text-[#d1e8c4]">FLASHCARDS</span>
+        </h1>
+        <p className="text-white/60 max-w-2xl mx-auto font-light tracking-wide">
+          Master your BCA subjects with AI-generated quick revision cards.
+        </p>
+      </div>
 
-          <div className="flex flex-col space-y-4">
-            <select
-              value={semester}
-              onChange={(e) => setSemester(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none transition-all appearance-none cursor-pointer font-medium"
-            >
-              {bcaSyllabus && Object.keys(bcaSyllabus).length > 0 ? (
-                Object.keys(bcaSyllabus)
-                  .map(key => key.replace("semester", ""))
-                  .sort((a, b) => a - b)
-                  .map((sem) => (
+      <div className="max-w-4xl mx-auto px-6 -mt-10 relative z-10">
+        <div className="bg-white p-8 md:p-12 rounded-[3rem] shadow-2xl border border-[#0b2b24]/5">
+          <h2 className="text-2xl font-serif text-[#0b2b24] text-center mb-10 uppercase tracking-widest">
+            CONFIGURE YOUR SESSION
+          </h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+            <div className="space-y-2">
+              <label className="text-[10px] font-black uppercase tracking-[0.2em] text-[#0b2b24]/40 ml-2">Semester</label>
+              <select
+                value={semester}
+                onChange={(e) => setSemester(e.target.value)}
+                className="w-full px-6 py-4 rounded-full border border-[#0b2b24]/10 bg-[#fdf7e9]/50 text-[#0b2b24] font-bold focus:ring-2 focus:ring-[#d1e8c4] outline-none transition-all appearance-none cursor-pointer"
+              >
+                {bcaSyllabus && Object.keys(bcaSyllabus).length > 0 ? (
+                  Object.keys(bcaSyllabus)
+                    .map(key => key.replace("semester", ""))
+                    .sort((a, b) => a - b)
+                    .map((sem) => (
+                      <option key={sem} value={sem}>
+                        Semester {sem}
+                      </option>
+                    ))
+                ) : (
+                  [1, 2, 3, 4, 5, 6].map((sem) => (
                     <option key={sem} value={sem}>
                       Semester {sem}
                     </option>
                   ))
-              ) : (
-                [1, 2, 3, 4, 5, 6].map((sem) => (
-                  <option key={sem} value={sem}>
-                    Semester {sem}
+                )}
+              </select>
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-[10px] font-black uppercase tracking-[0.2em] text-[#0b2b24]/40 ml-2">Subject</label>
+              <select
+                value={subject}
+                onChange={(e) => setSubject(e.target.value)}
+                className="w-full px-6 py-4 rounded-full border border-[#0b2b24]/10 bg-[#fdf7e9]/50 text-[#0b2b24] font-bold focus:ring-2 focus:ring-[#d1e8c4] outline-none transition-all appearance-none cursor-pointer"
+              >
+                <option value="">-- Subject --</option>
+                {subjectList.map((name, idx) => (
+                  <option key={idx} value={name}>
+                    {name}
                   </option>
-                ))
-              )}
-            </select>
+                ))}
+              </select>
+            </div>
 
-            <select
-              value={subject}
-              onChange={(e) => setSubject(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none transition-all appearance-none cursor-pointer font-medium"
-            >
-              <option value="">-- Choose Subject --</option>
-              {subjectList.map((name, idx) => (
-                <option key={idx} value={name}>
-                  {name}
-                </option>
-              ))}
-            </select>
+            <div className="space-y-2">
+              <label className="text-[10px] font-black uppercase tracking-[0.2em] text-[#0b2b24]/40 ml-2">Unit</label>
+              <select
+                value={unit}
+                onChange={(e) => setUnit(e.target.value)}
+                className="w-full px-6 py-4 rounded-full border border-[#0b2b24]/10 bg-[#fdf7e9]/50 text-[#0b2b24] font-bold focus:ring-2 focus:ring-[#d1e8c4] outline-none transition-all appearance-none cursor-pointer"
+              >
+                <option value="">-- Unit --</option>
+                {unitList.map((u, idx) => (
+                  <option key={idx} value={u}>
+                    {u}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
 
-            <select
-              value={unit}
-              onChange={(e) => setUnit(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none transition-all appearance-none cursor-pointer font-medium"
-            >
-              <option value="">Select Unit</option>
-              {unitList.map((u, idx) => (
-                <option key={idx} value={u}>
-                  {u}
-                </option>
-              ))}
-            </select>
-
+          <div className="flex justify-center">
             <button
               onClick={generateCards}
               disabled={!subject || loading}
-              className="bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-4 rounded-2xl font-black text-lg transition-all hover:scale-105 active:scale-95 shadow-xl shadow-indigo-100 dark:shadow-none disabled:opacity-50"
+              className="px-12 py-5 bg-[#0b2b24] text-[#d1e8c4] rounded-full font-black text-lg uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-xl disabled:opacity-50"
             >
-              {loading ? "⏳ Generating..." : "Generate Flashcards"}
+              {loading ? "⏳ Generating..." : "Generate Deck"}
             </button>
           </div>
         </div>
       </div>
 
-      <div className="flex justify-center">
+      <div className="max-w-5xl mx-auto px-6 py-20">
         {cards.length > 0 && !loading && (
-          <div className="font-medium border-b-4 w-fit mt-4">
-            ✅ Total Flashcards: {cards.length}
+          <div className="mb-10 text-center">
+             <span className="px-6 py-2 bg-[#d1e8c4] text-[#0b2b24] rounded-full font-black text-xs uppercase tracking-widest">
+              Ready: {cards.length} Flashcards
+             </span>
           </div>
         )}
+        
         {!cards.length && !loading && (
-          <p className="text-gray-500 dark:text-gray-400 py-32 text-xl">
-            🔍 No flashcards to show. Please select a semester & subject to
-            click Generate.
-          </p>
+          <div className="text-center py-20">
+            <div className="w-20 h-20 bg-[#0b2b24]/5 rounded-full flex items-center justify-center mx-auto mb-6">
+               <FileText className="text-[#0b2b24]/20" size={40} />
+            </div>
+            <p className="text-[#0b2b24]/40 font-serif text-2xl uppercase tracking-widest">
+              Select subject to start
+            </p>
+          </div>
         )}
+
         {loading && (
-          <div className="text-indigo-500 animate-pulse">⏳ Please wait...</div>
+          <div className="flex flex-col items-center justify-center py-20 space-y-4">
+            <div className="w-12 h-12 border-4 border-[#d1e8c4] border-t-[#0b2b24] rounded-full animate-spin"></div>
+            <p className="text-[#0b2b24] font-black text-xs uppercase tracking-widest animate-pulse">Building your deck...</p>
+          </div>
+        )}
+
+        {cards.length > 0 && !loading && (
+          <FlashcardMode
+            cards={cards}
+            setCards={setCards}
+            semester={semester}
+            subject={subject}
+            unit={unit}
+          />
         )}
       </div>
 
-      {cards.length > 0 && !loading && (
-        <FlashcardMode
-          cards={cards}
-          setCards={setCards}
-          semester={semester}
-          subject={subject}
-          unit={unit}
-        />
-      )}
-
-      <footer className="bg-gray-100 dark:bg-gray-900 text-gray-700 dark:text-gray-300 mt-20 w-full shadow-inner">
-        <div className="max-w-6xl mx-auto py-8 px-4 grid grid-cols-1 md:grid-cols-3 gap-6 text-sm">
-          <div>
-            <h4 className="font-semibold mb-2">About</h4>
-            <ul className="space-y-1">
-              <li>
-                <a href="#">Team</a>
-              </li>
-              <li>
-                <a href="#">Mission</a>
-              </li>
-              <li>
-                <a href="#">Contact</a>
-              </li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="font-semibold mb-2">Resources</h4>
-            <ul className="space-y-1">
-              <li>
-                <a href="#">Docs</a>
-              </li>
-              <li>
-                <a href="#">GitHub</a>
-              </li>
-              <li>
-                <a href="#">API</a>
-              </li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="font-semibold mb-2">Follow Us</h4>
-            <ul className="space-y-1">
-              <li>
-                <a href="#">Instagram</a>
-              </li>
-              <li>
-                <a href="#">Twitter</a>
-              </li>
-              <li>
-                <a href="#">LinkedIn</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div className="text-center text-xs py-4 border-t border-gray-300 dark:border-gray-700">
-          © 2025 NexaLearn. All rights reserved.
-        </div>
+      {/* FOOTER */}
+      <footer className="py-20 bg-[#0b2b24] text-white/40 text-center">
+         <div className="max-w-7xl mx-auto px-6 border-t border-white/5 pt-10">
+            <p className="text-xs font-black uppercase tracking-[0.3em]">© 2025 E-STUDY Platform • Premium Education</p>
+         </div>
       </footer>
     </div>
   );

@@ -52,159 +52,175 @@ const PerformanceAnalyzer = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] dark:bg-[#0b0f1a] pt-28 pb-12 px-4 sm:px-6">
-      <div className="max-w-5xl mx-auto">
+    <div className="min-h-screen bg-[#fdf7e9] pt-28 pb-12 transition-all duration-300">
+      
+      {/* Header Section */}
+      <div className="bg-[#0b2b24] py-20 px-6 text-center relative overflow-hidden mb-12">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 left-0 w-32 h-32 border border-white/10 rounded-full -translate-x-1/2 translate-y-1/2"></div>
         
-        {/* Header Section */}
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center justify-center p-3 bg-indigo-100 rounded-2xl mb-4">
-            <Brain className="w-8 h-8 text-indigo-600" />
-          </div>
-          <h1 className="text-4xl font-black text-slate-900 dark:text-white tracking-tight">AI Performance Analyzer</h1>
-          <p className="mt-4 text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto font-medium">
-            Add your subjects and marks to get a personalized AI analysis and a 1-week study strategy.
-          </p>
-        </div>
-
-        <div className="grid lg:grid-cols-5 gap-8">
-          
-          {/* Input Section */}
-          <div className="lg:col-span-2">
-            <div className="bg-white dark:bg-slate-800/50 rounded-[2rem] p-8 shadow-xl border border-slate-100 dark:border-slate-700 sticky top-28 transition-all duration-500">
-              <h2 className="text-2xl font-black bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-2">
-                Performance Analyzer
-              </h2>
-              <p className="text-slate-500 dark:text-slate-400 mb-6 font-medium">Add your subjects & marks for AI analysis</p>
-              
-              <div className="space-y-4 max-h-[400px] overflow-y-auto pr-2 mb-6 custom-scrollbar">
-                {subjects.map((row, index) => (
-                  <div key={index} className="flex gap-2 items-center animate-in fade-in slide-in-from-left-2 duration-300">
-                    <input
-                      type="text"
-                      placeholder="Subject name"
-                      value={row.subject}
-                      onChange={(e) => handleChange(index, "subject", e.target.value)}
-                      className="flex-1 px-4 py-3 rounded-2xl bg-slate-50 dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 focus:border-indigo-500 dark:focus:border-indigo-500 focus:bg-white dark:focus:bg-slate-800 text-slate-900 dark:text-white outline-none transition-all duration-300 placeholder-slate-400 text-sm font-medium"
-                    />
-                    <input
-                      type="number"
-                      placeholder="Marks"
-                      value={row.marks}
-                      onChange={(e) => handleChange(index, "marks", e.target.value)}
-                      className="w-24 px-4 py-3 rounded-2xl bg-slate-50 dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 focus:border-indigo-500 dark:focus:border-indigo-500 focus:bg-white dark:focus:bg-slate-800 text-slate-900 dark:text-white outline-none transition-all duration-300 placeholder-slate-400 text-sm font-medium"
-                    />
-                    {subjects.length > 1 && (
-                      <button 
-                        onClick={() => removeRow(index)}
-                        className="p-2 text-slate-400 hover:text-red-500 transition-colors"
-                      >
-                        <Trash2 size={18} />
-                      </button>
-                    )}
-                  </div>
-                ))}
-              </div>
-
-              <button
-                onClick={addRow}
-                className="w-full mb-4 py-3 rounded-2xl bg-slate-50 dark:bg-slate-900 border-2 border-dashed border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 hover:border-indigo-400 hover:text-indigo-600 dark:hover:border-indigo-600 dark:hover:text-indigo-400 transition-all flex items-center justify-center font-medium"
-              >
-                <Plus size={18} className="mr-2" /> Add Subject
-              </button>
-
-              <button
-                onClick={handleAnalyze}
-                disabled={loading}
-                className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white py-4 rounded-2xl font-bold text-lg transition-all hover:scale-[1.02] active:scale-[0.98] shadow-xl shadow-indigo-500/30 disabled:opacity-50 disabled:hover:scale-100 flex items-center justify-center"
-              >
-                {loading ? (
-                  <><Loader2 className="mr-2 animate-spin" /> Analyzing...</>
-                ) : (
-                  <><Sparkles className="mr-2" /> Analyze Performance</>
-                )}
-              </button>
-              {error && <p className="mt-3 text-xs text-red-500 text-center">{error}</p>}
-            </div>
-          </div>
-
-          {/* Result Section */}
-          <div className="lg:col-span-3">
-            {result ? (
-              <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
-                
-                {/* Analysis Card */}
-                <div className="bg-white dark:bg-slate-800/50 rounded-3xl shadow-xl border border-slate-200 dark:border-slate-700 p-8 transition-all duration-500">
-                  <h3 className="text-2xl font-bold text-slate-800 dark:text-slate-200 mb-4 flex items-center">
-                    <Brain className="mr-3 text-indigo-500" /> AI Insights
-                  </h3>
-                  <div className="flex flex-wrap gap-2 mb-6">
-                    {result.weaknesses.map((w, i) => (
-                      <span key={i} className="px-4 py-1 bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 text-xs font-bold rounded-full border border-red-100 dark:border-red-800">
-                        {w}
-                      </span>
-                    ))}
-                  </div>
-                  <p className="text-slate-600 dark:text-slate-300 leading-relaxed bg-indigo-50/50 dark:bg-indigo-900/20 p-4 rounded-2xl border border-indigo-50 dark:border-indigo-800 italic">
-                    "{result.analysis}"
-                  </p>
-                </div>
-
-                {/* 1-Week Study Strategy Card */}
-                <div className="bg-gradient-to-br from-indigo-600 to-violet-700 rounded-3xl shadow-xl p-8 text-white">
-                  <h3 className="text-2xl font-bold mb-6 flex items-center">
-                    <Sparkles className="mr-3" /> 1-Week Rescue Plan
-                  </h3>
-                  <div className="grid gap-4">
-                    {result.studyPlan.map((day, i) => (
-                      <div key={i} className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/20 hover:bg-white/20 transition-all">
-                        <div className="flex items-center gap-4">
-                          <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center font-bold text-lg">
-                            {i + 1}
-                          </div>
-                          <div>
-                            <h4 className="font-bold text-indigo-100 text-sm uppercase tracking-wider">{day.day}</h4>
-                            <p className="text-white font-medium">{day.task}</p>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Resources Card */}
-                <div className="bg-white dark:bg-slate-800/50 rounded-3xl shadow-xl border border-slate-200 dark:border-slate-700 p-8 transition-all duration-500">
-                  <h3 className="text-xl font-bold text-slate-800 dark:text-slate-200 mb-6">Recommended Resources 📚</h3>
-                  <div className="grid gap-4 sm:grid-cols-2">
-                    {result.resources.map((res, i) => (
-                      <div key={i} className="p-4 rounded-2xl border border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50">
-                        <p className="font-bold text-slate-800 dark:text-slate-200 mb-3 truncate">{res.subject}</p>
-                        <div className="flex gap-2">
-                          <a href={res.youtube} target="_blank" rel="noreferrer" className="flex-1 bg-red-500 hover:bg-red-600 text-white text-[10px] py-2 rounded-xl font-bold text-center transition-all">YouTube</a>
-                          <a href={res.google} target="_blank" rel="noreferrer" className="flex-1 bg-blue-500 hover:bg-blue-600 text-white text-[10px] py-2 rounded-xl font-bold text-center transition-all">Google</a>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-              </div>
-            ) : (
-              <div className="h-full min-h-[400px] bg-white dark:bg-slate-800/50 rounded-[2rem] border border-slate-100 dark:border-slate-700 shadow-xl flex flex-col items-center justify-center text-center p-8 transition-all duration-500">
-                <div className="p-5 bg-slate-50 dark:bg-slate-900 rounded-full mb-5">
-                  <Brain className="w-10 h-10 text-slate-300 dark:text-slate-600" />
-                </div>
-                <h3 className="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">Analysis Results Will Appear Here</h3>
-                <p className="text-slate-400 dark:text-slate-500 mt-2 max-w-xs font-medium">Fill in your subject details and let AI design your rescue strategy.</p>
-              </div>
-            )}
-          </div>
-
-        </div>
+        <h1 className="text-4xl md:text-6xl font-serif text-white uppercase tracking-tighter mb-4">
+          PERFORMANCE <span className="text-[#d1e8c4]">ANALYZER</span>
+        </h1>
+        <p className="text-white/60 max-w-2xl mx-auto font-light tracking-wide uppercase text-xs tracking-[0.3em]">
+          AI-driven insights to rescue your academic journey
+        </p>
       </div>
+
+      <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+        
+        {/* Input Section */}
+        <div className="lg:col-span-4 bg-white rounded-[3rem] p-10 shadow-2xl border border-[#0b2b24]/5 lg:sticky lg:top-32">
+          <h2 className="text-xl font-serif text-[#0b2b24] mb-8 uppercase tracking-widest border-b border-[#0b2b24]/10 pb-4">
+            Input Marks
+          </h2>
+          
+          <div className="space-y-4 max-h-[400px] overflow-y-auto pr-2 mb-8 custom-scrollbar">
+            {subjects.map((row, index) => (
+              <div key={index} className="flex gap-3 items-center">
+                <input
+                  type="text"
+                  placeholder="Subject"
+                  value={row.subject}
+                  onChange={(e) => handleChange(index, "subject", e.target.value)}
+                  className="flex-1 px-5 py-4 rounded-full bg-[#fdf7e9]/50 border border-[#0b2b24]/10 text-[#0b2b24] font-bold focus:ring-2 focus:ring-[#d1e8c4] outline-none transition-all placeholder-[#0b2b24]/30"
+                />
+                <input
+                  type="number"
+                  placeholder="0"
+                  value={row.marks}
+                  onChange={(e) => handleChange(index, "marks", e.target.value)}
+                  className="w-20 px-5 py-4 rounded-full bg-[#fdf7e9]/50 border border-[#0b2b24]/10 text-[#0b2b24] font-bold focus:ring-2 focus:ring-[#d1e8c4] outline-none transition-all placeholder-[#0b2b24]/30 text-center"
+                />
+                {subjects.length > 1 && (
+                  <button 
+                    onClick={() => removeRow(index)}
+                    className="p-3 text-[#0b2b24]/20 hover:text-red-500 transition-colors"
+                  >
+                    <Trash2 size={20} />
+                  </button>
+                )}
+              </div>
+            ))}
+          </div>
+
+          <button
+            onClick={addRow}
+            className="w-full mb-6 py-4 rounded-full border border-dashed border-[#0b2b24]/20 text-[#0b2b24]/40 hover:bg-[#fdf7e9] transition-all flex items-center justify-center font-black text-xs uppercase tracking-widest"
+          >
+            <Plus size={16} className="mr-2" /> Add Subject
+          </button>
+
+          <button
+            onClick={handleAnalyze}
+            disabled={loading}
+            className="w-full bg-[#0b2b24] text-[#d1e8c4] py-5 rounded-full font-black text-sm uppercase tracking-widest transition-all hover:scale-105 active:scale-95 shadow-xl disabled:opacity-50 flex items-center justify-center"
+          >
+            {loading ? (
+              <><Loader2 className="mr-2 animate-spin" /> Analyzing...</>
+            ) : (
+              <><Sparkles className="mr-2" /> Start Analysis</>
+            )}
+          </button>
+          {error && <p className="mt-4 text-[10px] text-red-500 text-center font-bold uppercase tracking-widest">{error}</p>}
+        </div>
+
+        {/* Result Section */}
+        <div className="lg:col-span-8">
+          {result ? (
+            <div className="space-y-10">
+              
+              {/* Analysis Card */}
+              <div className="bg-white rounded-[3rem] p-10 shadow-2xl border border-[#0b2b24]/5">
+                <div className="flex items-center space-x-4 mb-8">
+                  <div className="w-12 h-12 bg-[#fdf7e9] rounded-2xl flex items-center justify-center text-[#0b2b24]">
+                    <Brain size={28} />
+                  </div>
+                  <h3 className="text-2xl font-serif text-[#0b2b24] uppercase tracking-widest">
+                    AI Insights
+                  </h3>
+                </div>
+                <div className="flex flex-wrap gap-2 mb-8">
+                  {result.weaknesses.map((w, i) => (
+                    <span key={i} className="px-5 py-2 bg-[#d1e8c4] text-[#0b2b24] text-[10px] font-black rounded-full uppercase tracking-widest">
+                      {w}
+                    </span>
+                  ))}
+                </div>
+                <div className="bg-[#fdf7e9] p-8 rounded-[2rem] border-l-4 border-[#0b2b24] italic text-[#0b2b24] text-lg leading-relaxed">
+                  "{result.analysis}"
+                </div>
+              </div>
+
+              {/* 1-Week Study Strategy Card */}
+              <div className="bg-[#0b2b24] rounded-[3rem] p-10 md:p-16 shadow-2xl relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full translate-x-1/2 -translate-y-1/2"></div>
+                <h3 className="text-3xl font-serif text-white mb-12 flex items-center uppercase tracking-widest">
+                  <Sparkles className="mr-4 text-[#d1e8c4]" /> 1-Week Rescue Plan
+                </h3>
+                <div className="grid gap-6">
+                  {result.studyPlan.map((day, i) => (
+                    <div key={i} className="group bg-white/5 hover:bg-white/10 rounded-[2rem] p-6 border border-white/10 transition-all">
+                      <div className="flex items-center gap-6">
+                        <div className="w-16 h-16 rounded-2xl bg-[#d1e8c4] flex flex-col items-center justify-center text-[#0b2b24] group-hover:scale-110 transition-transform">
+                          <span className="text-[10px] font-black uppercase">Day</span>
+                          <span className="text-2xl font-serif">{i + 1}</span>
+                        </div>
+                        <div className="flex-1">
+                          <h4 className="text-[#d1e8c4] text-[10px] font-black uppercase tracking-[0.2em] mb-1">{day.day}</h4>
+                          <p className="text-white text-lg font-light leading-snug">{day.task}</p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Resources Card */}
+              <div className="bg-white rounded-[3rem] p-10 shadow-2xl border border-[#0b2b24]/5">
+                 <h3 className="text-xl font-serif text-[#0b2b24] mb-10 uppercase tracking-widest">
+                   Recommended Resources
+                 </h3>
+                 <div className="grid gap-6 sm:grid-cols-2">
+                   {result.resources.map((res, i) => (
+                     <div key={i} className="p-8 rounded-[2rem] bg-[#fdf7e9] border border-[#0b2b24]/5">
+                       <p className="text-lg font-bold text-[#0b2b24] mb-6">{res.subject}</p>
+                       <div className="flex gap-3">
+                         <a href={res.youtube} target="_blank" rel="noreferrer" className="flex-1 bg-[#0b2b24] text-white text-[10px] py-3 rounded-full font-black text-center uppercase tracking-widest hover:bg-[#d1e8c4] hover:text-[#0b2b24] transition-all">YouTube</a>
+                         <a href={res.google} target="_blank" rel="noreferrer" className="flex-1 bg-white text-[#0b2b24] text-[10px] py-3 rounded-full font-black text-center border border-[#0b2b24]/10 uppercase tracking-widest hover:bg-[#d1e8c4] transition-all">Google</a>
+                       </div>
+                     </div>
+                   ))}
+                 </div>
+              </div>
+
+            </div>
+          ) : (
+            <div className="h-full min-h-[500px] bg-white rounded-[3rem] border border-[#0b2b24]/5 shadow-2xl flex flex-col items-center justify-center text-center p-10">
+              <div className="w-24 h-24 bg-[#fdf7e9] rounded-full flex items-center justify-center mb-8">
+                 <Brain className="text-[#0b2b24]/20" size={48} />
+              </div>
+              <h3 className="text-2xl font-serif text-[#0b2b24]/30 uppercase tracking-[0.2em]">Ready For Analysis</h3>
+              <p className="text-[#0b2b24]/30 mt-4 max-w-xs font-light text-sm">
+                Add your academic records to generate a personalized rescue strategy.
+              </p>
+            </div>
+          )}
+        </div>
+
+      </div>
+
+      {/* FOOTER */}
+      <footer className="py-20 bg-[#0b2b24] text-white/40 text-center mt-20">
+         <div className="max-w-7xl mx-auto px-6 border-t border-white/5 pt-10">
+            <p className="text-xs font-black uppercase tracking-[0.3em]">© 2025 E-STUDY Platform • Premium Education</p>
+         </div>
+      </footer>
+
       <style>{`
         .custom-scrollbar::-webkit-scrollbar { width: 4px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #0b2b24; border-radius: 10px; }
       `}</style>
     </div>
   );

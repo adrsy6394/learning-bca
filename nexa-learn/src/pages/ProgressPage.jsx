@@ -53,23 +53,37 @@ const ProgressPage = () => {
   };
 
   return (
-    <div className="p-6 pt-28 min-h-screen bg-white dark:bg-gray-900 text-gray-800 dark:text-white">
-      <div className="max-w-5xl mx-auto">
-        <h2 className="text-3xl font-bold mb-10 text-center bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
-          📊 Your Learning Progress
-        </h2>
+    <div className="pt-28 min-h-screen bg-[#fdf7e9] transition-all duration-300">
+      
+      {/* Header Section */}
+      <div className="bg-[#0b2b24] py-20 px-6 text-center relative overflow-hidden mb-12">
+        <div className="absolute top-0 left-0 w-32 h-32 bg-white/5 rounded-full blur-2xl"></div>
+        <div className="absolute bottom-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-3xl"></div>
+        
+        <h1 className="text-4xl md:text-6xl font-serif text-white uppercase tracking-tighter mb-4">
+          YOUR <span className="text-[#d1e8c4]">PROGRESS</span>
+        </h1>
+        <p className="text-white/60 max-w-2xl mx-auto font-light tracking-wide uppercase text-xs tracking-[0.3em]">
+          Tracking your journey towards BCA excellence
+        </p>
+      </div>
 
+      <div className="max-w-5xl mx-auto px-6 pb-20">
         {!bcaSyllabus ? (
-          <div className="text-center text-indigo-500 animate-pulse py-20">Loading syllabus data...</div>
+          <div className="flex flex-col items-center justify-center py-20 space-y-4">
+            <div className="w-12 h-12 border-4 border-[#d1e8c4] border-t-[#0b2b24] rounded-full animate-spin"></div>
+            <p className="text-[#0b2b24] font-black text-xs uppercase tracking-widest animate-pulse">Calculating stats...</p>
+          </div>
         ) : (
           Object.entries(bcaSyllabus).map(([semesterKey, subjects]) => (
-          <div key={semesterKey} className="mb-12">
-            <h3 className="text-xl font-bold mb-6 text-slate-700 dark:text-slate-300 flex items-center border-b border-slate-100 dark:border-slate-800 pb-2">
-              <span className="bg-indigo-100 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-400 p-1 rounded-lg mr-3 text-sm">Sem</span>
-              {semesterKey.replace("semester", "Semester ")}
-            </h3>
+          <div key={semesterKey} className="mb-20">
+            <div className="flex items-center mb-10">
+              <h3 className="text-2xl font-serif text-[#0b2b24] uppercase tracking-[0.2em] border-b-2 border-[#d1e8c4] pb-2">
+                {semesterKey.replace("semester", "Semester ")}
+              </h3>
+            </div>
 
-            <div className="grid md:grid-cols-2 gap-6">
+            <div className="grid md:grid-cols-2 gap-8">
               {Object.entries(subjects).map(([subjectKey, subjectData]) => {
                 const { totalTopics, learnedTopics, percentage } = getSubjectProgress(
                   semesterKey.replace("semester", ""),
@@ -77,23 +91,28 @@ const ProgressPage = () => {
                 );
 
                 return (
-                  <div key={subjectKey} className="bg-slate-50 dark:bg-slate-800/50 p-6 rounded-2xl border border-slate-100 dark:border-slate-800 hover:shadow-md transition-shadow">
-                    <div className="flex justify-between items-start mb-4">
-                      <h4 className="font-bold text-slate-800 dark:text-slate-200">{subjectData.name}</h4>
-                      <span className="text-xs font-bold px-2 py-1 bg-green-100 text-green-700 rounded-lg">{percentage}%</span>
+                  <div key={subjectKey} className="bg-white p-8 rounded-[2rem] shadow-xl border border-[#0b2b24]/5 hover:-translate-y-1 transition-all duration-300">
+                    <div className="flex justify-between items-start mb-6">
+                      <h4 className="text-lg font-bold text-[#0b2b24] max-w-[70%]">{subjectData.name}</h4>
+                      <div className="w-14 h-14 rounded-full bg-[#fdf7e9] border border-[#d1e8c4] flex items-center justify-center">
+                        <span className="text-sm font-black text-[#0b2b24]">{percentage}%</span>
+                      </div>
                     </div>
                     
-                    <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2 mb-4 overflow-hidden">
+                    <div className="w-full bg-[#fdf7e9] rounded-full h-3 mb-6 overflow-hidden border border-[#0b2b24]/5">
                       <div
-                        className="bg-green-500 h-full rounded-full transition-all duration-500"
+                        className="bg-[#d1e8c4] h-full rounded-full transition-all duration-1000 ease-out border-r-2 border-[#0b2b24]/20"
                         style={{ width: `${percentage}%` }}
                       ></div>
                     </div>
                     
-                    <p className="text-xs text-slate-500 dark:text-slate-400 flex justify-between">
-                      <span>{learnedTopics} Topics Learned</span>
+                    <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-widest text-[#0b2b24]/40">
+                      <div className="flex items-center space-x-2">
+                        <div className="w-2 h-2 rounded-full bg-[#d1e8c4]"></div>
+                        <span>{learnedTopics} Topics Learned</span>
+                      </div>
                       <span>Total: {totalTopics}</span>
-                    </p>
+                    </div>
                   </div>
                 );
               })}
@@ -101,6 +120,13 @@ const ProgressPage = () => {
           </div>
         )))}
       </div>
+
+      {/* FOOTER */}
+      <footer className="py-20 bg-[#0b2b24] text-white/40 text-center">
+         <div className="max-w-7xl mx-auto px-6 border-t border-white/5 pt-10">
+            <p className="text-xs font-black uppercase tracking-[0.3em]">© 2025 E-STUDY Platform • Premium Education</p>
+         </div>
+      </footer>
     </div>
   );
 };

@@ -103,54 +103,58 @@ ${explanation}
   };
 
   return (
-    <div
-      className="min-h-screen transition-all duration-500
-    bg-white
-    dark:bg-[#0B1C2D] 
-    text-gray-900 dark:text-white 
-    pt-28 pb-12 "
-    >
-      <div className="max-w-full mx-auto md:px-6 p-2 grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
-        {/* LEFT PANEL */}
-        <div
-          className="bg-white dark:bg-slate-800/50 rounded-[2rem] p-8 shadow-xl border border-slate-100 dark:border-slate-700 transition-all duration-500 lg:sticky lg:top-28"
-        >
-          <h2 className="text-2xl font-black bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-2">
-            Select Your Topic
-          </h2>
-          <p className="text-slate-500 dark:text-slate-400 mb-6 font-medium">
-            Choose a topic for personalized explanation
-          </p>
+    <div className="min-h-screen transition-all duration-500 bg-[#fdf7e9] pt-28 pb-12">
+      
+      {/* Header Section */}
+      <div className="bg-[#0b2b24] py-16 px-6 text-center relative overflow-hidden mb-12">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+        <div className="absolute bottom-0 left-0 w-32 h-32 border border-white/10 rounded-full -translate-x-1/2 translate-y-1/2"></div>
+        
+        <h1 className="text-4xl md:text-6xl font-serif text-white uppercase tracking-tighter mb-4">
+          AI <span className="text-[#d1e8c4]">LEARNING</span> TUTOR
+        </h1>
+        <p className="text-white/60 max-w-2xl mx-auto font-light tracking-wide uppercase text-xs tracking-[0.3em]">
+          Master BCA concepts with personalized AI explanations
+        </p>
+      </div>
 
-          <div className="space-y-6">
-            <div>
-              <label className="block text-slate-700 dark:text-slate-300 font-bold text-sm mb-2">Topic</label>
+      <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+        {/* LEFT PANEL */}
+        <div className="lg:col-span-4 bg-white rounded-[3rem] p-10 shadow-2xl border border-[#0b2b24]/5 lg:sticky lg:top-32">
+          <h2 className="text-xl font-serif text-[#0b2b24] mb-8 uppercase tracking-widest border-b border-[#0b2b24]/10 pb-4">
+            Topic Selection
+          </h2>
+
+          <div className="space-y-8">
+            <div className="space-y-2">
+              <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-[#0b2b24]/40 ml-2">Quick Topic</label>
               <TopicInput onSubmit={setSelectedTopic} />
             </div>
 
-            <div>
-              <label className="block text-slate-700 dark:text-slate-300 font-bold text-sm mb-2">Or Custom Topic</label>
+            <div className="space-y-2">
+              <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-[#0b2b24]/40 ml-2">Or Custom Topic</label>
               <div className="relative flex items-center w-full group">
-                <Input
+                <input
                   value={customTopic}
                   onChange={(e) => {
                     setCustomTopic(e.target.value);
                     setSelectedTopic("");
                   }}
-                  placeholder="Enter your specific doubt..."
-                  className="w-full px-5 py-4 rounded-2xl bg-slate-50 dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 focus:border-indigo-500 dark:focus:border-indigo-500 focus:bg-white dark:focus:bg-slate-800 text-slate-900 dark:text-white outline-none transition-all duration-300 shadow-inner dark:shadow-slate-950/50 placeholder-slate-400 group-hover:border-indigo-300 dark:group-hover:border-indigo-700"
+                  placeholder="What's your doubt?"
+                  className="w-full px-6 py-4 rounded-full bg-[#fdf7e9]/50 border border-[#0b2b24]/10 text-[#0b2b24] font-bold focus:ring-2 focus:ring-[#d1e8c4] outline-none transition-all placeholder-[#0b2b24]/30"
                 />
               </div>
             </div>
 
-            <div>
-              <LanguageToggle value={language} onChange={setLanguage} />
+            <div className="space-y-2">
+               <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-[#0b2b24]/40 ml-2">Language</label>
+               <LanguageToggle value={language} onChange={setLanguage} />
             </div>
 
             <button
               onClick={handleGetExplanation}
               disabled={loading}
-              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-4 rounded-2xl font-black text-lg transition-all hover:scale-105 active:scale-95 shadow-xl shadow-indigo-100 dark:shadow-none disabled:opacity-50"
+              className="w-full bg-[#0b2b24] text-[#d1e8c4] py-5 rounded-full font-black text-sm uppercase tracking-widest transition-all hover:scale-105 active:scale-95 shadow-xl disabled:opacity-50 mt-4"
             >
               {loading ? "Generating..." : "Get Explanation"}
             </button>
@@ -158,56 +162,49 @@ ${explanation}
         </div>
 
         {/* RIGHT PANEL */}
-        <div
-          className="bg-white dark:bg-slate-800/50 rounded-[2rem] p-8 shadow-xl border border-slate-100 dark:border-slate-700 transition-all duration-500"
-        >
-          <h2 className="text-2xl font-black bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-2 text-center">
-            AI Explanation
-          </h2>
-          <p className="text-slate-500 dark:text-slate-400 mb-8 text-center font-medium">
-            Personalized in {language}
-          </p>
+        <div className="lg:col-span-8 bg-white rounded-[3rem] p-10 md:p-16 shadow-2xl border border-[#0b2b24]/5 min-h-[600px] flex flex-col">
+          <div className="flex justify-between items-center mb-12 border-b border-[#0b2b24]/10 pb-6">
+            <h2 className="text-2xl font-serif text-[#0b2b24] uppercase tracking-widest">
+              Explanation
+            </h2>
+            <div className="px-4 py-1 bg-[#d1e8c4] text-[#0b2b24] rounded-full text-[10px] font-black uppercase tracking-widest">
+              AI: {language}
+            </div>
+          </div>
 
           {explanation ? (
-            <>
-              <div
-                className="bg-white/95 dark:bg-gray-900
-              text-gray-900 dark:text-white
-              p-6 rounded-xl shadow-lg transition-all duration-300"
-              >
+            <div className="flex-grow flex flex-col">
+              <div className="flex-grow text-[#0b2b24] leading-relaxed text-lg">
                 <MarkdownRenderer content={typedMarkdown} />
               </div>
 
-              <div className="mt-6 flex justify-center space-x-6">
+              <div className="mt-12 flex justify-center space-x-6 pt-10 border-t border-[#0b2b24]/5">
                 {supported && (
                   <button
                     onClick={() => (speaking ? stop() : speak(explanation))}
-                    className="bg-slate-100 dark:bg-slate-700 hover:bg-indigo-600 hover:text-white p-4 rounded-2xl transition-all duration-300 shadow-sm"
+                    className={`w-16 h-16 flex items-center justify-center rounded-full transition-all duration-300 shadow-lg ${
+                      speaking ? "bg-[#0b2b24] text-white" : "bg-[#fdf7e9] text-[#0b2b24] hover:bg-[#d1e8c4]"
+                    }`}
                   >
-                    {speaking ? (
-                      <Pause className="w-6 h-6" />
-                    ) : (
-                      <Play className="w-6 h-6" />
-                    )}
+                    {speaking ? <Pause size={24} /> : <Play size={24} />}
                   </button>
                 )}
 
                 <button
                   onClick={exportToFile}
-                  className="bg-slate-100 dark:bg-slate-700 hover:bg-indigo-600 hover:text-white p-4 rounded-2xl transition-all duration-300 shadow-sm"
+                  className="w-16 h-16 flex items-center justify-center rounded-full bg-[#fdf7e9] text-[#0b2b24] hover:bg-[#d1e8c4] transition-all duration-300 shadow-lg"
                 >
-                  <FileText className="w-6 h-6" />
+                  <FileText size={24} />
                 </button>
               </div>
-            </>
+            </div>
           ) : (
-            <div
-              className="flex flex-col items-center justify-center 
-            text-gray-200 py-16"
-            >
-              <Brain className="w-14 h-14 mb-6 text-gray-300 animate-pulse" />
-              <p className="text-lg opacity-80 text-center">
-                Select a topic and language to get started
+            <div className="flex-grow flex flex-col items-center justify-center text-center py-20">
+              <div className="w-24 h-24 bg-[#fdf7e9] rounded-full flex items-center justify-center mb-8">
+                 <Brain className="text-[#0b2b24]/20" size={48} />
+              </div>
+              <p className="text-[#0b2b24]/30 font-serif text-2xl uppercase tracking-[0.2em] max-w-sm">
+                Awaiting your topic...
               </p>
             </div>
           )}
