@@ -17,8 +17,8 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-16 mb-20">
           <div className="col-span-1 md:col-span-2">
             <div className="flex items-center space-x-3 mb-8">
-              <div className="w-12 h-12 bg-[#0b2b24] rounded-full flex items-center justify-center text-[#d1e8c4] font-serif text-2xl">E</div>
-              <span className="font-serif text-3xl text-[#0b2b24] tracking-tighter">E-STUDY</span>
+              <div className="w-12 h-12 bg-[#0b2b24] rounded-full flex items-center justify-center text-[#d1e8c4] font-serif text-2xl">N</div>
+              <span className="font-serif text-3xl text-[#0b2b24] tracking-tighter">NexaLearn</span>
             </div>
             <p className="text-[#0b2b24]/60 max-w-sm mb-8 text-lg font-light leading-relaxed">
               Empowering BCA students with AI-driven insights and a premium, high-quality learning experience.
@@ -58,7 +58,7 @@ const Footer = () => {
           </div>
         </div>
         <div className="text-center pt-12 border-t border-[#0b2b24]/10 text-[#0b2b24]/40 text-xs font-bold uppercase tracking-widest">
-          © 2025 E-STUDY Platform. All rights reserved. Premium Education for BCA.
+          © 2025 NexaLearn Platform. All rights reserved. Premium Education for BCA.
         </div>
       </div>
     </footer>

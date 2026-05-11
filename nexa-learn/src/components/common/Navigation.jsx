@@ -78,7 +78,7 @@ const Navigation = () => {
                 className="h-10 w-10 rounded-full object-cover border-2 border-[#d1e8c4]"
               />
               <span className="font-serif text-xl text-white tracking-widest group-hover:text-[#d1e8c4] transition-colors">
-                E-STUDY
+                NexaLearn
               </span>
             </div>
 

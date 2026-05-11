@@ -78,7 +78,7 @@ const AdminDashboard = () => {
     <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-500">
       <div>
         <h1 className="text-4xl font-serif text-[#0b2b24] uppercase tracking-tighter">System Overview</h1>
-        <p className="text-[#0b2b24]/40 mt-2 font-black text-[10px] uppercase tracking-[0.3em]">Welcome to the E-STUDY Command Center</p>
+        <p className="text-[#0b2b24]/40 mt-2 font-black text-[10px] uppercase tracking-[0.3em]">Welcome to the NexaLearn Command Center</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
