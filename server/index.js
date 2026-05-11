@@ -17,18 +17,34 @@ import connectDB from "./src/config/db.js";
 
 const app = express();
 
-// 1. ✅ MANUAL CORS HEADERS (Fix for Vercel Preflight)
+// 1. ✅ CORS Configuration
+const allowedOrigins = [
+  "https://learning-bca-gbwg.vercel.app",
+  "https://learning-bca.vercel.app",
+  "http://localhost:5173",
+  "http://localhost:3000"
+];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
+  allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept", "Origin"]
+}));
+
+// Additional Manual Headers for Vercel edge cases
 app.use((req, res, next) => {
   const origin = req.headers.origin;
-  res.header("Access-Control-Allow-Origin", origin);
-  res.header("Access-Control-Allow-Credentials", "true");
-  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, PATCH");
-  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With, Accept, Origin");
-
-  // Handle Preflight
-  if (req.method === "OPTIONS") {
-    return res.sendStatus(200);
+  if (allowedOrigins.includes(origin)) {
+    res.header("Access-Control-Allow-Origin", origin);
   }
+  res.header("Access-Control-Allow-Credentials", "true");
   next();
 });
 

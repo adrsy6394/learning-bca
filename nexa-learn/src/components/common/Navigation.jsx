@@ -11,9 +11,23 @@ const Navigation = () => {
 
   const [isOpen, setIsOpen] = useState(false);
   const [isAiOpen, setIsAiOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const [darkMode, setDarkMode] = useState(
     () => localStorage.getItem("theme") === "dark"
   );
+
+  /* ================= SCROLL LISTENER ================= */
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setScrolled(true);
+      } else {
+        setScrolled(false);
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   /* ================= DARK MODE ================= */
   useEffect(() => {
@@ -63,9 +77,13 @@ const Navigation = () => {
 
   return (
     <>
-      <nav className="fixed w-full top-0 left-0 z-[100] transition-all duration-300">
-        <div className="max-w-7xl mx-auto px-6 py-6">
-          <div className="bg-white/10 dark:bg-black/10 backdrop-blur-md border border-white/10 rounded-full px-6 py-3 flex justify-between items-center shadow-2xl">
+      <nav className={`fixed w-full top-0 left-0 z-[100] transition-all duration-500 ${scrolled ? "py-4" : "py-8"}`}>
+        <div className="max-w-7xl mx-auto px-6">
+          <div className={`transition-all duration-500 border rounded-full px-8 py-4 flex justify-between items-center shadow-2xl ${
+            scrolled 
+              ? "bg-[#0b2b24] border-[#d1e8c4]/20" 
+              : "bg-white/10 backdrop-blur-md border-white/10"
+          }`}>
             
             {/* LEFT SIDE: LOGO */}
             <div 
@@ -77,24 +95,25 @@ const Navigation = () => {
                 alt="Logo"
                 className="h-10 w-10 rounded-full object-cover border-2 border-[#d1e8c4]"
               />
-              <span className="font-serif text-xl text-white tracking-widest group-hover:text-[#d1e8c4] transition-colors">
+              <span className="font-serif text-2xl text-white tracking-widest group-hover:text-[#d1e8c4] transition-colors">
                 NexaLearn
               </span>
             </div>
 
             {/* Desktop Links */}
-            <div className="hidden md:flex items-center space-x-8">
+            <div className="hidden md:flex items-center space-x-10">
               {navLinks.map((link) => (
                 <button
                   key={link.path}
                   onClick={() => navigate(link.path)}
-                  className={`text-sm font-bold tracking-widest uppercase transition-all ${
+                  className={`text-[10px] font-black uppercase tracking-[0.2em] transition-all relative group ${
                     location.pathname === link.path
                       ? "text-[#d1e8c4]"
                       : "text-white/70 hover:text-white"
                   }`}
                 >
                   {link.name}
+                  <span className={`absolute -bottom-1 left-0 h-px bg-[#d1e8c4] transition-all duration-300 ${location.pathname === link.path ? "w-full" : "w-0 group-hover:w-full"}`}></span>
                 </button>
               ))}
             </div>
