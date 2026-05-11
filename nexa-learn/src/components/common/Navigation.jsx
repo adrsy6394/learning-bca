@@ -119,6 +119,31 @@ const Navigation = () => {
                   <span className={`absolute -bottom-1 left-0 h-px bg-[#d1e8c4] transition-all duration-300 ${location.pathname === link.path ? "w-full" : "w-0 group-hover:w-full"}`}></span>
                 </button>
               ))}
+
+              {/* AI DROPDOWN */}
+              <div className="relative group/ai">
+                <button className="flex items-center space-x-2 text-[10px] font-black uppercase tracking-[0.2em] text-white/70 hover:text-white transition-all">
+                  <span>AI Capabilities</span>
+                  <ChevronDown size={14} className="group-hover/ai:rotate-180 transition-transform duration-300" />
+                </button>
+                
+                <div className="absolute top-full right-0 mt-4 w-64 bg-[#0b2b24] border border-[#d1e8c4]/20 rounded-3xl p-4 shadow-2xl opacity-0 invisible group-hover/ai:opacity-100 group-hover/ai:visible translate-y-2 group-hover/ai:translate-y-0 transition-all duration-300">
+                  <div className="space-y-2">
+                    {aiTools.map((tool) => (
+                      <button
+                        key={tool.path}
+                        onClick={() => navigate(tool.path)}
+                        className="w-full flex items-center space-x-3 p-4 rounded-2xl hover:bg-white/5 text-white/70 hover:text-[#d1e8c4] transition-all"
+                      >
+                        <div className="w-8 h-8 rounded-xl bg-white/5 flex items-center justify-center text-[#d1e8c4]">
+                          {tool.icon}
+                        </div>
+                        <span className="text-[10px] font-black uppercase tracking-widest">{tool.name}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
 
             {/* RIGHT SIDE: PROFILE & MENU */}
