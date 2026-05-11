@@ -64,127 +64,67 @@ const Navigation = () => {
   return (
     <>
       <nav className="fixed w-full top-0 left-0 z-[100] transition-all duration-300">
-        <div className="bg-white/70 dark:bg-gray-900/80 backdrop-blur-xl border-b border-white/20 dark:border-white/10 shadow-lg px-6 py-4 flex justify-between items-center">
-          
-          {/* LEFT SIDE: LOGO & NAV */}
-          <div className="flex items-center space-x-8">
+        <div className="max-w-7xl mx-auto px-6 py-6">
+          <div className="bg-white/10 dark:bg-black/10 backdrop-blur-md border border-white/10 rounded-full px-6 py-3 flex justify-between items-center shadow-2xl">
+            
+            {/* LEFT SIDE: LOGO */}
             <div 
               onClick={() => navigate("/")}
-              className="group cursor-pointer flex items-center space-x-2"
+              className="flex items-center space-x-3 cursor-pointer group"
             >
-              <div className="relative">
-                <div className="absolute -inset-1 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full blur opacity-25 group-hover:opacity-100 transition duration-1000 group-hover:duration-200"></div>
-                <img
-                  src="/ChatGPT_Image_Jul_20__2025__04_55_44_PM-removebg-preview.png"
-                  alt="Logo"
-                  className="relative h-10 w-10 md:h-12 md:w-12 rounded-full object-cover border border-white/50"
-                />
-              </div>
-              <span className="hidden lg:block font-black text-xl tracking-tighter bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-400 bg-clip-text text-transparent">
-                NEXALEARN
+              <img
+                src="/hero1.png" 
+                alt="Logo"
+                className="h-10 w-10 rounded-full object-cover border-2 border-[#d1e8c4]"
+              />
+              <span className="font-serif text-xl text-white tracking-widest group-hover:text-[#d1e8c4] transition-colors">
+                E-STUDY
               </span>
             </div>
 
             {/* Desktop Links */}
-            <div className="hidden md:flex items-center space-x-1 bg-gray-100/50 dark:bg-white/5 p-1 rounded-2xl">
+            <div className="hidden md:flex items-center space-x-8">
               {navLinks.map((link) => (
                 <button
                   key={link.path}
                   onClick={() => navigate(link.path)}
-                  className={`relative px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-300 ${
+                  className={`text-sm font-bold tracking-widest uppercase transition-all ${
                     location.pathname === link.path
-                      ? "text-white dark:text-gray-900"
-                      : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
+                      ? "text-[#d1e8c4]"
+                      : "text-white/70 hover:text-white"
                   }`}
                 >
-                  {location.pathname === link.path && (
-                    <div className="absolute inset-0 bg-gray-900 dark:bg-white rounded-xl shadow-lg z-0 animate-in fade-in zoom-in-95 duration-300"></div>
-                  )}
-                  <span className="relative z-10">{link.name}</span>
+                  {link.name}
                 </button>
               ))}
-
-              {/* AI Tools Dropdown */}
-              <div className="relative">
-                <button
-                  onMouseEnter={() => setIsAiOpen(true)}
-                  className={`flex items-center space-x-1 px-4 py-2 rounded-xl text-sm font-bold transition-all duration-300 ${
-                    aiTools.some(t => t.path === location.pathname)
-                      ? "text-indigo-600 dark:text-indigo-400"
-                      : "text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400"
-                  }`}
-                >
-                  <Sparkles size={16} className="mr-1 animate-pulse" />
-                  <span>AI Tools</span>
-                  <ChevronDown size={14} className={`transition-transform duration-300 ${isAiOpen ? "rotate-180" : ""}`} />
-                </button>
-
-                {isAiOpen && (
-                  <div 
-                    onMouseLeave={() => setIsAiOpen(false)}
-                    className="absolute top-full mt-2 left-0 w-64 bg-white/90 dark:bg-gray-800/90 backdrop-blur-2xl rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.2)] border border-white/20 dark:border-white/10 p-2 animate-in fade-in slide-in-from-top-2 duration-300 z-50"
-                  >
-                    {aiTools.map((tool) => (
-                      <button
-                        key={tool.path}
-                        onClick={() => navigate(tool.path)}
-                        className="w-full flex items-center space-x-4 px-4 py-4 rounded-2xl hover:bg-indigo-600 hover:text-white text-slate-700 dark:text-slate-200 group transition-all duration-300"
-                      >
-                        <div className="p-2 bg-indigo-100 dark:bg-indigo-900/30 group-hover:bg-white/20 rounded-xl transition-colors">
-                          {tool.icon}
-                        </div>
-                        <span className="font-bold text-sm">{tool.name}</span>
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
             </div>
-          </div>
 
-          {/* RIGHT SIDE: PROFILE & THEME */}
-          <div className="flex items-center space-x-3">
-            
-            {/* Theme Button (Uiverse Inspired) */}
-            <button
-              onClick={() => setDarkMode(!darkMode)}
-              className="p-2.5 rounded-full bg-gray-100 dark:bg-white/5 text-gray-600 dark:text-gray-300 hover:scale-110 active:scale-95 transition-all"
-            >
-              {darkMode ? <Sun size={20} /> : <Moon size={20} />}
-            </button>
-
-            {/* Desktop Auth */}
-            <div className="hidden md:flex items-center space-x-2">
+            {/* RIGHT SIDE: PROFILE & MENU */}
+            <div className="flex items-center space-x-6">
               {isLoggedIn ? (
-                <div className="flex items-center bg-gray-100/50 dark:bg-white/5 pl-2 pr-1 py-1 rounded-2xl border border-white/10">
-                  <div className="flex flex-col items-end mr-3">
-                    <span className="text-sm font-black text-gray-900 dark:text-white leading-tight">{displayName}</span>
-                  </div>
-                  <button
-                    onClick={handleLogout}
-                    className="p-2.5 bg-white dark:bg-gray-800 text-red-500 rounded-xl shadow-sm hover:bg-red-500 hover:text-white transition-all duration-300"
-                    title="Logout"
-                  >
-                    <LogOut size={18} />
-                  </button>
-                </div>
+                <button
+                  onClick={handleLogout}
+                  className="text-white/70 hover:text-white transition-colors"
+                >
+                  <LogOut size={20} />
+                </button>
               ) : (
                 <button
                   onClick={() => navigate("/login")}
-                  className="px-6 py-2.5 bg-gray-900 dark:bg-white text-white dark:text-black rounded-2xl font-bold hover:shadow-[0_0_20px_rgba(0,0,0,0.1)] hover:scale-105 active:scale-95 transition-all"
+                  className="px-6 py-2 bg-[#d1e8c4] text-[#0b2b24] rounded-full font-bold text-xs uppercase tracking-widest hover:scale-105 transition-all"
                 >
-                  Get Started
+                  Join Us
                 </button>
               )}
+              
+              {/* Mobile Toggle */}
+              <button 
+                onClick={() => setIsOpen(!isOpen)}
+                className="md:hidden text-white"
+              >
+                {isOpen ? <X size={24} /> : <Menu size={24} />}
+              </button>
             </div>
-
-            {/* Mobile Toggle */}
-            <button 
-              onClick={() => setIsOpen(!isOpen)}
-              className="md:hidden p-2.5 rounded-2xl bg-gray-900 dark:bg-white text-white dark:text-black"
-            >
-              {isOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
           </div>
         </div>
 

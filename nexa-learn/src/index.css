@@ -1,12 +1,23 @@
-/*  index.css – Global Styles for AI Learning Assistant */
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Outfit:wght@300;400;600;800&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --forest-green: #0b2b24;
+  --cream: #fdf7e9;
+  --lime: #d1e8c4;
+  --soft-green: #2d4a43;
+}
+
 /*  Font and Smooth Scroll */
 body {
-  @apply font-sans bg-gray-50 text-gray-800 scroll-smooth;
+  @apply font-['Outfit'] bg-white text-gray-800 scroll-smooth;
+}
+
+.font-serif {
+  font-family: 'DM Serif Display', serif;
 }
 
 /*  Inputs and Buttons Reset */

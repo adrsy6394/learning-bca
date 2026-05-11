@@ -66,77 +66,135 @@ const HomePage = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-[#fcfcfd] dark:bg-[#0b0f1a] overflow-hidden">
+    <div className="min-h-screen bg-white overflow-hidden">
       
       {/* --- HERO SECTION --- */}
-      <section className="relative pt-52 pb-32 overflow-hidden">
-        {/* Background Blobs */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full -z-10 overflow-hidden">
-          <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-500/10 blur-[120px] rounded-full"></div>
-          <div className="absolute bottom-[10%] right-[-10%] w-[40%] h-[40%] bg-blue-500/10 blur-[120px] rounded-full"></div>
-        </div>
+      <section className="relative pt-32 pb-20 bg-[#0b2b24] overflow-hidden">
+        {/* Decorative Shapes */}
+        <div className="absolute top-20 left-10 w-32 h-32 bg-white/5 rounded-full blur-2xl"></div>
+        <div className="absolute bottom-10 right-10 w-64 h-64 bg-white/5 rounded-full blur-3xl"></div>
+        <div className="absolute top-40 right-20 w-12 h-12 border border-white/10 rounded-lg rotate-12"></div>
+        <div className="absolute bottom-40 left-20 w-16 h-16 border border-white/10 rounded-full"></div>
 
-        <div className="max-w-7xl mx-auto px-6 text-center">
-          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-indigo-50 dark:bg-indigo-900/30 border border-indigo-100 dark:border-indigo-800 mb-8 animate-in fade-in slide-in-from-top-4 duration-1000">
-            <Sparkles className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
-            <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">Next Gen Learning Platform</span>
-          </div>
-          
-          <h1 className="text-5xl md:text-7xl font-black text-slate-900 dark:text-white tracking-tight leading-[1.1] mb-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-            Master BCA with <br />
-            <span className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-              AI Precision.
-            </span>
+        <div className="max-w-7xl mx-auto px-6 text-center relative z-10">
+          <h1 className="text-5xl md:text-8xl font-serif text-white tracking-tight leading-tight mb-12 uppercase">
+            GETTING <span className="text-[#d1e8c4]">BEST QUALITY</span> <br />
+            EDUCATION
           </h1>
 
-          <p className="text-lg md:text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto mb-12 animate-in fade-in zoom-in-95 duration-1000">
-            Hello, <span className="font-bold text-slate-900 dark:text-white">{user?.full_name}</span>. 
-            NexaLearn uses Gemini AI to transform complex BCA concepts into simple, understandable insights.
-          </p>
-
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-300">
+          <div className="flex justify-center mb-20">
             <button 
               onClick={() => navigate("/flashcards")}
-              className="group relative px-8 py-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl font-bold text-lg transition-all hover:scale-105 active:scale-95 shadow-xl shadow-indigo-200 dark:shadow-indigo-900/20 flex items-center overflow-hidden"
+              className="flex items-center space-x-3 px-10 py-4 bg-[#d1e8c4] text-[#0b2b24] rounded-full font-bold text-lg hover:scale-105 transition-all shadow-xl"
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
-              Start Learning Now
-              <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              <span>Start A Course</span>
+              <div className="w-8 h-8 bg-[#0b2b24] text-white rounded-full flex items-center justify-center">
+                <ArrowRight size={18} />
+              </div>
             </button>
-            <button 
-              onClick={() => navigate("/progress")}
-              className="px-8 py-4 bg-white dark:bg-slate-800 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 rounded-2xl font-bold text-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-all shadow-sm"
-            >
-              Track Progress
-            </button>
+          </div>
+
+          {/* Hero Images with Decorative Line */}
+          <div className="relative mt-20 max-w-5xl mx-auto">
+            <div className="absolute top-1/2 left-0 w-full h-[1px] bg-white/20 -z-10"></div>
+            <div className="grid grid-cols-3 gap-4 md:gap-8 items-center">
+              <div className="rounded-2xl overflow-hidden shadow-2xl transform -rotate-3 hover:rotate-0 transition-transform duration-500 border-4 border-white/10">
+                <img src="/hero1.png" alt="Student" className="w-full h-auto object-cover aspect-[4/5]" />
+              </div>
+              <div className="rounded-2xl overflow-hidden shadow-2xl transform translate-y-8 hover:translate-y-4 transition-transform duration-500 border-4 border-white/10">
+                <img src="/hero2.png" alt="Learning" className="w-full h-auto object-cover aspect-[3/4]" />
+              </div>
+              <div className="rounded-2xl overflow-hidden shadow-2xl transform rotate-3 hover:rotate-0 transition-transform duration-500 border-4 border-white/10">
+                <img src="/hero3.png" alt="Education" className="w-full h-auto object-cover aspect-[4/5]" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* --- STATS SECTION --- */}
+      <section className="bg-[#fdf7e9] py-20">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="flex flex-wrap justify-center items-center gap-6 md:gap-12">
+            {[
+              { val: "20K+", label: "Students" },
+              { val: "70+", label: "Instructors" },
+              { val: "250+", label: "Subjects" },
+              { val: "30+", label: "Awards" },
+              { val: "10+", label: "Years" }
+            ].map((stat, i) => (
+              <div key={i} className="flex flex-col items-center">
+                <div className="w-24 h-24 md:w-32 md:h-32 rounded-full bg-[#d1e8c4] border-2 border-[#0b2b24]/10 flex flex-col items-center justify-center shadow-lg hover:scale-110 transition-transform duration-300">
+                  <span className="text-xl md:text-2xl font-black text-[#0b2b24]">{stat.val}</span>
+                  <span className="text-[10px] md:text-xs font-bold text-[#0b2b24]/60 uppercase tracking-widest">{stat.label}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+          
+          <div className="mt-32 grid md:grid-cols-2 gap-20 items-center">
+            <div>
+              <h2 className="text-4xl md:text-6xl font-serif text-[#0b2b24] mb-8 leading-tight">
+                WHY CHOOSE US?
+              </h2>
+              <p className="text-lg text-[#0b2b24]/70 leading-relaxed mb-12 max-w-xl">
+                Unlocking our wealth of knowledge and experience to deliver unmatched solutions tailored to your needs.
+              </p>
+              
+              <div className="space-y-8">
+                {[
+                  { title: "Best Tutors", icon: <Brain size={24} />, desc: "Unlocking academic excellence with the finest tutors." },
+                  { title: "Best Curriculum", icon: <Sparkles size={24} />, desc: "Perfect path with the best curriculum for lifelong learning." },
+                  { title: "Certicate", icon: <FileText size={24} />, desc: "Recognizing proficiency and achievement with official certificates." },
+                  { title: "Best Price", icon: <CreditCard size={24} />, desc: "Unbeatable deals and unmatched value for your ideal purchase." }
+                ].map((item, i) => (
+                  <div key={i} className="flex items-start space-x-6 group">
+                    <div className="w-14 h-14 rounded-full border border-[#0b2b24]/20 flex items-center justify-center text-[#0b2b24] group-hover:bg-[#0b2b24] group-hover:text-white transition-all duration-300 shrink-0">
+                      {item.icon}
+                    </div>
+                    <div>
+                      <h4 className="text-xl font-bold text-[#0b2b24] mb-1">{item.title}</h4>
+                      <p className="text-[#0b2b24]/60 text-sm">{item.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            
+            <div className="relative">
+              <div className="rounded-[3rem] overflow-hidden shadow-2xl border-8 border-white">
+                <img src="/hero2.png" alt="Why us" className="w-full h-auto" />
+              </div>
+              <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-[#d1e8c4] rounded-full -z-10 blur-2xl opacity-50"></div>
+            </div>
           </div>
         </div>
       </section>
 
       {/* --- FEATURES SECTION --- */}
-      <section className="py-24 relative bg-white dark:bg-[#0d121f]">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="mb-16 text-center">
-            <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white mb-4">Powerful AI Features</h2>
-            <p className="text-slate-500 dark:text-slate-400">Everything you need to excel in your BCA journey</p>
+      <section className="py-32 relative bg-white">
+        <div className="max-w-7xl mx-auto px-6 text-center">
+          <div className="mb-20">
+            <h2 className="text-4xl md:text-5xl font-serif text-[#0b2b24] mb-6">OUR PREMIUM SERVICES</h2>
+            <div className="w-24 h-1 bg-[#d1e8c4] mx-auto"></div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
             {features.map((f, i) => (
               <div 
                 key={i}
                 onClick={() => navigate(f.link)}
-                className="group relative p-8 bg-white dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700 rounded-[2rem] hover:border-indigo-500 dark:hover:border-indigo-400 transition-all duration-500 cursor-pointer hover:shadow-2xl hover:shadow-indigo-500/10 hover:-translate-y-2"
+                className="group p-10 bg-white border border-[#0b2b24]/5 rounded-[2rem] hover:bg-[#0b2b24] transition-all duration-500 cursor-pointer shadow-xl hover:shadow-[#0b2b24]/20"
               >
-                <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${f.color} flex items-center justify-center text-white mb-6 shadow-lg group-hover:scale-110 transition-transform duration-500`}>
+                <div className="w-16 h-16 rounded-2xl bg-[#fdf7e9] flex items-center justify-center text-[#0b2b24] mb-8 group-hover:bg-[#d1e8c4] transition-colors duration-500">
                   {f.icon}
                 </div>
-                <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-3">{f.title}</h3>
-                <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed mb-6">
+                <h3 className="text-2xl font-bold text-[#0b2b24] group-hover:text-white mb-4 transition-colors">{f.title}</h3>
+                <p className="text-[#0b2b24]/60 group-hover:text-white/70 text-sm leading-relaxed mb-8 transition-colors">
                   {f.desc}
                 </p>
-                <div className="flex items-center text-indigo-600 dark:text-indigo-400 font-bold text-sm">
-                  Learn more <ArrowRight className="ml-1 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                <div className="flex items-center text-[#0b2b24] group-hover:text-[#d1e8c4] font-black text-xs uppercase tracking-widest transition-colors">
+                  Learn more <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-2 transition-transform" />
                 </div>
               </div>
             ))}
@@ -145,24 +203,24 @@ const HomePage = () => {
       </section>
 
       {/* --- CTA SECTION --- */}
-      <section className="py-24 px-6">
-        <div className="max-w-5xl mx-auto relative rounded-[3rem] overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-indigo-600 via-purple-700 to-indigo-800"></div>
-          {/* Decorative mesh */}
-          <div className="absolute top-0 right-0 w-full h-full opacity-20">
-            <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-white via-transparent to-transparent"></div>
+      <section className="pb-32 px-6">
+        <div className="max-w-7xl mx-auto relative rounded-[4rem] overflow-hidden bg-[#0b2b24] py-24 text-center">
+          <div className="absolute top-0 left-0 w-full h-full opacity-10">
+            <div className="absolute top-0 left-0 w-64 h-64 bg-white rounded-full -translate-x-1/2 -translate-y-1/2"></div>
+            <div className="absolute bottom-0 right-0 w-96 h-96 bg-[#d1e8c4] rounded-full translate-x-1/3 translate-y-1/3"></div>
           </div>
           
-          <div className="relative p-12 md:p-20 text-center">
-            <h2 className="text-3xl md:text-5xl font-black text-white mb-6">
-              Ready to elevate your study?
+          <div className="relative z-10 px-6">
+            <h2 className="text-4xl md:text-7xl font-serif text-white mb-8 leading-tight uppercase">
+              Ready to <span className="text-[#d1e8c4]">Elevate</span> <br />
+              Your Study?
             </h2>
-            <p className="text-indigo-100 mb-10 max-w-xl mx-auto text-lg">
-              Join NexaLearn today and experience the future of education powered by AI.
+            <p className="text-white/70 mb-12 max-w-2xl mx-auto text-lg md:text-xl font-light tracking-wide">
+              Join thousands of BCA students mastering complex concepts with NexaLearn's premium AI platform.
             </p>
             <button 
               onClick={() => navigate("/learning")}
-              className="px-10 py-5 bg-white text-indigo-600 rounded-3xl font-black text-xl hover:scale-105 active:scale-95 transition-all shadow-2xl"
+              className="px-12 py-5 bg-[#d1e8c4] text-[#0b2b24] rounded-full font-black text-lg uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-2xl"
             >
               Start For Free
             </button>
@@ -171,42 +229,44 @@ const HomePage = () => {
       </section>
 
       {/* --- FOOTER --- */}
-      <footer className="pt-24 pb-12 border-t border-slate-100 dark:border-slate-800">
+      <footer className="py-24 bg-[#fdf7e9] border-t border-[#0b2b24]/5">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-16 mb-20">
             <div className="col-span-1 md:col-span-2">
-              <div className="flex items-center space-x-2 mb-6">
-                <img src="/ChatGPT_Image_Jul_20__2025__04_55_44_PM-removebg-preview.png" alt="Logo" className="h-10 w-10 rounded-full" />
-                <span className="font-black text-2xl tracking-tighter dark:text-white">NEXALEARN</span>
+              <div className="flex items-center space-x-3 mb-8">
+                <img src="/hero1.png" alt="Logo" className="h-12 w-12 rounded-full border-2 border-[#0b2b24]" />
+                <span className="font-serif text-3xl text-[#0b2b24] tracking-tighter">E-STUDY</span>
               </div>
-              <p className="text-slate-500 dark:text-slate-400 max-w-sm mb-6">
-                Empowering BCA students with AI-driven insights and personalized learning experiences.
+              <p className="text-[#0b2b24]/60 max-w-sm mb-8 text-lg font-light leading-relaxed">
+                Empowering BCA students with AI-driven insights and a premium, high-quality learning experience.
               </p>
               <div className="flex space-x-4">
-                <a href="#" className="p-2 bg-slate-100 dark:bg-slate-800 rounded-lg hover:text-indigo-600 transition-colors dark:text-white"><Github size={20} /></a>
-                <a href="#" className="p-2 bg-slate-100 dark:bg-slate-800 rounded-lg hover:text-indigo-600 transition-colors dark:text-white"><Instagram size={20} /></a>
-                <a href="#" className="p-2 bg-slate-100 dark:bg-slate-800 rounded-lg hover:text-indigo-600 transition-colors dark:text-white"><Linkedin size={20} /></a>
+                {[Github, Instagram, Linkedin].map((Icon, i) => (
+                  <a key={i} href="#" className="w-12 h-12 flex items-center justify-center rounded-full border border-[#0b2b24]/10 text-[#0b2b24] hover:bg-[#0b2b24] hover:text-white transition-all duration-300">
+                    <Icon size={20} />
+                  </a>
+                ))}
               </div>
             </div>
             <div>
-              <h4 className="font-bold text-slate-900 dark:text-white mb-6 uppercase text-xs tracking-[0.2em]">Platform</h4>
-              <ul className="space-y-4 text-slate-500 dark:text-slate-400 text-sm font-medium">
-                <li><button onClick={() => navigate("/learning")} className="hover:text-indigo-600 transition-colors">AI Learning</button></li>
-                <li><button onClick={() => navigate("/flashcards")} className="hover:text-indigo-600 transition-colors">Flashcards</button></li>
-                <li><button onClick={() => navigate("/progress")} className="hover:text-indigo-600 transition-colors">Progress Tracker</button></li>
+              <h4 className="font-black text-[#0b2b24] mb-8 uppercase text-xs tracking-[0.3em]">Quick Links</h4>
+              <ul className="space-y-4 text-[#0b2b24]/70 text-sm font-bold uppercase tracking-widest">
+                <li><button onClick={() => navigate("/learning")} className="hover:text-[#0b2b24] transition-colors">AI Learning</button></li>
+                <li><button onClick={() => navigate("/flashcards")} className="hover:text-[#0b2b24] transition-colors">Flashcards</button></li>
+                <li><button onClick={() => navigate("/progress")} className="hover:text-[#0b2b24] transition-colors">Progress Tracker</button></li>
               </ul>
             </div>
             <div>
-              <h4 className="font-bold text-slate-900 dark:text-white mb-6 uppercase text-xs tracking-[0.2em]">Company</h4>
-              <ul className="space-y-4 text-slate-500 dark:text-slate-400 text-sm font-medium">
-                <li><a href="#" className="hover:text-indigo-600 transition-colors">About Us</a></li>
-                <li><a href="#" className="hover:text-indigo-600 transition-colors">Terms of Service</a></li>
-                <li><a href="#" className="hover:text-indigo-600 transition-colors">Privacy Policy</a></li>
+              <h4 className="font-black text-[#0b2b24] mb-8 uppercase text-xs tracking-[0.3em]">Support</h4>
+              <ul className="space-y-4 text-[#0b2b24]/70 text-sm font-bold uppercase tracking-widest">
+                <li><a href="#" className="hover:text-[#0b2b24] transition-colors">About Us</a></li>
+                <li><a href="#" className="hover:text-[#0b2b24] transition-colors">Privacy Policy</a></li>
+                <li><a href="#" className="hover:text-[#0b2b24] transition-colors">Terms of Use</a></li>
               </ul>
             </div>
           </div>
-          <div className="text-center pt-8 border-t border-slate-50 dark:border-slate-800 text-slate-400 text-xs">
-            © 2025 NexaLearn Platform. All rights reserved. Built for BCA Excellence.
+          <div className="text-center pt-12 border-t border-[#0b2b24]/10 text-[#0b2b24]/40 text-xs font-bold uppercase tracking-widest">
+            © 2025 E-STUDY Platform. All rights reserved. Premium Education for BCA.
           </div>
         </div>
       </footer>
