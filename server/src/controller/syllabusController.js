@@ -3,7 +3,7 @@ import Syllabus from '../models/Syllabus.js';
 // Fetch the complete syllabus and format it for the frontend
 export const getSyllabus = async (req, res) => {
   try {
-    let syllabus = await Syllabus.find().sort({ semester: 1 });
+    let syllabus = await Syllabus.find({ units: { $exists: true } }).sort({ semester: 1 });
     
     // Sort subjects by extracting the numeric code (e.g., 101, 102)
     syllabus = syllabus.sort((a, b) => {
