@@ -28,7 +28,7 @@ app.use(cors({
 }));
 
 // Handle Preflight (OPTIONS)
-app.options("*", cors());
+app.options(/.*/, cors());
 
 // ✅ Environment Debug (Production-Friendly)
 console.log(
