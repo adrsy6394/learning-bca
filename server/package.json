@@ -5,8 +5,10 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
+    "start": "node index.js",
     "dev": "node index.js"
   },
+
   "keywords": [],
   "author": "",
   "license": "ISC",
