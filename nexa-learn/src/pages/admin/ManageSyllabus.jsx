@@ -152,98 +152,93 @@ const ManageSyllabus = () => {
   }
 
   return (
-    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500 relative pb-20">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-500 relative pb-20">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
-          <h1 className="text-3xl font-bold text-slate-900 dark:text-white">Syllabus Manager</h1>
-          <p className="text-slate-500 dark:text-slate-400 mt-1">Organize courses by semester and manage subjects.</p>
+          <h1 className="text-4xl font-serif text-[#0b2b24] uppercase tracking-tighter">Syllabus Engine</h1>
+          <p className="text-[#0b2b24]/40 mt-2 font-black text-[10px] uppercase tracking-[0.3em]">Curriculum architecture and management</p>
         </div>
         
         <button 
           onClick={openAddModal}
-          className="flex items-center justify-center gap-2 px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold transition-all shadow-md shadow-indigo-500/30"
+          className="flex items-center justify-center gap-3 px-10 py-5 bg-[#0b2b24] text-[#d1e8c4] rounded-full font-black text-[10px] uppercase tracking-widest transition-all hover:scale-105 active:scale-95 shadow-xl"
         >
-          <Plus size={20} />
-          Add New Subject
+          <Plus size={18} />
+          Architect New Subject
         </button>
       </div>
 
-      {error && <div className="p-4 bg-red-100 text-red-700 rounded-xl">{error}</div>}
+      {error && <div className="p-6 bg-red-50 text-red-700 rounded-[2rem] border border-red-100 font-bold text-xs uppercase tracking-widest">{error}</div>}
 
-      <div className="space-y-10">
+      <div className="space-y-16">
         {sortedSemesters.map((sem) => (
-          <div key={sem} className="space-y-4">
-            <div className="flex items-center gap-4 px-2">
-              <div className="h-px flex-1 bg-slate-200 dark:bg-slate-800"></div>
-              <div className="flex items-center gap-3">
-                <h2 className="text-xl font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">
-                  Semester {sem}
-                </h2>
-                <button 
-                  onClick={() => {
-                    setEditingId(null);
-                    setFormData({ semester: sem, subjectName: "", units: [{ unitName: "", topics: "" }] });
-                    setIsModalOpen(true);
-                  }}
-                  className="p-1.5 bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-indigo-600 dark:hover:text-indigo-400 rounded-lg transition-all"
-                  title={`Add subject to Semester ${sem}`}
-                >
-                  <Plus size={16} />
-                </button>
-              </div>
-              <div className="h-px flex-1 bg-slate-200 dark:bg-slate-800"></div>
+          <div key={sem} className="space-y-6">
+            <div className="flex items-center gap-6">
+              <h2 className="text-2xl font-serif text-[#0b2b24] uppercase tracking-[0.2em] whitespace-nowrap">
+                Semester {sem}
+              </h2>
+              <div className="h-px flex-1 bg-[#0b2b24]/10"></div>
+              <button 
+                onClick={() => {
+                  setEditingId(null);
+                  setFormData({ semester: sem, subjectName: "", units: [{ unitName: "", topics: "" }] });
+                  setIsModalOpen(true);
+                }}
+                className="w-10 h-10 bg-[#0b2b24] text-[#d1e8c4] rounded-full flex items-center justify-center hover:scale-110 transition-transform shadow-lg"
+                title={`Add subject to Semester ${sem}`}
+              >
+                <Plus size={16} />
+              </button>
             </div>
 
-            <div className="grid grid-cols-1 gap-4">
+            <div className="grid grid-cols-1 gap-6">
               {groupedSyllabus[sem].map((module) => (
-                <div key={module._id} className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 overflow-hidden transition-all">
+                <div key={module._id} className="bg-white rounded-[2.5rem] shadow-xl border border-[#0b2b24]/5 overflow-hidden transition-all duration-500">
                   <div 
-                    className="flex items-center justify-between p-6 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50"
+                    className={`flex items-center justify-between p-8 cursor-pointer transition-colors ${expandedModule === module._id ? "bg-[#fdf7e9]/50" : "hover:bg-[#fdf7e9]/30"}`}
                     onClick={() => setExpandedModule(expandedModule === module._id ? null : module._id)}
                   >
                     <div>
-                      <h3 className="text-xl font-bold text-slate-900 dark:text-white">{module.subjectName}</h3>
-                      <p className="text-slate-500 dark:text-slate-400 mt-1 font-medium">{module.units?.length || 0} Units in this subject</p>
+                      <h3 className="text-xl font-bold text-[#0b2b24]">{module.subjectName}</h3>
+                      <p className="text-[10px] font-black text-[#0b2b24]/30 uppercase tracking-[0.2em] mt-2">{module.units?.length || 0} Modules Integrated</p>
                     </div>
                     <div className="flex items-center gap-4">
                       <div className="flex gap-2" onClick={(e) => e.stopPropagation()}>
                         <button 
                           onClick={() => openEditModal(module)}
-                          className="p-2 text-indigo-600 hover:bg-indigo-50 dark:text-indigo-400 dark:hover:bg-indigo-900/30 rounded-lg transition-colors"
+                          className="p-3 bg-[#fdf7e9] text-[#0b2b24] hover:bg-[#0b2b24] hover:text-white rounded-xl transition-all"
                         >
-                          <Edit2 size={18} />
+                          <Edit2 size={16} />
                         </button>
                         <button 
                           onClick={() => handleDelete(module._id, `Semester ${module.semester} - ${module.subjectName}`)}
-                          className="p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg transition-colors"
+                          className="p-3 bg-red-50 text-red-500 hover:bg-red-500 hover:text-white rounded-xl transition-all"
                         >
-                          <Trash2 size={18} />
+                          <Trash2 size={16} />
                         </button>
                       </div>
-                      <div className="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500">
-                        {expandedModule === module._id ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                      <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${expandedModule === module._id ? "bg-[#0b2b24] text-[#d1e8c4] rotate-180" : "bg-[#fdf7e9] text-[#0b2b24]"}`}>
+                        <ChevronDown size={20} />
                       </div>
                     </div>
                   </div>
 
                   {expandedModule === module._id && (
-                    <div className="p-6 pt-0 border-t border-slate-100 dark:border-slate-800 animate-in slide-in-from-top-2 duration-300">
-                      <div className="space-y-4 mt-6">
+                    <div className="p-8 pt-0 animate-in slide-in-from-top-4 duration-500">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
                         {module.units?.map((unit, index) => (
-                          <div key={index} className="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700">
-                            <h4 className="font-bold text-slate-800 dark:text-slate-200 mb-2">{unit.unitName}</h4>
+                          <div key={index} className="p-8 bg-[#fdf7e9] rounded-[2rem] border border-[#0b2b24]/5 relative overflow-hidden group">
+                            <div className="absolute top-0 right-0 w-24 h-24 bg-[#0b2b24]/5 rounded-full translate-x-1/2 -translate-y-1/2"></div>
+                            <h4 className="font-bold text-[#0b2b24] mb-4 text-lg">{unit.unitName}</h4>
                             <div className="flex flex-wrap gap-2">
                               {unit.topics?.map((topic, i) => (
-                                <span key={i} className="px-3 py-1 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-sm text-slate-600 dark:text-slate-400 shadow-sm">
+                                <span key={i} className="px-4 py-1.5 bg-white text-[#0b2b24] text-[10px] font-black rounded-full border border-[#0b2b24]/5 uppercase tracking-widest shadow-sm">
                                   {topic}
                                 </span>
                               ))}
                             </div>
                           </div>
                         ))}
-                        {(!module.units || module.units.length === 0) && (
-                          <p className="text-slate-500 italic">No units defined for this subject.</p>
-                        )}
                       </div>
                     </div>
                   )}
@@ -254,117 +249,114 @@ const ManageSyllabus = () => {
         ))}
 
         {syllabus.length === 0 && !loading && (
-          <div className="text-center py-12 bg-white dark:bg-slate-900 rounded-2xl border border-dashed border-slate-300 dark:border-slate-700">
-            <p className="text-slate-500 dark:text-slate-400">No syllabus modules found. Click "Add Module" to create one.</p>
+          <div className="text-center py-24 bg-white rounded-[3rem] border border-dashed border-[#0b2b24]/20">
+            <p className="text-[10px] font-black text-[#0b2b24]/20 uppercase tracking-[0.3em]">No curriculum data detected. Architect a new subject to begin.</p>
           </div>
         )}
       </div>
 
       {/* --- ADD/EDIT MODAL --- */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-100 dark:border-slate-800 w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-[#0b2b24]/60 backdrop-blur-md animate-in fade-in duration-500">
+          <div className="bg-[#fdf7e9] rounded-[3rem] shadow-2xl border border-white/20 w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden animate-in zoom-in-95 duration-500">
             
             {/* Modal Header */}
-            <div className="flex items-center justify-between p-6 border-b border-slate-100 dark:border-slate-800">
-              <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
-                {editingId ? "Edit Module" : "Add New Module"}
+            <div className="flex items-center justify-between p-10 border-b border-[#0b2b24]/5 bg-white/50">
+              <h2 className="text-3xl font-serif text-[#0b2b24] uppercase tracking-tighter">
+                {editingId ? "Modify Architecture" : "New Curriculum"}
               </h2>
               <button 
                 onClick={closeModal}
-                className="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors"
+                className="w-10 h-10 flex items-center justify-center bg-white rounded-full text-[#0b2b24]/30 hover:text-red-500 transition-all shadow-sm"
               >
                 <X size={20} />
               </button>
             </div>
 
             {/* Modal Body */}
-            <div className="p-6 overflow-y-auto flex-1 custom-scrollbar">
-              <form id="syllabus-form" onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="p-10 overflow-y-auto flex-1 custom-scrollbar">
+              <form id="syllabus-form" onSubmit={handleSubmit} className="space-y-10">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <label className="text-sm font-bold text-slate-700 dark:text-slate-300">Semester</label>
+                    <label className="text-[10px] font-black text-[#0b2b24]/40 uppercase tracking-widest ml-4">Target Semester</label>
                     <input 
                       type="number" 
                       required
                       placeholder="e.g. 1"
                       value={formData.semester}
                       onChange={(e) => setFormData({...formData, semester: e.target.value})}
-                      className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all dark:text-white"
+                      className="w-full px-6 py-4 bg-white border border-[#0b2b24]/5 rounded-full focus:ring-2 focus:ring-[#d1e8c4] outline-none text-[#0b2b24] font-bold transition-all"
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-sm font-bold text-slate-700 dark:text-slate-300">Subject Name</label>
+                    <label className="text-[10px] font-black text-[#0b2b24]/40 uppercase tracking-widest ml-4">Subject Identity</label>
                     <input 
                       type="text" 
                       required
                       placeholder="e.g. Mathematics"
                       value={formData.subjectName}
                       onChange={(e) => setFormData({...formData, subjectName: e.target.value})}
-                      className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all dark:text-white"
+                      className="w-full px-6 py-4 bg-white border border-[#0b2b24]/5 rounded-full focus:ring-2 focus:ring-[#d1e8c4] outline-none text-[#0b2b24] font-bold transition-all"
                     />
                   </div>
                 </div>
 
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <label className="text-sm font-bold text-slate-700 dark:text-slate-300">Units</label>
+                <div className="space-y-6">
+                  <div className="flex items-center justify-between px-4">
+                    <label className="text-[10px] font-black text-[#0b2b24] uppercase tracking-widest">Learning Modules</label>
                     <button 
                       type="button" 
                       onClick={handleAddUnit}
-                      className="text-sm font-bold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 flex items-center gap-1"
+                      className="text-[10px] font-black text-[#0b2b24]/60 hover:text-[#0b2b24] flex items-center gap-2 uppercase tracking-widest"
                     >
-                      <Plus size={16} /> Add Unit
+                      <Plus size={16} /> Add Module
                     </button>
                   </div>
                   
                   {formData.units.map((unit, index) => (
-                    <div key={index} className="p-4 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl relative group">
+                    <div key={index} className="p-8 bg-white border border-[#0b2b24]/5 rounded-[2rem] relative group shadow-sm">
                       <button 
                         type="button"
                         onClick={() => handleRemoveUnit(index)}
-                        className="absolute top-4 right-4 p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg transition-colors opacity-0 group-hover:opacity-100"
-                        title="Remove Unit"
+                        className="absolute top-6 right-6 w-8 h-8 flex items-center justify-center bg-red-50 text-red-500 rounded-full opacity-0 group-hover:opacity-100 transition-all hover:bg-red-500 hover:text-white"
+                        title="Remove Module"
                       >
-                        <Trash2 size={16} />
+                        <Trash2 size={14} />
                       </button>
-                      <div className="space-y-4 pr-8">
+                      <div className="space-y-6">
                         <div>
                           <input 
                             type="text" 
                             required
-                            placeholder={`Unit ${index + 1} Title`}
+                            placeholder={`Module ${index + 1} Title`}
                             value={unit.unitName}
                             onChange={(e) => handleUnitChange(index, "unitName", e.target.value)}
-                            className="w-full px-3 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none text-sm dark:text-white"
+                            className="w-full px-6 py-3 bg-[#fdf7e9]/50 border border-[#0b2b24]/5 rounded-full focus:ring-2 focus:ring-[#d1e8c4] outline-none text-sm font-bold text-[#0b2b24]"
                           />
                         </div>
                         <div>
                           <textarea 
                             required
-                            placeholder="Comma separated topics (e.g. Algebra, Calculus, Geometry)"
+                            placeholder="Comma separated topics (Algebra, Calculus, ...)"
                             rows="2"
                             value={unit.topics}
                             onChange={(e) => handleUnitChange(index, "topics", e.target.value)}
-                            className="w-full px-3 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none text-sm dark:text-white resize-none"
+                            className="w-full px-6 py-4 bg-[#fdf7e9]/50 border border-[#0b2b24]/5 rounded-[1.5rem] focus:ring-2 focus:ring-[#d1e8c4] outline-none text-sm font-medium text-[#0b2b24] resize-none"
                           ></textarea>
                         </div>
                       </div>
                     </div>
                   ))}
-                  {formData.units.length === 0 && (
-                    <p className="text-sm text-slate-500 italic">No units added. Add at least one unit.</p>
-                  )}
                 </div>
               </form>
             </div>
 
             {/* Modal Footer */}
-            <div className="p-6 border-t border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/30 flex justify-end gap-3">
+            <div className="p-10 border-t border-[#0b2b24]/5 bg-white/30 flex justify-end gap-4">
               <button 
                 type="button"
                 onClick={closeModal}
-                className="px-5 py-2.5 rounded-xl font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+                className="px-8 py-4 bg-white text-[#0b2b24]/40 rounded-full font-black text-[10px] uppercase tracking-widest hover:bg-white/80 transition-all shadow-sm"
               >
                 Cancel
               </button>
@@ -372,14 +364,14 @@ const ManageSyllabus = () => {
                 type="submit"
                 form="syllabus-form"
                 disabled={formLoading || formData.units.length === 0}
-                className="flex items-center gap-2 px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white rounded-xl font-bold transition-all shadow-md shadow-indigo-500/30"
+                className="flex items-center gap-3 px-10 py-4 bg-[#0b2b24] text-[#d1e8c4] rounded-full font-black text-[10px] uppercase tracking-widest hover:scale-105 transition-all shadow-xl disabled:opacity-50"
               >
                 {formLoading ? (
-                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                  <div className="w-5 h-5 border-2 border-[#d1e8c4]/30 border-t-[#d1e8c4] rounded-full animate-spin"></div>
                 ) : (
                   <Save size={18} />
                 )}
-                {editingId ? "Save Changes" : "Create Module"}
+                {editingId ? "Deploy Changes" : "Deploy Module"}
               </button>
             </div>
           </div>

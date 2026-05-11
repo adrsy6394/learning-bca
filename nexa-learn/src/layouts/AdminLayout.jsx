@@ -25,31 +25,32 @@ const AdminLayout = () => {
   const closeSidebar = () => setSidebarOpen(false);
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-[#0b0f1a] flex overflow-hidden font-sans text-slate-800 dark:text-slate-200">
+    <div className="min-h-screen bg-[#fdf7e9] flex overflow-hidden font-sans">
+      
       {/* Mobile Sidebar Overlay */}
       {sidebarOpen && (
         <div 
-          className="fixed inset-0 bg-black/50 z-40 lg:hidden backdrop-blur-sm"
+          className="fixed inset-0 bg-[#0b2b24]/60 z-40 lg:hidden backdrop-blur-md"
           onClick={closeSidebar}
         />
       )}
 
       {/* Sidebar */}
       <aside 
-        className={`fixed lg:static inset-y-0 left-0 z-50 w-64 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 transform ${
+        className={`fixed lg:static inset-y-0 left-0 z-50 w-72 bg-[#0b2b24] transform ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
-        } lg:translate-x-0 transition-transform duration-300 ease-in-out flex flex-col`}
+        } lg:translate-x-0 transition-transform duration-500 ease-in-out flex flex-col shadow-2xl`}
       >
-        <div className="p-6 flex items-center justify-between">
-          <Link to="/admin" className="text-2xl font-black bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-            Admin Panel
+        <div className="p-10 flex items-center justify-between">
+          <Link to="/admin" className="font-serif text-2xl text-white uppercase tracking-widest">
+            ADMIN <span className="text-[#d1e8c4]">HUB</span>
           </Link>
-          <button onClick={closeSidebar} className="lg:hidden text-slate-500 hover:text-slate-800 dark:hover:text-white">
+          <button onClick={closeSidebar} className="lg:hidden text-white/50 hover:text-white">
             <X size={24} />
           </button>
         </div>
 
-        <nav className="flex-1 px-4 space-y-2 mt-4">
+        <nav className="flex-1 px-6 space-y-4 mt-4">
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive = location.pathname === item.path || (item.path !== '/admin' && location.pathname.startsWith(item.path));
@@ -58,33 +59,33 @@ const AdminLayout = () => {
                 key={item.name}
                 to={item.path}
                 onClick={closeSidebar}
-                className={`flex items-center px-4 py-3 rounded-xl transition-all font-medium ${
+                className={`flex items-center px-6 py-4 rounded-full transition-all text-xs font-black uppercase tracking-widest ${
                   isActive 
-                    ? "bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400" 
-                    : "text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"
+                    ? "bg-[#d1e8c4] text-[#0b2b24] shadow-xl" 
+                    : "text-white/60 hover:text-white hover:bg-white/5"
                 }`}
               >
-                <Icon className={`w-5 h-5 mr-3 ${isActive ? "text-indigo-600 dark:text-indigo-400" : ""}`} />
+                <Icon className={`w-4 h-4 mr-4 ${isActive ? "text-[#0b2b24]" : "text-white/40"}`} />
                 {item.name}
               </Link>
             );
           })}
         </nav>
 
-        <div className="p-4 border-t border-slate-200 dark:border-slate-800 space-y-2">
+        <div className="p-8 border-t border-white/5 space-y-4">
           <Link
             to="/"
-            className="flex items-center px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-all font-medium"
+            className="flex items-center px-6 py-4 text-white/40 hover:text-white hover:bg-white/5 rounded-full transition-all text-[10px] font-black uppercase tracking-widest"
           >
-            <Home className="w-5 h-5 mr-3" />
-            Back to App
+            <Home className="w-4 h-4 mr-4" />
+            Live Platform
           </Link>
           <button
             onClick={signOut}
-            className="w-full flex items-center px-4 py-3 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl transition-all font-medium"
+            className="w-full flex items-center px-6 py-4 text-red-400 hover:bg-red-500 hover:text-white rounded-full transition-all text-[10px] font-black uppercase tracking-widest"
           >
-            <LogOut className="w-5 h-5 mr-3" />
-            Sign Out
+            <LogOut className="w-4 h-4 mr-4" />
+            Logout
           </button>
         </div>
       </aside>
@@ -92,15 +93,15 @@ const AdminLayout = () => {
       {/* Main Content */}
       <main className="flex-1 flex flex-col h-screen overflow-hidden">
         {/* Mobile Header */}
-        <header className="lg:hidden bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 p-4 flex items-center">
-          <button onClick={() => setSidebarOpen(true)} className="p-2 mr-4 text-slate-600 dark:text-slate-400">
+        <header className="lg:hidden bg-[#0b2b24] p-6 flex items-center shadow-lg">
+          <button onClick={() => setSidebarOpen(true)} className="p-2 mr-4 text-white">
             <Menu size={24} />
           </button>
-          <h1 className="text-lg font-bold">Admin Panel</h1>
+          <h1 className="text-white font-serif uppercase tracking-widest">Admin Hub</h1>
         </header>
 
         {/* Content Area */}
-        <div className="flex-1 overflow-auto p-4 md:p-8 bg-slate-50 dark:bg-slate-950">
+        <div className="flex-1 overflow-auto p-6 md:p-12">
           <Outlet />
         </div>
       </main>

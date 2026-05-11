@@ -75,36 +75,37 @@ const AdminDashboard = () => {
   ];
 
   return (
-    <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+    <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-500">
       <div>
-        <h1 className="text-3xl font-bold text-slate-900 dark:text-white">Overview</h1>
-        <p className="text-slate-500 dark:text-slate-400 mt-1">Welcome to the NexaLearn Admin Dashboard.</p>
+        <h1 className="text-4xl font-serif text-[#0b2b24] uppercase tracking-tighter">System Overview</h1>
+        <p className="text-[#0b2b24]/40 mt-2 font-black text-[10px] uppercase tracking-[0.3em]">Welcome to the E-STUDY Command Center</p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
         {statCards.map((stat, index) => {
           const Icon = stat.icon;
           return (
             <div 
               key={index} 
-              className="bg-white dark:bg-slate-900 rounded-2xl p-6 shadow-sm border border-slate-100 dark:border-slate-800 flex items-center"
+              className="bg-white rounded-[2rem] p-8 shadow-xl border border-[#0b2b24]/5 hover:-translate-y-1 transition-all duration-300"
             >
-              <div className={`p-4 rounded-xl ${stat.bgLight} mr-4`}>
-                <Icon className={`w-8 h-8 ${stat.color.replace('bg-', 'text-')}`} />
+              <div className="w-14 h-14 rounded-2xl bg-[#fdf7e9] border border-[#d1e8c4] flex items-center justify-center text-[#0b2b24] mb-6">
+                <Icon size={28} />
               </div>
               <div>
-                <p className="text-sm font-medium text-slate-500 dark:text-slate-400">{stat.title}</p>
-                <h3 className="text-3xl font-black text-slate-800 dark:text-white mt-1">{stat.value}</h3>
+                <p className="text-[10px] font-black text-[#0b2b24]/40 uppercase tracking-widest mb-1">{stat.title}</p>
+                <h3 className="text-4xl font-serif text-[#0b2b24]">{stat.value}</h3>
               </div>
             </div>
           );
         })}
       </div>
       
-      <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 shadow-sm border border-slate-100 dark:border-slate-800 mt-8">
-        <h3 className="text-xl font-bold mb-2 text-slate-800 dark:text-white">Admin System Ready</h3>
-        <p className="text-sm text-slate-500 dark:text-slate-400">
-          The NexaLearn management system is fully functional. You can manage users and syllabus modules using the sidebar.
+      <div className="bg-[#0b2b24] rounded-[3rem] p-10 md:p-16 text-white shadow-2xl relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full translate-x-1/3 -translate-y-1/3"></div>
+        <h3 className="text-3xl font-serif mb-6 uppercase tracking-widest text-[#d1e8c4]">Management Status</h3>
+        <p className="text-white/60 text-lg font-light leading-relaxed max-w-2xl">
+          The NexaLearn administrative ecosystem is synchronized. All student data and syllabus modules are under active management. Use the premium sidebar for deep configuration.
         </p>
       </div>
     </div>
