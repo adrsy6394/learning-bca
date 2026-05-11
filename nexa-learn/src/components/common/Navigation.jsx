@@ -73,7 +73,7 @@ const Navigation = () => {
               className="flex items-center space-x-3 cursor-pointer group"
             >
               <img
-                src="/hero1.png" 
+                src="/image.png" 
                 alt="Logo"
                 className="h-10 w-10 rounded-full object-cover border-2 border-[#d1e8c4]"
               />
