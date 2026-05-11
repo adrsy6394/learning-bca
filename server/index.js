@@ -12,7 +12,8 @@ import syllabusRoutes from "./src/routes/syllabusRoutes.js";
 import adminRoutes from "./src/routes/adminRoutes.js";
 import connectDB from "./src/config/db.js";
 
-connectDB().then(() => console.log("Database connected successfully"));
+// Move DB connection to happen after middleware setup or in the background
+// connectDB().then(() => console.log("Database connected successfully"));
 
 const app = express();
 
@@ -78,6 +79,9 @@ if (process.env.NODE_ENV !== "production") {
     console.log(`🚀 Server running at http://localhost:${PORT}`);
   });
 }
+
+// ✅ Start DB connection in background
+connectDB().then(() => console.log("Database connected successfully")).catch(err => console.error("DB connection error:", err));
 
 // ✅ Export for Vercel Serverless
 export default app;
