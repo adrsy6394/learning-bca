@@ -1,4 +1,4 @@
-# 🎓 NexaLearn: Full-Stack AI Learning Assistant
+# 🎓 NexaLearn: AI-Driven BCA Learning Assistant (Updated)
 ### *Empowering BCA Students with AI-Driven Education*
 
 [![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org/)
