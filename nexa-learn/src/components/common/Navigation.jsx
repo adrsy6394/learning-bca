@@ -109,7 +109,7 @@ const Navigation = () => {
                 <button
                   key={link.path}
                   onClick={() => navigate(link.path)}
-                  className={`text-[10px] font-black uppercase tracking-[0.2em] transition-all relative group ${
+                  className={`text-[10px] font-black uppercase tracking-[0.2em] transition-all relative group outline-none focus:outline-none ${
                     location.pathname === link.path
                       ? "text-[#d1e8c4]"
                       : "text-white/70 hover:text-white"
@@ -122,7 +122,7 @@ const Navigation = () => {
 
               {/* AI DROPDOWN */}
               <div className="relative group/ai">
-                <button className="flex items-center space-x-2 text-[10px] font-black uppercase tracking-[0.2em] text-white/70 hover:text-white transition-all">
+                <button className="flex items-center space-x-2 text-[10px] font-black uppercase tracking-[0.2em] text-white/70 hover:text-white transition-all outline-none focus:outline-none">
                   <span>AI Capabilities</span>
                   <ChevronDown size={14} className="group-hover/ai:rotate-180 transition-transform duration-300" />
                 </button>
@@ -151,14 +151,14 @@ const Navigation = () => {
               {isLoggedIn ? (
                 <button
                   onClick={handleLogout}
-                  className="text-white/70 hover:text-white transition-colors"
+                  className="text-white/70 hover:text-white transition-colors outline-none focus:outline-none"
                 >
                   <LogOut size={20} />
                 </button>
               ) : (
                 <button
                   onClick={() => navigate("/login")}
-                  className="px-6 py-2 bg-[#d1e8c4] text-[#0b2b24] rounded-full font-bold text-xs uppercase tracking-widest hover:scale-105 transition-all"
+                  className="px-6 py-2 bg-[#d1e8c4] text-[#0b2b24] rounded-full font-bold text-xs uppercase tracking-widest hover:scale-105 transition-all outline-none focus:outline-none"
                 >
                   Join Us
                 </button>
@@ -167,7 +167,7 @@ const Navigation = () => {
               {/* Mobile Toggle */}
               <button 
                 onClick={() => setIsOpen(!isOpen)}
-                className="md:hidden text-white"
+                className="md:hidden text-white outline-none focus:outline-none"
               >
                 {isOpen ? <X size={24} /> : <Menu size={24} />}
               </button>
