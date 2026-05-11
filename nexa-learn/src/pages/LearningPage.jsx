@@ -56,10 +56,9 @@ const LearningPage = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            selectedSubject,
-            selectedTopic,
-            customTopic,
-            language,
+            subject: selectedSubject,
+            topic: topic,
+            language: language,
           }),
         },
       );
@@ -70,7 +69,7 @@ const LearningPage = () => {
         throw new Error(data.message || "Failed to generate explanation");
       }
 
-      setExplanation(data.reply || "No explanation generated");
+      setExplanation(data.explanation || data.reply || "No explanation generated");
     } catch (error) {
       console.error("Frontend Error 👉", error);
       setExplanation("⚠️ Failed to generate explanation. Please try again.");
