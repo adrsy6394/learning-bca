@@ -17,19 +17,7 @@ connectDB().then(() => console.log("Database connected successfully"));
 const app = express();
 
 // 1. ✅ STANDARD CORS
-app.use(cors({
-  origin: function(origin, callback) {
-    // Allow any Vercel domain for now to debug
-    if (!origin || origin.endsWith(".vercel.app") || origin.includes("localhost")) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  credentials: true,
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
-  allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept", "Origin"]
-}));
+app.use(cors({ origin: "*" }));
 
 // ✅ Environment Debug (Production-Friendly)
 console.log(
