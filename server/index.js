@@ -16,8 +16,19 @@ connectDB().then(() => console.log("Database connected successfully"));
 
 const app = express();
 
-// 1. ✅ STANDARD CORS
-app.use(cors({ origin: "*" }));
+// 1. ✅ DYNAMIC CORS (Better for Vercel & Credentials)
+app.use(cors({
+  origin: function (origin, callback) {
+    // Allow all origins (Reflects the origin in response)
+    callback(null, true);
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
+  allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept", "Origin"]
+}));
+
+// Handle Preflight (OPTIONS)
+app.options("*", cors());
 
 // ✅ Environment Debug (Production-Friendly)
 console.log(
