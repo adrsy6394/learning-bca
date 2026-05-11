@@ -67,7 +67,7 @@ Use bullet points where helpful.
       }
 
       const data = await response.json();
-      console.log("OpenRouter RAW 👉", data);
+      // console.log("OpenRouter RAW 👉", data);
 
       const reply = data?.choices?.[0]?.message?.content;
 

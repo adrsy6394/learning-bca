@@ -31,10 +31,6 @@ app.use(cors({
   allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept", "Origin"]
 }));
 
-app.options("*", (req, res) => {
-  res.status(200).end();
-});
-
 // ✅ Environment Debug (Production-Friendly)
 console.log(
   "OPENROUTER KEY 👉",

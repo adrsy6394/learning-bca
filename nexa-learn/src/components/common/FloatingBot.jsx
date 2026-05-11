@@ -1,11 +1,13 @@
 import React, { useState, useRef, useEffect } from "react";
 import { MessageSquare, Send, X, Bot, Loader2 } from "lucide-react";
 import axios from "axios";
+import { useAuth } from "../../context/AuthContext";
 
 const FloatingBot = () => {
+  const { user } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
-    { role: "assistant", content: "Hello! I'm Nexa AI. How can I help you with the platform or your syllabus today?" }
+    { role: "assistant", content: "Hello! I'm Nexa AI. How can I help you with the platform, your syllabus, or your academic performance today?" }
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -29,12 +31,17 @@ const FloatingBot = () => {
     setLoading(true);
 
     try {
+      const config = user?.token 
+        ? { headers: { Authorization: `Bearer ${user.token}` } } 
+        : {};
+
       const { data } = await axios.post(`${API_URL}/api/v2/chatbot/query`, {
         message: userMsg
-      });
+      }, config);
 
       setMessages(prev => [...prev, { role: "assistant", content: data.reply }]);
     } catch (error) {
+      console.error("Chat Error:", error);
       setMessages(prev => [...prev, { role: "assistant", content: "Sorry, I'm having trouble connecting right now." }]);
     } finally {
       setLoading(false);

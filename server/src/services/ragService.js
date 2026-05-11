@@ -17,7 +17,6 @@ class RAGService {
     try {
       // If you don't have an OpenAI key, you can use a free HuggingFace model
       // or a local transformer library.
-      console.log("Generating embedding for text...");
       
       // Placeholder: Return a mock vector if no key is found
       // Real implementation would be:
@@ -39,35 +38,46 @@ class RAGService {
   }
 
   /**
-   * Performs a vector search in MongoDB Atlas
+   * Performs a search in Knowledge Base (Vector Search + Text Fallback)
    */
   async searchKnowledge(queryText) {
     try {
-      const queryVector = await this.generateEmbedding(queryText);
+      let results = [];
 
-      // Perform Vector Search using MongoDB Aggregate
-      const results = await Knowledge.aggregate([
-        {
-          $vectorSearch: {
-            index: "vector_index", // This name must match the Atlas index name
-            path: "embedding",
-            queryVector: queryVector,
-            numCandidates: 100,
-            limit: 5,
-          },
-        },
-        {
-          $project: {
-            content: 1,
-            score: { $meta: "vectorSearchScore" },
-            metadata: 1
-          }
+      // 1. Try Vector Search if possible
+      try {
+        const queryVector = await this.generateEmbedding(queryText);
+        // Only attempt vector search if the vector is not just zeros
+        if (queryVector.some(v => v !== 0)) {
+          results = await Knowledge.aggregate([
+            {
+              $vectorSearch: {
+                index: "vector_index",
+                path: "embedding",
+                queryVector: queryVector,
+                numCandidates: 100,
+                limit: 5,
+              },
+            },
+          ]);
         }
-      ]);
+      } catch (vectorError) {
+        console.warn("Vector Search Failed, falling back to text search...");
+      }
+
+      // 2. Fallback: Keyword Search (Regex) if no vector results
+      if (!results || results.length === 0) {
+        const keywords = queryText.split(" ").filter(w => w.length > 2);
+        const regexQuery = keywords.map(k => ({ content: { $regex: k, $options: "i" } }));
+        
+        if (regexQuery.length > 0) {
+          results = await Knowledge.find({ $or: regexQuery }).limit(5);
+        }
+      }
 
       return results.map(r => r.content).join("\n\n");
     } catch (error) {
-      console.error("Vector Search Error:", error);
+      console.error("Search Error:", error);
       return ""; // Fallback to no context
     }
   }

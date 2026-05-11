@@ -96,7 +96,6 @@ export const getUserProfile = async (req, res) => {
         progress: user.progress,
         role: user.role,
       };
-      console.log("SENDING PROFILE:", responseData);
       res.json(responseData);
     } else {
       res.status(404).json({ message: "User not found" });

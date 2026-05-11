@@ -2,7 +2,7 @@ import User from "../models/User.js";
 // Re-touch for Vercel deployment sync
 import Syllabus from "../models/Syllabus.js";
 import ragService from "../services/ragService.js";
-import AcademicRecord from "../models/AcademicRecord.js";
+import AcademicRecord from "../models/academicRecord.js";
 
 // @desc    Get Admin Dashboard Stats
 // @route   GET /api/v2/admin/stats
