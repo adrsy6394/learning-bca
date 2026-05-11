@@ -16,16 +16,20 @@ connectDB().then(() => console.log("Database connected successfully"));
 
 const app = express();
 
-// 1. ✅ DYNAMIC CORS (Better for Vercel & Credentials)
-app.use(cors({
-  origin: function (origin, callback) {
-    // Allow all origins (Reflects the origin in response)
-    callback(null, true);
-  },
-  credentials: true,
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
-  allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept", "Origin"]
-}));
+// 1. ✅ MANUAL CORS HEADERS (Fix for Vercel Preflight)
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  res.header("Access-Control-Allow-Origin", origin);
+  res.header("Access-Control-Allow-Credentials", "true");
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, PATCH");
+  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With, Accept, Origin");
+
+  // Handle Preflight
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(200);
+  }
+  next();
+});
 
 // ✅ Environment Debug (Production-Friendly)
 console.log(
