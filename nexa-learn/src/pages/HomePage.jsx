@@ -79,8 +79,8 @@ const HomePage = () => {
 
         <div className="max-w-7xl mx-auto px-6 text-center relative z-10">
           <h1 className="text-5xl md:text-8xl font-serif text-white tracking-tight leading-tight mb-12 uppercase">
-            GETTING <span className="text-[#d1e8c4]">BEST QUALITY</span> <br />
-            EDUCATION
+            EMPOWERING <span className="text-[#d1e8c4]">BCA STUDENTS</span> <br />
+            WITH AI LEARNING
           </h1>
 
           <div className="flex justify-center mb-20">
