@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 
 import { AuthContext } from "../context/AuthContext";
+import Footer from "../components/common/Footer";
 import { FlashcardMode } from "../components/features/FlashcardMode";
 
 const FlashcardsPage = () => {
@@ -226,11 +227,7 @@ const FlashcardsPage = () => {
       </div>
 
       {/* FOOTER */}
-      <footer className="py-20 bg-[#0b2b24] text-white/40 text-center">
-         <div className="max-w-7xl mx-auto px-6 border-t border-white/5 pt-10">
-            <p className="text-xs font-black uppercase tracking-[0.3em]">© 2025 E-STUDY Platform • Premium Education</p>
-         </div>
-      </footer>
+      <Footer />
     </div>
   );
 };

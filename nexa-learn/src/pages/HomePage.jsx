@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { AuthContext } from "@/context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import Footer from "../components/common/Footer";
 
 const HomePage = () => {
   const { user } = useContext(AuthContext);
@@ -229,47 +230,7 @@ const HomePage = () => {
       </section>
 
       {/* --- FOOTER --- */}
-      <footer className="py-24 bg-[#fdf7e9] border-t border-[#0b2b24]/5">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-16 mb-20">
-            <div className="col-span-1 md:col-span-2">
-              <div className="flex items-center space-x-3 mb-8">
-                <img src="/hero1.png" alt="Logo" className="h-12 w-12 rounded-full border-2 border-[#0b2b24]" />
-                <span className="font-serif text-3xl text-[#0b2b24] tracking-tighter">E-STUDY</span>
-              </div>
-              <p className="text-[#0b2b24]/60 max-w-sm mb-8 text-lg font-light leading-relaxed">
-                Empowering BCA students with AI-driven insights and a premium, high-quality learning experience.
-              </p>
-              <div className="flex space-x-4">
-                {[Github, Instagram, Linkedin].map((Icon, i) => (
-                  <a key={i} href="#" className="w-12 h-12 flex items-center justify-center rounded-full border border-[#0b2b24]/10 text-[#0b2b24] hover:bg-[#0b2b24] hover:text-white transition-all duration-300">
-                    <Icon size={20} />
-                  </a>
-                ))}
-              </div>
-            </div>
-            <div>
-              <h4 className="font-black text-[#0b2b24] mb-8 uppercase text-xs tracking-[0.3em]">Quick Links</h4>
-              <ul className="space-y-4 text-[#0b2b24]/70 text-sm font-bold uppercase tracking-widest">
-                <li><button onClick={() => navigate("/learning")} className="hover:text-[#0b2b24] transition-colors">AI Learning</button></li>
-                <li><button onClick={() => navigate("/flashcards")} className="hover:text-[#0b2b24] transition-colors">Flashcards</button></li>
-                <li><button onClick={() => navigate("/progress")} className="hover:text-[#0b2b24] transition-colors">Progress Tracker</button></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-black text-[#0b2b24] mb-8 uppercase text-xs tracking-[0.3em]">Support</h4>
-              <ul className="space-y-4 text-[#0b2b24]/70 text-sm font-bold uppercase tracking-widest">
-                <li><a href="#" className="hover:text-[#0b2b24] transition-colors">About Us</a></li>
-                <li><a href="#" className="hover:text-[#0b2b24] transition-colors">Privacy Policy</a></li>
-                <li><a href="#" className="hover:text-[#0b2b24] transition-colors">Terms of Use</a></li>
-              </ul>
-            </div>
-          </div>
-          <div className="text-center pt-12 border-t border-[#0b2b24]/10 text-[#0b2b24]/40 text-xs font-bold uppercase tracking-widest">
-            © 2025 E-STUDY Platform. All rights reserved. Premium Education for BCA.
-          </div>
-        </div>
-      </footer>
+      <Footer />
 
       {/* Global CSS for animations */}
       <style>{`

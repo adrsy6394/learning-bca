@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
+import Footer from "../components/common/Footer";
 import { Plus, Trash2, Brain, Loader2, Sparkles } from "lucide-react";
 
 const PerformanceAnalyzer = () => {
@@ -211,11 +212,7 @@ const PerformanceAnalyzer = () => {
       </div>
 
       {/* FOOTER */}
-      <footer className="py-20 bg-[#0b2b24] text-white/40 text-center mt-20">
-         <div className="max-w-7xl mx-auto px-6 border-t border-white/5 pt-10">
-            <p className="text-xs font-black uppercase tracking-[0.3em]">© 2025 E-STUDY Platform • Premium Education</p>
-         </div>
-      </footer>
+      <Footer />
 
       <style>{`
         .custom-scrollbar::-webkit-scrollbar { width: 4px; }

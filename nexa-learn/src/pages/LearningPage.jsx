@@ -3,6 +3,7 @@
 import React, { useState, useContext } from "react";
 import { Brain, Play, Pause, FileText } from "lucide-react";
 import { AuthContext } from "../context/AuthContext";
+import Footer from "../components/common/Footer";
 
 import TopicInput from "../components/features/TopicInput";
 import LanguageToggle from "../components/common/LanguageToggle";
@@ -210,6 +211,7 @@ ${explanation}
           )}
         </div>
       </div>
+      <Footer />
     </div>
   );
 };
