@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 
 import { AuthContext } from "../context/AuthContext";
 import Footer from "../components/common/Footer";
+import { FileText } from "lucide-react";
 import { FlashcardMode } from "../components/features/FlashcardMode";
 
 const FlashcardsPage = () => {
