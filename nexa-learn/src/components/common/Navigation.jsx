@@ -75,12 +75,15 @@ const Navigation = () => {
   const isLoggedIn = !!user?._id;
   const displayName = user?.full_name || "User";
 
+  const isHomePage = location.pathname === "/";
+  const shouldShowSolid = !isHomePage || scrolled;
+
   return (
     <>
-      <nav className={`fixed w-full top-0 left-0 z-[100] transition-all duration-500 ${scrolled ? "py-4" : "py-8"}`}>
+      <nav className={`fixed w-full top-0 left-0 z-[100] transition-all duration-500 ${shouldShowSolid ? "py-4" : "py-8"}`}>
         <div className="max-w-7xl mx-auto px-6">
           <div className={`transition-all duration-500 border rounded-full px-8 py-4 flex justify-between items-center shadow-2xl ${
-            scrolled 
+            shouldShowSolid 
               ? "bg-[#0b2b24] border-[#d1e8c4]/20" 
               : "bg-white/10 backdrop-blur-md border-white/10"
           }`}>
