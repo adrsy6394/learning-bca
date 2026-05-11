@@ -8,7 +8,7 @@ const router = express.Router();
 // ✅ Standard Explanation
 router.post("/explain", explainTopic);
 
-// ✅ RAG-based Query (Knowledge about website + User Context)
+// ✅ Simple AI Chatbot
 router.post("/query", protect, chatWithContext);
 
 export const Apirouter = router;
