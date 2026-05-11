@@ -10,10 +10,10 @@ export const getDashboardStats = async (req, res) => {
   try {
     const totalUsers = await User.countDocuments();
     const totalAdmins = await User.countDocuments({ role: "admin" });
-    const totalSyllabusModules = await Syllabus.countDocuments();
+    const totalSyllabusModules = await Syllabus.countDocuments({ units: { $exists: true } });
 
     // Calculate total topics across all syllabus modules
-    const allSyllabus = await Syllabus.find();
+    const allSyllabus = await Syllabus.find({ units: { $exists: true } });
     let totalTopics = 0;
     allSyllabus.forEach(module => {
       if (module.units) {
@@ -116,7 +116,7 @@ export const updateUserRole = async (req, res) => {
 // @access  Private/Admin
 export const getAllSyllabus = async (req, res) => {
   try {
-    const syllabus = await Syllabus.find({}).sort({ semester: 1 });
+    const syllabus = await Syllabus.find({ units: { $exists: true } }).sort({ semester: 1 });
     res.json({ success: true, data: syllabus });
   } catch (error) {
     res.status(500).json({ message: "Failed to fetch syllabus" });

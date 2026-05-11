@@ -1,3 +1,5 @@
+import ragService from "../services/ragService.js";
+
 // ✅ 1. Explain Topic (Standard LLM call)
 export const explainTopic = async (req, res) => {
   try {
@@ -42,7 +44,7 @@ Explain this topic in ${language} using simple and student-friendly language wit
   }
 };
 
-// ✅ 2. Simple Chat (Without RAG/Context)
+// ✅ 2. Chat with RAG Context
 export const chatWithContext = async (req, res) => {
   try {
     const { message } = req.body;
@@ -51,6 +53,31 @@ export const chatWithContext = async (req, res) => {
       return res.status(400).json({ success: false, message: "Message is required" });
     }
 
+    // 1. Fetch Context using Vector Search
+    console.log("🔍 Searching vector database for context...");
+    const contextResults = await ragService.searchContext(message);
+    const contextText = contextResults.length > 0 
+      ? contextResults.map(c => `- ${c.text} (Semester: ${c.semester}, Subject: ${c.subjectName})`).join("\n")
+      : "No specific syllabus context found.";
+
+    console.log("📄 Context Found:", contextResults.length, "items");
+
+    // 2. Prepare System Prompt with Context
+    const systemPrompt = `
+You are NexaLearn AI, a helpful academic assistant for BCA students.
+Use the following syllabus context to answer the user's question. 
+If the context isn't relevant, answer based on your general knowledge but prioritize syllabus topics.
+
+Syllabus Context:
+${contextText}
+
+Instructions:
+1. Be concise and professional.
+2. If asked about a topic in the syllabus, provide detailed information.
+3. If the user asks for a study plan or resources, use the context to guide them.
+    `.trim();
+
+    // 3. Call LLM via OpenRouter
     const response = await fetch(
       "https://openrouter.ai/api/v1/chat/completions",
       {
@@ -64,7 +91,7 @@ export const chatWithContext = async (req, res) => {
         body: JSON.stringify({
           model: "google/gemini-2.0-flash-001",
           messages: [
-            { role: "system", content: "You are NexaLearn AI, a helpful academic assistant. Answer user questions clearly and professionally." },
+            { role: "system", content: systemPrompt },
             { role: "user", content: message }
           ],
         }),
@@ -77,6 +104,7 @@ export const chatWithContext = async (req, res) => {
     return res.status(200).json({
       success: true,
       reply: reply || "I'm sorry, I couldn't generate a response.",
+      contextUsed: contextResults.length > 0
     });
 
   } catch (error) {
