@@ -228,15 +228,33 @@ export const executeCode = async (req, res) => {
   try {
     const { language, version, code } = req.body;
     
-    const response = await axios.post("https://emkc.org/api/v2/piston/execute", {
-      language,
-      version,
-      files: [{ content: code }],
+    const response = await fetch("https://emkc.org/api/v2/piston/execute", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        language,
+        version,
+        files: [
+          {
+            name: `main.${language === "javascript" ? "js" : language === "python" ? "py" : language}`,
+            content: code,
+          },
+        ],
+      }),
     });
 
-    res.status(200).json(response.data);
+    const data = await response.json();
+
+    if (!response.ok) {
+      console.error("Piston API Error:", data);
+      return res.status(response.status).json({ success: false, message: data.message || "Execution engine error" });
+    }
+
+    res.status(200).json(data);
   } catch (error) {
-    console.error("Code Execution Error:", error.response?.data || error.message);
+    console.error("Code Execution Error:", error.message);
     res.status(500).json({ success: false, message: "Execution engine is currently busy. Please try again." });
   }
 };
