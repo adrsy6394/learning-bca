@@ -73,7 +73,7 @@ class RagService {
     return { created: totalChunksCreated, skipped: totalChunksSkipped };
   }
 
-  async searchContext(query, limit = 5) {
+  async searchContext(query, limit = 15) {
     try {
       const queryEmbedding = await embeddingService.generateEmbedding(query);
 
@@ -83,7 +83,7 @@ class RagService {
             index: "vector_index",
             path: "embedding",
             queryVector: queryEmbedding,
-            numCandidates: 100,
+            numCandidates: 200,
             limit: limit
           }
         },
