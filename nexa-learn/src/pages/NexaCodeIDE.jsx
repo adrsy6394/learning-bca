@@ -21,11 +21,11 @@ const NexaCodeIDE = () => {
   const [aiLoading, setAiLoading] = useState(false);
 
   const languages = [
-    { id: "python", name: "Python", version: "3.10.0", defaultCode: "print('Hello, NexaLearn!')" },
-    { id: "javascript", name: "JavaScript", version: "18.15.0", defaultCode: "console.log('Hello, NexaLearn!');" },
-    { id: "c", name: "C", version: "10.2.0", defaultCode: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello, NexaLearn!\\n\");\n    return 0;\n}" },
-    { id: "cpp", name: "C++", version: "10.2.0", defaultCode: "#include <iostream>\n\nint main() {\n    std::cout << \"Hello, NexaLearn!\" << std::endl;\n    return 0;\n}" },
-    { id: "java", name: "Java", version: "15.0.2", defaultCode: "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Hello, NexaLearn!\");\n    }\n}" },
+    { id: "python", jid: 71, name: "Python", defaultCode: "print('Hello, NexaLearn!')" },
+    { id: "javascript", jid: 93, name: "JavaScript", defaultCode: "console.log('Hello, NexaLearn!');" },
+    { id: "c", jid: 50, name: "C", defaultCode: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello, NexaLearn!\\n\");\n    return 0;\n}" },
+    { id: "cpp", jid: 54, name: "C++", defaultCode: "#include <iostream>\n\nint main() {\n    std::cout << \"Hello, NexaLearn!\" << std::endl;\n    return 0;\n}" },
+    { id: "java", jid: 62, name: "Java", defaultCode: "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Hello, NexaLearn!\");\n    }\n}" },
   ];
 
   const handleLanguageChange = (langId) => {
@@ -44,8 +44,7 @@ const NexaCodeIDE = () => {
     try {
       const langData = languages.find(l => l.id === language);
       const { data } = await axios.post(`${API_URL}/api/v2/ai/execute-code`, {
-        language: langData.id,
-        version: langData.version,
+        languageId: langData.jid,
         code: code,
       }, {
         headers: { Authorization: `Bearer ${user.token}` }

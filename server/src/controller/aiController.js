@@ -221,38 +221,44 @@ export const generateFlashcardAnswer = async (req, res) => {
   }
 };
 
-// @desc    Execute code via Piston API (Backend Proxy)
+// @desc    Execute code via Judge0 API (Backend Proxy)
 // @route   POST /api/v2/ai/execute-code
 // @access  Private
 export const executeCode = async (req, res) => {
   try {
-    const { language, version, code } = req.body;
+    const { languageId, code } = req.body;
     
-    const response = await fetch("https://emkc.org/api/v2/piston/execute", {
+    // Using Judge0 Public Instance (One-shot execution)
+    const response = await fetch("https://ce.judge0.com/submissions?wait=true", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        language,
-        version,
-        files: [
-          {
-            name: `main.${language === "javascript" ? "js" : language === "python" ? "py" : language}`,
-            content: code,
-          },
-        ],
+        source_code: code,
+        language_id: languageId,
+        stdin: "",
       }),
     });
 
     const data = await response.json();
 
     if (!response.ok) {
-      console.error("Piston API Error:", data);
-      return res.status(response.status).json({ success: false, message: data.message || "Execution engine error" });
+      console.error("Judge0 API Error:", data);
+      return res.status(response.status).json({ success: false, message: "Execution engine error" });
     }
 
-    res.status(200).json(data);
+    // Judge0 response format mapping to match frontend expectation
+    // stdout, stderr, compile_output, status
+    const result = {
+      run: {
+        stdout: data.stdout || "",
+        stderr: (data.stderr || "") + (data.compile_output || ""),
+        output: data.stdout || data.stderr || data.compile_output || "Program executed successfully.",
+      }
+    };
+
+    res.status(200).json(result);
   } catch (error) {
     console.error("Code Execution Error:", error.message);
     res.status(500).json({ success: false, message: "Execution engine is currently busy. Please try again." });
