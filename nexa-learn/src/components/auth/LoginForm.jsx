@@ -75,82 +75,90 @@ const LoginForm = () => {
   });
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white dark:bg-[#0B1C2D] p-4 font-sans text-slate-800 dark:text-slate-200 relative overflow-hidden">
-      {/* Background glowing orbs */}
-      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-indigo-500/20 dark:bg-indigo-600/20 blur-[100px] pointer-events-none"></div>
-      <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-purple-500/20 dark:bg-purple-600/20 blur-[100px] pointer-events-none"></div>
+    <div className="min-h-screen flex items-center justify-center bg-[#fdf7e9] p-4 font-sans text-[#0b2b24] relative overflow-hidden">
+      {/* Background organic shapes */}
+      <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-[#d1e8c4]/20 blur-[120px] pointer-events-none animate-pulse"></div>
+      <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-[#0b2b24]/5 blur-[120px] pointer-events-none"></div>
 
       <form
         onSubmit={handleSubmit}
-        className="relative bg-white/80 dark:bg-slate-800/60 backdrop-blur-xl p-10 rounded-[2.5rem] shadow-2xl border border-slate-100 dark:border-slate-700/50 w-full max-w-md space-y-6 transition-all duration-500"
+        className="relative bg-white p-10 md:p-14 rounded-[3rem] shadow-[0_20px_50px_rgba(11,43,36,0.1)] border border-[#0b2b24]/5 w-full max-w-md space-y-8 transition-all duration-500"
       >
-        <div className="text-center space-y-2">
-          <h2 className="text-4xl font-black bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">Welcome back</h2>
-          <p className="text-slate-500 dark:text-slate-400 font-medium">Please enter your details to sign in.</p>
+        <div className="text-center space-y-4">
+          <div className="inline-block px-4 py-1.5 bg-[#d1e8c4] text-[#0b2b24] rounded-full text-[10px] font-black uppercase tracking-[0.2em] mb-2">
+            Welcome Back
+          </div>
+          <h2 className="text-4xl md:text-5xl font-serif text-[#0b2b24] tracking-tighter">
+            Sign <span className="italic text-[#0b2b24]/60">In</span>
+          </h2>
+          <p className="text-[#0b2b24]/40 font-light text-sm tracking-wide">Enter your details to access your learning hub.</p>
         </div>
 
         {error && (
-          <p className="text-red-500 text-sm text-center">{error}</p>
+          <div className="bg-red-50 text-red-600 p-4 rounded-2xl text-xs text-center border border-red-100 font-bold uppercase tracking-widest">
+            {error}
+          </div>
         )}
 
-        <div className="space-y-4">
-          <input
-            type="email"
-            required
-            placeholder="Email address"
-            value={form.email}
-            onChange={(e) => setForm({ ...form, email: e.target.value })}
-            className="w-full px-5 py-4 rounded-2xl bg-slate-50 dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 focus:border-indigo-500 dark:focus:border-indigo-500 focus:bg-white dark:focus:bg-slate-800 text-slate-900 dark:text-white outline-none transition-all duration-300 shadow-inner dark:shadow-slate-950/50 placeholder-slate-400 font-medium"
-          />
+        <div className="space-y-5">
+          <div className="space-y-2">
+            <label className="text-[10px] font-black uppercase tracking-[0.2em] text-[#0b2b24]/40 ml-4">Email Address</label>
+            <input
+              type="email"
+              required
+              placeholder="name@example.com"
+              value={form.email}
+              onChange={(e) => setForm({ ...form, email: e.target.value })}
+              className="w-full px-8 py-5 rounded-full bg-[#fdf7e9]/50 border border-[#0b2b24]/5 focus:border-[#d1e8c4] focus:bg-white text-[#0b2b24] outline-none transition-all duration-300 font-bold placeholder-[#0b2b24]/20 text-sm"
+            />
+          </div>
 
-          <input
-            type="password"
-            required
-            placeholder="Password"
-            value={form.password}
-            onChange={(e) => setForm({ ...form, password: e.target.value })}
-            className="w-full px-5 py-4 rounded-2xl bg-slate-50 dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 focus:border-indigo-500 dark:focus:border-indigo-500 focus:bg-white dark:focus:bg-slate-800 text-slate-900 dark:text-white outline-none transition-all duration-300 shadow-inner dark:shadow-slate-950/50 placeholder-slate-400 font-medium"
-          />
+          <div className="space-y-2">
+            <label className="text-[10px] font-black uppercase tracking-[0.2em] text-[#0b2b24]/40 ml-4">Password</label>
+            <input
+              type="password"
+              required
+              placeholder="••••••••"
+              value={form.password}
+              onChange={(e) => setForm({ ...form, password: e.target.value })}
+              className="w-full px-8 py-5 rounded-full bg-[#fdf7e9]/50 border border-[#0b2b24]/5 focus:border-[#d1e8c4] focus:bg-white text-[#0b2b24] outline-none transition-all duration-300 font-bold placeholder-[#0b2b24]/20 text-sm"
+            />
+          </div>
         </div>
 
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white py-4 rounded-2xl font-bold text-lg transition-all hover:scale-[1.02] active:scale-[0.98] shadow-xl shadow-indigo-500/30 disabled:opacity-50 disabled:hover:scale-100"
+          className="w-full bg-[#0b2b24] text-[#d1e8c4] py-5 rounded-full font-black text-sm uppercase tracking-[0.3em] transition-all hover:scale-[1.02] active:scale-[0.98] shadow-2xl shadow-[#0b2b24]/20 disabled:opacity-50"
         >
-          {loading ? (
-            <span className="flex items-center justify-center">
-              <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-              Logging in...
-            </span>
-          ) : "Sign In"}
+          {loading ? "⏳ Authenticating..." : "Enter Hub"}
         </button>
 
-        <div className="relative">
+        <div className="relative py-4">
           <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-slate-200 dark:border-slate-700"></div>
+            <div className="w-full border-t border-[#0b2b24]/5"></div>
           </div>
-          <div className="relative flex justify-center text-sm">
-            <span className="px-2 bg-white dark:bg-slate-800 text-slate-500">Or continue with</span>
+          <div className="relative flex justify-center text-[10px] font-black uppercase tracking-widest">
+            <span className="px-4 bg-white text-[#0b2b24]/20">Or</span>
           </div>
         </div>
 
         <button
           type="button"
           onClick={handleGoogleLogin}
-          className="flex items-center justify-center w-full bg-slate-50 dark:bg-slate-800/80 border-2 border-slate-200 dark:border-slate-700 text-slate-800 dark:text-white py-4 rounded-2xl font-bold transition-all hover:bg-white dark:hover:bg-slate-700 hover:border-indigo-500 hover:shadow-lg active:scale-[0.98]"
+          className="flex items-center justify-center w-full bg-[#fdf7e9]/50 border border-[#0b2b24]/5 text-[#0b2b24] py-5 rounded-full font-black text-[10px] uppercase tracking-widest transition-all hover:bg-white hover:border-[#d1e8c4] hover:shadow-xl active:scale-[0.98]"
         >
-          <FcGoogle className="mr-3 text-2xl" />
+          <FcGoogle className="mr-3 text-xl" />
           Google Account
         </button>
 
-        <p className="text-center font-medium text-slate-500 dark:text-slate-400 mt-6">
-          Don't have an account?{" "}
+        <p className="text-center font-bold text-[10px] uppercase tracking-widest text-[#0b2b24]/40 mt-8">
+          New to NexaLearn?{" "}
           <Link
             to="/signup"
-            className="text-indigo-600 dark:text-indigo-400 font-bold hover:underline"
+            className="text-[#0b2b24] underline decoration-[#d1e8c4] decoration-2 underline-offset-4"
           >
-            Create one
+            Create Account
           </Link>
         </p>
       </form>
