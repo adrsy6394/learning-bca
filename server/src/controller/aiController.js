@@ -20,7 +20,11 @@ export const analyzeCustomPerformance = async (req, res) => {
       2. A 1-week study strategy for these subjects.
       3. Specific resources (YouTube/Google) to improve.
 
-      IMPORTANT: Return ONLY a valid JSON object.
+      IMPORTANT: Return ONLY a valid JSON object. 
+      For "youtube" and "google" links, use search query URLs to ensure they work.
+      YouTube format: https://www.youtube.com/results?search_query=BCA+[Subject]+[Topic]+tutorial
+      Google format: https://www.google.com/search?q=BCA+[Subject]+[Topic]+notes+pdf
+      
       Structure:
       {
         "weaknesses": ["Subject 1", "Subject 2"],
@@ -83,7 +87,10 @@ export const analyzePerformance = async (req, res) => {
       3. A short encouraging feedback message.
 
       IMPORTANT: Return ONLY a valid JSON object. Do not include any preamble or explanation.
-      
+      For "youtube" and "google" links, use search query URLs to ensure they work.
+      YouTube format: https://www.youtube.com/results?search_query=BCA+[Subject]+[Topic]+tutorial
+      Google format: https://www.google.com/search?q=BCA+[Subject]+[Topic]+notes+pdf
+
       Structure:
       {
         "weaknesses": ["Subject Name 1", "Subject Name 2", "Subject Name 3"],
