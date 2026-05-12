@@ -1,4 +1,5 @@
 import User from "../models/User.js";
+import axios from "axios";
 
 // @desc    Analyze custom performance based on user-provided marks
 // @route   POST /api/v2/ai/analyze-custom
@@ -72,7 +73,6 @@ export const analyzePerformance = async (req, res) => {
 
     const progress = user.progress || {};
     
-    // Check if OpenRouter key exists
     if (!process.env.OPENROUTER_API_KEY) {
       return res.status(500).json({ success: false, message: "OpenRouter API Key missing" });
     }
@@ -117,13 +117,9 @@ export const analyzePerformance = async (req, res) => {
 
     const data = await response.json();
     let content = data.choices[0].message.content;
-    
-    // Clean markdown if present
     content = content.replace(/```json|```/g, "").trim();
     
     const result = JSON.parse(content);
-
-    // Save weaknesses to user profile
     user.weaknesses = result.weaknesses;
     await user.save();
 
@@ -170,12 +166,9 @@ export const generateStudyPlan = async (req, res) => {
 
     const data = await response.json();
     let content = data.choices[0].message.content;
-    
-    // Clean markdown if present
     content = content.replace(/```json|```/g, "").trim();
     
     const plan = JSON.parse(content);
-
     user.studyPlan = plan;
     await user.save();
 
@@ -199,14 +192,12 @@ export const generateFlashcardAnswer = async (req, res) => {
     const prompt = `
       You are an expert tutor for a BCA (Bachelor of Computer Applications) student in Semester ${semester || "unknown"}.
       The student is studying the subject: "${subject}".
-      
       Explain the following topic in a way that is perfect for a flashcard: "${topic}".
-      
       Rules:
       1. Be extremely concise but comprehensive.
       2. Use bullet points for readability.
       3. Keep it under 100 words.
-      4. Use Markdown formatting (bolding important terms).
+      4. Use Markdown formatting.
     `;
 
     const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
@@ -226,7 +217,70 @@ export const generateFlashcardAnswer = async (req, res) => {
 
     res.status(200).json({ success: true, answer });
   } catch (error) {
-    console.error("Error generating flashcard answer:", error);
     res.status(500).json({ success: false, message: "Failed to generate answer" });
+  }
+};
+
+// @desc    Execute code via Piston API (Backend Proxy)
+// @route   POST /api/v2/ai/execute-code
+// @access  Private
+export const executeCode = async (req, res) => {
+  try {
+    const { language, version, code } = req.body;
+    
+    const response = await axios.post("https://emkc.org/api/v2/piston/execute", {
+      language,
+      version,
+      files: [{ content: code }],
+    });
+
+    res.status(200).json(response.data);
+  } catch (error) {
+    console.error("Code Execution Error:", error.response?.data || error.message);
+    res.status(500).json({ success: false, message: "Execution engine is currently busy. Please try again." });
+  }
+};
+
+// @desc    Explain code and find bugs via Gemini
+// @route   POST /api/v2/ai/explain-code
+// @access  Private
+export const explainCode = async (req, res) => {
+  try {
+    const { code, language } = req.body;
+
+    const prompt = `
+      You are an expert AI Programming Tutor. 
+      Language: ${language}
+      Code:
+      \`\`\`${language}
+      ${code}
+      \`\`\`
+
+      Tasks:
+      1. Explain what this code does in simple terms.
+      2. Identify any syntax or logical bugs.
+      3. Suggest improvements for better performance or readability.
+
+      Format: Use clean Markdown with headings and bullet points. Keep it professional.
+    `;
+
+    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`,
+      },
+      body: JSON.stringify({
+        model: "google/gemini-2.0-flash-001",
+        messages: [{ role: "user", content: prompt }],
+      }),
+    });
+
+    const data = await response.json();
+    const explanation = data.choices[0].message.content;
+
+    res.status(200).json({ success: true, explanation });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Failed to connect to AI Tutor." });
   }
 };

@@ -1,15 +1,24 @@
 import React, { useState, useRef } from "react";
 import Editor from "@monaco-editor/react";
+import { useAuth } from "../context/AuthContext";
+import MarkdownRenderer from "../components/features/MarkdownRenderer";
 import axios from "axios";
-import { Play, RotateCcw, Save, Sparkles, Terminal, Code2, ChevronRight, Loader2 } from "lucide-react";
+import { Play, RotateCcw, Save, Sparkles, Terminal, Code2, ChevronRight, Loader2, X } from "lucide-react";
 import Footer from "../components/common/Footer";
 
 const NexaCodeIDE = () => {
+  const { user } = useAuth();
+  const API_URL = import.meta.env.VITE_MAIN_URL || "http://localhost:5000";
+  
   const [language, setLanguage] = useState("python");
   const [code, setCode] = useState("# Welcome to NexaCode IDE\nprint('Hello, NexaLearn!')");
   const [output, setOutput] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  const [aiExplanation, setAiExplanation] = useState("");
+  const [showAiModal, setShowAiModal] = useState(false);
+  const [aiLoading, setAiLoading] = useState(false);
 
   const languages = [
     { id: "python", name: "Python", version: "3.10.0", defaultCode: "print('Hello, NexaLearn!')" },
@@ -34,22 +43,44 @@ const NexaCodeIDE = () => {
     
     try {
       const langData = languages.find(l => l.id === language);
-      const response = await axios.post("https://emkc.org/api/v2/piston/execute", {
+      const { data } = await axios.post(`${API_URL}/api/v2/ai/execute-code`, {
         language: langData.id,
         version: langData.version,
-        files: [{ content: code }],
+        code: code,
+      }, {
+        headers: { Authorization: `Bearer ${user.token}` }
       });
 
-      const { run } = response.data;
-      if (run.stderr) {
-        setError(run.stderr);
+      if (data.run.stderr) {
+        setError(data.run.stderr);
       } else {
-        setOutput(run.output || "Program executed successfully (no output).");
+        setOutput(data.run.output || "Program executed successfully (no output).");
       }
     } catch (err) {
-      setError("Execution failed. Please check your internet connection or try again.");
+      setError(err.response?.data?.message || "Execution engine is busy. Please try again.");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const askAi = async () => {
+    if (!code.trim()) return;
+    setAiLoading(true);
+    setShowAiModal(true);
+    setAiExplanation("");
+    
+    try {
+      const { data } = await axios.post(`${API_URL}/api/v2/ai/explain-code`, {
+        code,
+        language
+      }, {
+        headers: { Authorization: `Bearer ${user.token}` }
+      });
+      setAiExplanation(data.explanation);
+    } catch (err) {
+      setAiExplanation("Sorry, I couldn't connect to the AI Tutor. Please try again later.");
+    } finally {
+      setAiLoading(false);
     }
   };
 
@@ -97,7 +128,11 @@ const NexaCodeIDE = () => {
              <Sparkles className="mx-auto mb-4 opacity-50" size={32} />
              <h4 className="font-serif text-lg mb-2">AI Assistant</h4>
              <p className="text-[10px] font-light opacity-60 leading-relaxed mb-6 uppercase tracking-wider">Get help with your code logic and debugging instantly.</p>
-             <button className="w-full py-3 bg-[#d1e8c4] text-[#0b2b24] rounded-full text-[10px] font-black uppercase tracking-widest hover:scale-105 transition-all">Ask Nexa AI</button>
+             <button 
+                onClick={askAi}
+                className="w-full py-3 bg-[#d1e8c4] text-[#0b2b24] rounded-full text-[10px] font-black uppercase tracking-widest hover:scale-105 transition-all">
+                Ask Nexa AI
+             </button>
           </div>
         </div>
 
@@ -192,6 +227,48 @@ const NexaCodeIDE = () => {
 
         </div>
       </div>
+
+      {/* AI ASSISTANT MODAL */}
+      {showAiModal && (
+        <div className="fixed inset-0 z-[300] flex items-center justify-center p-6 bg-[#0b2b24]/80 backdrop-blur-md animate-in fade-in duration-300">
+          <div className="bg-white w-full max-w-2xl max-h-[80vh] rounded-[3rem] shadow-2xl flex flex-col overflow-hidden animate-in zoom-in-95 duration-300">
+            {/* Header */}
+            <div className="p-8 bg-[#0b2b24] text-[#d1e8c4] flex justify-between items-center">
+               <div className="flex items-center gap-3">
+                 <Sparkles size={24} />
+                 <h3 className="font-serif text-xl">NexaCode AI Tutor</h3>
+               </div>
+               <button onClick={() => setShowAiModal(false)} className="p-2 hover:bg-white/10 rounded-full transition-all">
+                 <X size={20} />
+               </button>
+            </div>
+            
+            {/* Content */}
+            <div className="flex-1 overflow-y-auto p-8 custom-scrollbar">
+               {aiLoading ? (
+                 <div className="flex flex-col items-center justify-center py-20 space-y-4">
+                    <Loader2 size={40} className="animate-spin text-[#0b2b24]/20" />
+                    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#0b2b24]/40">Nexa AI is thinking...</p>
+                 </div>
+               ) : (
+                 <div className="prose max-w-none">
+                    <MarkdownRenderer content={aiExplanation} />
+                 </div>
+               )}
+            </div>
+
+            {/* Footer */}
+            <div className="p-6 bg-[#fdf7e9] border-t border-[#0b2b24]/5 flex justify-end">
+               <button 
+                 onClick={() => setShowAiModal(false)}
+                 className="px-8 py-3 bg-[#0b2b24] text-[#d1e8c4] rounded-full font-black text-[10px] uppercase tracking-widest hover:scale-105 transition-all shadow-lg"
+               >
+                 Close Assistant
+               </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* FOOTER */}
       <Footer />
