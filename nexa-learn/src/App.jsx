@@ -12,6 +12,7 @@ import LearningPage from "./pages/LearningPage";
 import FlashcardsPage from "./pages/FlashcardsPage";
 import ProgressPage from "./pages/ProgressPage";
 import PerformanceAnalyzer from "./pages/PerformanceAnalyzer";
+import NexaCodeIDE from "./pages/NexaCodeIDE";
 
 // Admin Imports
 import AdminRoute from "./components/auth/AdminRoute";
@@ -123,6 +124,18 @@ const App = () => {
               <>
                 <Navigation />
                 <PerformanceAnalyzer />
+              </>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/ide"
+          element={
+            <ProtectedRoute>
+              <>
+                <Navigation />
+                <NexaCodeIDE />
               </>
             </ProtectedRoute>
           }

@@ -70,6 +70,7 @@ const Navigation = () => {
   const aiTools = [
     { name: "Learn (AI Tutor)", path: "/learning", icon: <Sparkles size={16} /> },
     { name: "Performance Analyzer", path: "/analyzer", icon: <ClipboardCheck size={16} /> },
+    { name: "NexaCode IDE", path: "/ide", icon: <Code2 size={16} /> },
   ];
 
   const isLoggedIn = !!user?._id;
