@@ -1,3 +1,7 @@
+import React, { useState, useRef, useEffect } from "react";
+import { MessageSquare, Send, X, Bot } from "lucide-react";
+import axios from "axios";
+import { useAuth } from "../../context/AuthContext";
 import MarkdownRenderer from "../features/MarkdownRenderer";
 
 const FloatingBot = () => {
