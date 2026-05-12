@@ -2,7 +2,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import { AuthContext } from "@/context/AuthContext";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Menu, X, Sun, Moon, ChevronDown, Sparkles, ClipboardCheck, LogOut, User as UserIcon } from "lucide-react";
+import { Menu, X, Sun, Moon, ChevronDown, Sparkles, ClipboardCheck, LogOut, User as UserIcon, Code2 } from "lucide-react";
 
 const Navigation = () => {
   const { user, signOut } = useContext(AuthContext);
