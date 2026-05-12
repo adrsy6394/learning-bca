@@ -21,8 +21,12 @@ The platform is divided into a student-facing learning dashboard and a powerful 
 
 ### 👨‍🎓 Student Features
 - **🤖 AI Explanation (Learning Page)**: Get instant, contextual explanations for any BCA topic in English, Hindi, or Hinglish.
+- **💻 NexaCode IDE**: A fully integrated, multi-language online code editor (C, C++, Java, Python, JS) powered by **Judge0**.
+- **🤖 AI Programming Tutor**: "Ask Nexa AI" within the IDE for instant code debugging, explanation, and logic optimization.
 - **🧠 Smart Flashcards**: Dynamically generated cards based on the official syllabus. Track your mastery with "Mark as Learned".
 - **📈 Progress Analytics**: Visual indicators of subject-wise and unit-wise completion percentages.
+- **💬 Premium AI Chatbot**: Re-designed RAG-based assistant with forest-green aesthetic and advanced markdown rendering.
+- **📊 Performance Analyzer**: AI-driven performance insights with verified resource links (YouTube/Google).
 - **🔊 Text-to-Speech**: Listen to AI explanations on the go with built-in TTS support.
 - **📄 Export to Text**: Save your learning sessions as `.txt` files for offline revision.
 
@@ -44,11 +48,12 @@ The platform is divided into a student-facing learning dashboard and a powerful 
 
 | Layer | Technologies |
 |---|---|
-| **Frontend** | React 18, Vite, Tailwind CSS, Lucide Icons, Framer Motion |
+| **Frontend** | React 18, Vite, Tailwind CSS, Monaco Editor, Lucide Icons, Framer Motion |
 | **Backend** | Node.js, Express.js |
 | **Database** | MongoDB Atlas (Mongoose ODM) |
+| **Execution Engine** | Judge0 API (for NexaCode IDE) |
 | **Authentication** | JWT (JSON Web Tokens), BCrypt.js, Google OAuth |
-| **AI Integration** | OpenRouter API (Gemini/GPT Models) |
+| **AI Integration** | OpenRouter API (Gemini 2.0 Flash, GPT Models) |
 | **Deployment** | Vercel (Frontend & Serverless Backend) |
 
 ---
