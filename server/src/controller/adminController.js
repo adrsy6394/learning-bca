@@ -1,7 +1,5 @@
 import User from "../models/User.js";
-// Re-touch for Vercel deployment sync
 import Syllabus from "../models/Syllabus.js";
-import AcademicRecord from "../models/academicRecord.js";
 
 // @desc    Get Admin Dashboard Stats
 // @route   GET /api/v2/admin/stats
@@ -10,10 +8,10 @@ export const getDashboardStats = async (req, res) => {
   try {
     const totalUsers = await User.countDocuments();
     const totalAdmins = await User.countDocuments({ role: "admin" });
-    const totalSyllabusModules = await Syllabus.countDocuments({ units: { $exists: true } });
+    const totalSyllabusModules = await Syllabus.countDocuments();
 
     // Calculate total topics across all syllabus modules
-    const allSyllabus = await Syllabus.find({ units: { $exists: true } });
+    const allSyllabus = await Syllabus.find({});
     let totalTopics = 0;
     allSyllabus.forEach(module => {
       if (module.units) {
@@ -36,7 +34,7 @@ export const getDashboardStats = async (req, res) => {
     });
   } catch (error) {
     console.error("Admin Stats Error:", error);
-    res.status(500).json({ message: "Failed to fetch admin stats" });
+    res.status(500).json({ success: false, message: "Failed to fetch admin stats" });
   }
 };
 
@@ -48,7 +46,7 @@ export const getAllUsers = async (req, res) => {
     const users = await User.find({}).select("-password");
     res.json({ success: true, users });
   } catch (error) {
-    res.status(500).json({ message: "Failed to fetch users" });
+    res.status(500).json({ success: false, message: "Failed to fetch users" });
   }
 };
 
@@ -61,16 +59,16 @@ export const deleteUser = async (req, res) => {
 
     if (user) {
       if (user.role === "admin" && req.user._id.toString() !== user._id.toString()) {
-        return res.status(403).json({ message: "Cannot delete another admin" });
+        return res.status(403).json({ success: false, message: "Cannot delete another admin" });
       }
       
       await User.deleteOne({ _id: user._id });
       res.json({ success: true, message: "User removed" });
     } else {
-      res.status(404).json({ message: "User not found" });
+      res.status(404).json({ success: false, message: "User not found" });
     }
   } catch (error) {
-    res.status(500).json({ message: "Failed to delete user" });
+    res.status(500).json({ success: false, message: "Failed to delete user" });
   }
 };
 
@@ -81,15 +79,14 @@ export const updateUserRole = async (req, res) => {
   try {
     const { role } = req.body;
     if (!["student", "admin"].includes(role)) {
-      return res.status(400).json({ message: "Invalid role" });
+      return res.status(400).json({ success: false, message: "Invalid role" });
     }
 
     const user = await User.findById(req.params.id);
 
     if (user) {
-      // Prevent self-demotion to avoid locking out the only admin
       if (req.user._id.toString() === user._id.toString() && role !== "admin") {
-         return res.status(403).json({ message: "You cannot demote yourself" });
+         return res.status(403).json({ success: false, message: "You cannot demote yourself" });
       }
 
       user.role = role;
@@ -104,10 +101,10 @@ export const updateUserRole = async (req, res) => {
         } 
       });
     } else {
-      res.status(404).json({ message: "User not found" });
+      res.status(404).json({ success: false, message: "User not found" });
     }
   } catch (error) {
-    res.status(500).json({ message: "Failed to update role" });
+    res.status(500).json({ success: false, message: "Failed to update role" });
   }
 };
 
@@ -116,10 +113,10 @@ export const updateUserRole = async (req, res) => {
 // @access  Private/Admin
 export const getAllSyllabus = async (req, res) => {
   try {
-    const syllabus = await Syllabus.find({ units: { $exists: true } }).sort({ semester: 1 });
+    const syllabus = await Syllabus.find({}).sort({ semester: 1 });
     res.json({ success: true, data: syllabus });
   } catch (error) {
-    res.status(500).json({ message: "Failed to fetch syllabus" });
+    res.status(500).json({ success: false, message: "Failed to fetch syllabus" });
   }
 };
 
@@ -132,7 +129,7 @@ export const createSyllabus = async (req, res) => {
     res.status(201).json({ success: true, syllabus: newSyllabus });
   } catch (error) {
     console.error("Create Syllabus Error:", error);
-    res.status(500).json({ message: error.message || "Failed to create syllabus module" });
+    res.status(500).json({ success: false, message: error.message || "Failed to create syllabus module" });
   }
 };
 
@@ -150,11 +147,11 @@ export const updateSyllabus = async (req, res) => {
     if (updatedSyllabus) {
       res.json({ success: true, syllabus: updatedSyllabus });
     } else {
-      res.status(404).json({ message: "Syllabus module not found" });
+      res.status(404).json({ success: false, message: "Syllabus module not found" });
     }
   } catch (error) {
     console.error("Update Syllabus Error:", error);
-    res.status(500).json({ message: error.message || "Failed to update syllabus module" });
+    res.status(500).json({ success: false, message: error.message || "Failed to update syllabus module" });
   }
 };
 
@@ -168,10 +165,10 @@ export const deleteSyllabus = async (req, res) => {
     if (result.deletedCount > 0) {
       res.json({ success: true, message: "Syllabus module deleted" });
     } else {
-      res.status(404).json({ message: "Syllabus module not found" });
+      res.status(404).json({ success: false, message: "Syllabus module not found" });
     }
   } catch (error) {
-    res.status(500).json({ message: "Failed to delete syllabus module" });
+    res.status(500).json({ success: false, message: "Failed to delete syllabus module" });
   }
 };
 
@@ -184,10 +181,9 @@ export const addAdmin = async (req, res) => {
 
     const userExists = await User.findOne({ email });
     if (userExists) {
-      return res.status(400).json({ message: "User already exists with this email" });
+      return res.status(400).json({ success: false, message: "User already exists with this email" });
     }
 
-    // Generate a unique studentId for the admin (since it's required by schema)
     const adminId = `ADM-${Math.random().toString(36).substring(2, 7).toUpperCase()}`;
 
     const admin = await User.create({
@@ -212,7 +208,7 @@ export const addAdmin = async (req, res) => {
     }
   } catch (error) {
     console.error("Add Admin Error:", error);
-    res.status(500).json({ message: error.message || "Failed to create admin" });
+    res.status(500).json({ success: false, message: error.message || "Failed to create admin" });
   }
 };
 
