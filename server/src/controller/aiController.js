@@ -47,8 +47,9 @@ export const analyzeCustomPerformance = async (req, res) => {
         "Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`,
       },
       body: JSON.stringify({
-        model: "google/gemini-2.0-flash-001",
+        model: "google/gemini-2.5-flash",
         messages: [{ role: "user", content: prompt }],
+        max_tokens: 1000,
       }),
     });
 
@@ -109,9 +110,10 @@ export const analyzePerformance = async (req, res) => {
         "Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`,
       },
       body: JSON.stringify({
-        model: "google/gemini-2.0-flash-001",
+        model: "google/gemini-2.5-flash",
         messages: [{ role: "user", content: prompt }],
-        response_format: { type: "json_object" }
+        response_format: { type: "json_object" },
+        max_tokens: 1000,
       }),
     });
 
@@ -158,9 +160,10 @@ export const generateStudyPlan = async (req, res) => {
         "Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`,
       },
       body: JSON.stringify({
-        model: "google/gemini-2.0-flash-001",
+        model: "google/gemini-2.5-flash",
         messages: [{ role: "user", content: prompt }],
-        response_format: { type: "json_object" }
+        response_format: { type: "json_object" },
+        max_tokens: 1000,
       }),
     });
 
@@ -207,8 +210,9 @@ export const generateFlashcardAnswer = async (req, res) => {
         "Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`,
       },
       body: JSON.stringify({
-        model: "google/gemini-2.0-flash-001",
+        model: "google/gemini-2.5-flash",
         messages: [{ role: "user", content: prompt }],
+        max_tokens: 200,
       }),
     });
 
@@ -295,8 +299,9 @@ export const explainCode = async (req, res) => {
         "Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`,
       },
       body: JSON.stringify({
-        model: "google/gemini-2.0-flash-001",
+        model: "google/gemini-2.5-flash",
         messages: [{ role: "user", content: prompt }],
+        max_tokens: 1000,
       }),
     });
 

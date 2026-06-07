@@ -32,7 +32,7 @@ class AIController {
             "X-Title": "NexaLearn AI Assistant",
           },
           body: JSON.stringify({
-            model: "google/gemini-2.0-flash-001",
+            model: "google/gemini-2.5-flash",
             messages: [
               {
                 role: "system",
@@ -52,7 +52,7 @@ Use bullet points where helpful.
                 `,
               },
             ],
-           
+            max_tokens: 800,
           }),
         },
       );

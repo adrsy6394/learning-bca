@@ -27,7 +27,7 @@ Explain this topic in ${language} using simple and student-friendly language wit
           "X-Title": "NexaLearn AI Assistant",
         },
         body: JSON.stringify({
-          model: "google/gemini-2.0-flash-001",
+          model: "google/gemini-2.5-flash",
           messages: [{ role: "user", content: prompt }],
           max_tokens: 600,
         }),
@@ -92,11 +92,12 @@ Instructions:
           "X-Title": "NexaLearn AI Assistant",
         },
         body: JSON.stringify({
-          model: "google/gemini-2.0-flash-001",
+          model: "google/gemini-2.5-flash",
           messages: [
             { role: "system", content: systemPrompt },
             { role: "user", content: message }
           ],
+          max_tokens: 800,
         }),
       }
     );
